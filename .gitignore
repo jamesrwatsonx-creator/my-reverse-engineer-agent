@@ -1,0 +1,19 @@
+# Sensitive or local-only files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.json
+**/cookies.json
+**/session.json
+**/auth.json
+**/tokens.json
+node_modules/
+.venv/
+__pycache__/
+.DS_Store
+Thumbs.db
