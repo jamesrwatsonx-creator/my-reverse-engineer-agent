@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "repository": "My Reverse Engineer Agent",
+  "description": "Evidence-grounded index of reverse engineering investigations.",
+  "investigations": []
+}
