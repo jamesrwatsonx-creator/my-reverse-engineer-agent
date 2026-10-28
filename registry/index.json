@@ -2,5 +2,24 @@
   "schema_version": 1,
   "repository": "My Reverse Engineer Agent",
   "description": "Evidence-grounded index of reverse engineering investigations.",
-  "investigations": []
+  "investigations": [
+    {
+      "slug": "livekit-cloud",
+      "name": "LiveKit Cloud (Gods Eye View voice foundation)",
+      "type": "authenticated-saas",
+      "url": "https://cloud.livekit.io/projects/p_2dlbc09r83f/overview",
+      "status": "BLOCKED",
+      "last_reviewed": "2026-10-28",
+      "summary": "Authenticated project uninspected; documented LiveKit realtime/SIP/observability capabilities; provisional Gods Eye View personal+business agent architecture and build order.",
+      "tags": [
+        "voice-agents",
+        "telephony",
+        "livekit",
+        "hermes",
+        "gods-eye-view",
+        "a2a",
+        "business-agents"
+      ]
+    }
+  ]
 }
