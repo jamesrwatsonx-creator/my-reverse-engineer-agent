@@ -27,7 +27,7 @@ Read [comparative evaluation](docs/COMPARATIVE_EVALUATION.md), [learning lifecyc
 python scripts/intelligence.py search --query "webhook retry"
 python scripts/intelligence.py audit --slug example
 python scripts/intelligence.py compare --file path/to/comparison.json
-python scripts/intelligence.py review --slug example --id candidate-id --reviewer reviewer-id --decision validated --reason "Independent fixture reproduced"
+python scripts/intelligence.py review --slug example --id candidate-id --reviewer reviewer-id --decision validated --reason "Independent fixture reproduced" --receipt investigations/example/review.md
 python scripts/intelligence.py verify-package --slug example
 ```
 Review is an explicit local index update, not autonomous certification. Run it only after an actual separate review; the script checks record shape, local artifact references and comparison eligibility, not truth or human identity. No global default is changed by the CLI.

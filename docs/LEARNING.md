@@ -24,3 +24,5 @@ Case-based reasoning uses retrieval, reuse, revision and retention; see [Aamodt 
 
 ## Governance and measurement
 Default routing or general policy changes are separate reviewed proposals with regression tests, protected holdouts and rollback commit. Require evidence across more than one materially distinct context before broad generalization (not a magic count; explain independence and limits). Preserve variants on Pareto frontier, favor hard constraints and owner goals. Measure effectiveness of the whole workbench, not accumulated notes; use comparative evaluation. No automatic model training, autonomous background execution, or guaranteed improvement per case.
+
+Machine-readable record format and local commands: [LEARNING_RECORD_FORMAT.md](LEARNING_RECORD_FORMAT.md).
