@@ -1,6 +1,6 @@
 # Registry reconciliation — 22 requested candidates
 
-Baseline 5d7119db5ea16d4466a9d80f13e6b274c6dfc6f7: 152 entries, all 22 already present, source_status=candidate-unverified, runtime_status=NOT_RUN, pin=null and license_review=PENDING. No duplicate additions; metadata-only enrichment using phase1_priority, phase1_capability, upstream_overlap. Repository paths are existing catalog URLs, not fresh independent canonical redirect or release checks. No provider invocation or installation attempted; availability UNAVAILABLE/unknown until local health and fixture pass. Preserve existing route references and other entries.
+Baseline 5d7119db5ea16d4466a9d80f13e6b274c6dfc6f7: 152 entries, all 22 already present, source_status=candidate-unverified, runtime_status=NOT_RUN, pin=null and license_review=PENDING. No duplicate additions; metadata-only enrichment using phase1_priority, phase1_capability, upstream_overlap. All 22 existing URLs were independently checked against current GitHub repository metadata on 2026-11-25; canonical owner/name matched and none were archived. This is not a release, deep source or runtime check. No provider invocation or installation attempted; availability UNAVAILABLE/unknown until local health and fixture pass. Preserve existing route references and other entries.
 
 | Priority | ID | Repository path | Capability | REA overlap | Status |
 |---|---|---|---|---|---|
@@ -27,4 +27,31 @@ Baseline 5d7119db5ea16d4466a9d80f13e6b274c6dfc6f7: 152 entries, all 22 already p
 | specialized | hyperdbg | https://github.com/HyperDbg/HyperDbg | Dedicated approved hypervisor debugging lab | Partial: GDB/Rizin/Frida, not hypervisor-level observation | candidate-unverified / NOT_RUN |
 | specialized | rz-ghidra | https://github.com/rizinorg/rz-ghidra | Alternative Rizin Ghidra decompilation backend | Substantial: REA Ghidra and Rizin interfaces; alternate backend only for measured delta | candidate-unverified / NOT_RUN |
 
-Canonical paths and lineage need rechecking with source freshness protocol before selection; no fixed versions or paths introduced. Prefer REA where actual operation/fixture passes. Qiling is OS-aware emulation, not universal full-system emulation. Isolation components require host, privilege and confinement validation; no claim of a safe sandbox. No authorization/DRM/security bypass lane. Record exact source, license, host, live schemas, test receipt and restrictions before any promotion.
+Canonical paths were confirmed; lineage, HEAD/release changes and licenses still need rechecking with source freshness protocol before selection; no fixed versions or paths introduced. Prefer REA where actual operation/fixture passes. Qiling is OS-aware emulation, not universal full-system emulation. Isolation components require host, privilege and confinement validation; no claim of a safe sandbox. No authorization/DRM/security bypass lane. Record exact source, license, host, live schemas, test receipt and restrictions before any promotion.
+
+## Metadata verification receipt (2026-11-25)
+
+| Canonical repository | Default branch (observed, not a pin) | Archived |
+|---|---|---|
+| [angr/angr](https://github.com/angr/angr) | master | false |
+| [JonathanSalwan/Triton](https://github.com/JonathanSalwan/Triton) | master | false |
+| [qilingframework/qiling](https://github.com/qilingframework/qiling) | master | false |
+| [j4k0xb/webcrack](https://github.com/j4k0xb/webcrack) | master | false |
+| [unicorn-engine/unicorn](https://github.com/unicorn-engine/unicorn) | master | false |
+| [nccgroup/blackboxprotobuf](https://github.com/nccgroup/blackboxprotobuf) | master | false |
+| [marin-m/pbtk](https://github.com/marin-m/pbtk) | qt-version-1.x | false |
+| [wireshark/wireshark](https://github.com/wireshark/wireshark) | master | false |
+| [blacktop/ipsw](https://github.com/blacktop/ipsw) | master | false |
+| [panda-re/panda](https://github.com/panda-re/panda) | dev | false |
+| [rr-debugger/rr](https://github.com/rr-debugger/rr) | master | false |
+| [QBDI/QBDI](https://github.com/QBDI/QBDI) | dev-next | false |
+| [baldurk/renderdoc](https://github.com/baldurk/renderdoc) | v1.x | false |
+| [KhronosGroup/SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools) | main | false |
+| [lutzroeder/netron](https://github.com/lutzroeder/netron) | main | false |
+| [onnx/onnx](https://github.com/onnx/onnx) | main | false |
+| [firecracker-microvm/firecracker](https://github.com/firecracker-microvm/firecracker) | main | false |
+| [containers/bubblewrap](https://github.com/containers/bubblewrap) | main | false |
+| [google/nsjail](https://github.com/google/nsjail) | master | false |
+| [libvmi/libvmi](https://github.com/libvmi/libvmi) | master | false |
+| [HyperDbg/HyperDbg](https://github.com/HyperDbg/HyperDbg) | master | false |
+| [rizinorg/rz-ghidra](https://github.com/rizinorg/rz-ghidra) | dev | false |

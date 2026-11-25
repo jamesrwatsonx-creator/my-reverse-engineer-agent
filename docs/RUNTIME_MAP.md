@@ -1,6 +1,6 @@
 # Repository runtime map
 
-Immutable baseline [5d7119db5ea16d4466a9d80f13e6b274c6dfc6f7](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/tree/5d7119db5ea16d4466a9d80f13e6b274c6dfc6f7), tree c1cd8781ef71bff9c52ecf99ea95043cbfd1b17c. 55 tracked files; all source blobs fetched via GitHub during audit (some long documents reviewed by extracted sections; not a line-by-line semantic proof). No execution engine, provider adapter, evidence database or supervisor exists. No local checkout: container DNS cannot resolve GitHub. Existing Python consists of four utility scripts and four test modules. Line numbers refer to baseline, not this revision.
+Immutable baseline [5d7119db5ea16d4466a9d80f13e6b274c6dfc6f7](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/tree/5d7119db5ea16d4466a9d80f13e6b274c6dfc6f7), tree c1cd8781ef71bff9c52ecf99ea95043cbfd1b17c. 57 tracked files; all source blobs fetched via GitHub during audit (some long documents reviewed by extracted sections; not a line-by-line semantic proof). No execution engine, provider adapter, evidence database or supervisor exists. No local checkout: container DNS cannot resolve GitHub. Existing Python consists of four utility scripts and four test modules. Line numbers refer to baseline, not this revision.
 
 ## File inventory and actual structure
 | Path | Actual content / schema |

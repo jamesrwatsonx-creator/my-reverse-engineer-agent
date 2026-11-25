@@ -1407,7 +1407,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "very-high",
       "upstream_overlap": "Partial: native Ghidra value flow; symbolic execution distinct",
-      "phase1_capability": "Symbolic binary analysis; indirect-dispatch hypotheses"
+      "phase1_capability": "Symbolic binary analysis; indirect-dispatch hypotheses",
+      "phase1_source_observation": {
+        "canonical_repository": "angr/angr",
+        "default_branch": "master",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "triton",
@@ -1426,7 +1433,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "very-high",
       "upstream_overlap": "Partial: Ghidra/Frida observations; symbolic execution distinct",
-      "phase1_capability": "Dynamic symbolic execution and expression analysis"
+      "phase1_capability": "Dynamic symbolic execution and expression analysis",
+      "phase1_source_observation": {
+        "canonical_repository": "JonathanSalwan/Triton",
+        "default_branch": "master",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "qiling",
@@ -1445,7 +1459,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "very-high",
       "upstream_overlap": "Partial: native artifact inspection; execution emulation distinct; not full-system universally",
-      "phase1_capability": "OS-aware binary and firmware emulation"
+      "phase1_capability": "OS-aware binary and firmware emulation",
+      "phase1_source_observation": {
+        "canonical_repository": "qilingframework/qiling",
+        "default_branch": "master",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "unicorn",
@@ -1464,7 +1485,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Partial: native disassembly; CPU emulation distinct",
-      "phase1_capability": "CPU instruction emulation on controlled fixtures"
+      "phase1_capability": "CPU instruction emulation on controlled fixtures",
+      "phase1_source_observation": {
+        "canonical_repository": "unicorn-engine/unicorn",
+        "default_branch": "master",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "rz-ghidra",
@@ -1483,7 +1511,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "specialized",
       "upstream_overlap": "Substantial: REA Ghidra and Rizin interfaces; alternate backend only for measured delta",
-      "phase1_capability": "Alternative Rizin Ghidra decompilation backend"
+      "phase1_capability": "Alternative Rizin Ghidra decompilation backend",
+      "phase1_source_observation": {
+        "canonical_repository": "rizinorg/rz-ghidra",
+        "default_branch": "dev",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "webcrack",
@@ -1501,7 +1536,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "very-high",
       "upstream_overlap": "Partial: REA JavaScript graph and source analysis; compare transformations",
-      "phase1_capability": "JavaScript normalization/deobfuscation"
+      "phase1_capability": "JavaScript normalization/deobfuscation",
+      "phase1_source_observation": {
+        "canonical_repository": "j4k0xb/webcrack",
+        "default_branch": "master",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "js-deobfuscator",
@@ -1535,7 +1577,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Substantial: REA wire fields, framing and candidate readings; re-encoding/inference needs fixture",
-      "phase1_capability": "Schema-less Protobuf interpretation and re-encoding"
+      "phase1_capability": "Schema-less Protobuf interpretation and re-encoding",
+      "phase1_source_observation": {
+        "canonical_repository": "nccgroup/blackboxprotobuf",
+        "default_branch": "master",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "pbtk",
@@ -1554,7 +1603,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Partial: REA supplied FileDescriptorSet interpretation; descriptor discovery distinct",
-      "phase1_capability": "Descriptor recovery from authorized artifacts"
+      "phase1_capability": "Descriptor recovery from authorized artifacts",
+      "phase1_source_observation": {
+        "canonical_repository": "marin-m/pbtk",
+        "default_branch": "qt-version-1.x",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "wireshark",
@@ -1573,7 +1629,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Partial: native HAR/SAZ/mitmproxy/qlog and tested HTTP/3 profile; general packet capture distinct",
-      "phase1_capability": "Packet and protocol inspection"
+      "phase1_capability": "Packet and protocol inspection",
+      "phase1_source_observation": {
+        "canonical_repository": "wireshark/wireshark",
+        "default_branch": "master",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "ipsw",
@@ -1590,7 +1653,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Partial: native artifact readers; specialized Apple coverage requires comparison",
-      "phase1_capability": "Apple firmware and binary artifact inspection"
+      "phase1_capability": "Apple firmware and binary artifact inspection",
+      "phase1_source_observation": {
+        "canonical_repository": "blacktop/ipsw",
+        "default_branch": "master",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "ipsw-py",
@@ -1635,7 +1705,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Partial: browser scenario replay is not whole-system replay",
-      "phase1_capability": "Whole-system record/replay"
+      "phase1_capability": "Whole-system record/replay",
+      "phase1_source_observation": {
+        "canonical_repository": "panda-re/panda",
+        "default_branch": "dev",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "rr",
@@ -1652,7 +1729,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Partial: native debugger/Frida observations; deterministic replay distinct",
-      "phase1_capability": "Deterministic Linux process replay"
+      "phase1_capability": "Deterministic Linux process replay",
+      "phase1_source_observation": {
+        "canonical_repository": "rr-debugger/rr",
+        "default_branch": "master",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "qbdi",
@@ -1669,7 +1753,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Partial: Frida and debugger providers; instruction coverage compare",
-      "phase1_capability": "Dynamic binary instrumentation"
+      "phase1_capability": "Dynamic binary instrumentation",
+      "phase1_source_observation": {
+        "canonical_repository": "QBDI/QBDI",
+        "default_branch": "dev-next",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "libvmi",
@@ -1686,7 +1777,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "specialized",
       "upstream_overlap": "Partial: process observation, not hypervisor guest introspection",
-      "phase1_capability": "Approved guest introspection"
+      "phase1_capability": "Approved guest introspection",
+      "phase1_source_observation": {
+        "canonical_repository": "libvmi/libvmi",
+        "default_branch": "master",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "hyperdbg",
@@ -1703,7 +1801,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "specialized",
       "upstream_overlap": "Partial: GDB/Rizin/Frida, not hypervisor-level observation",
-      "phase1_capability": "Dedicated approved hypervisor debugging lab"
+      "phase1_capability": "Dedicated approved hypervisor debugging lab",
+      "phase1_source_observation": {
+        "canonical_repository": "HyperDbg/HyperDbg",
+        "default_branch": "master",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "firecracker",
@@ -1720,7 +1825,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Distinct: REA provider cleanup not a host isolation guarantee",
-      "phase1_capability": "MicroVM isolation component"
+      "phase1_capability": "MicroVM isolation component",
+      "phase1_source_observation": {
+        "canonical_repository": "firecracker-microvm/firecracker",
+        "default_branch": "main",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "bubblewrap",
@@ -1737,7 +1849,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Distinct: no comparable supervisor isolation contract established",
-      "phase1_capability": "Linux namespace isolation component"
+      "phase1_capability": "Linux namespace isolation component",
+      "phase1_source_observation": {
+        "canonical_repository": "containers/bubblewrap",
+        "default_branch": "main",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "nsjail",
@@ -1754,7 +1873,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Distinct: no comparable supervisor isolation contract established",
-      "phase1_capability": "Controlled process isolation component"
+      "phase1_capability": "Controlled process isolation component",
+      "phase1_source_observation": {
+        "canonical_repository": "google/nsjail",
+        "default_branch": "master",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "qemu",
@@ -1800,7 +1926,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Partial: static GPU metadata, not graphics runtime",
-      "phase1_capability": "Owned graphics-frame inspection"
+      "phase1_capability": "Owned graphics-frame inspection",
+      "phase1_source_observation": {
+        "canonical_repository": "baldurk/renderdoc",
+        "default_branch": "v1.x",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "spirv-tools",
@@ -1818,7 +1951,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Partial: static CUDA/HIP/PTX inspection is not SPIR-V validation",
-      "phase1_capability": "SPIR-V IR validation and analysis"
+      "phase1_capability": "SPIR-V IR validation and analysis",
+      "phase1_source_observation": {
+        "canonical_repository": "KhronosGroup/SPIRV-Tools",
+        "default_branch": "main",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "spirv-cross",
@@ -1867,7 +2007,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Partial: GGUF/safetensors declarations, not executable graph",
-      "phase1_capability": "Local model graph visualization"
+      "phase1_capability": "Local model graph visualization",
+      "phase1_source_observation": {
+        "canonical_repository": "lutzroeder/netron",
+        "default_branch": "main",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "onnx",
@@ -1886,7 +2033,14 @@
       "notes": "Verify source, host, license, installed version and fixture before use.",
       "phase1_priority": "high",
       "upstream_overlap": "Distinct: REA model artifact guide explicitly excludes ONNX",
-      "phase1_capability": "ONNX model structure and validation"
+      "phase1_capability": "ONNX model structure and validation",
+      "phase1_source_observation": {
+        "canonical_repository": "onnx/onnx",
+        "default_branch": "main",
+        "archived": false,
+        "observed_date": "2026-11-25",
+        "scope": "GitHub repository metadata only; not runtime or release verification"
+      }
     },
     {
       "id": "onnxruntime",
