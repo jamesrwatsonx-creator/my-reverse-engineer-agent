@@ -1,0 +1,94 @@
+{
+  "fingerprint": {
+    "archetype": "native-desktop",
+    "format": "synthetic",
+    "arch": "fixture",
+    "packer": null,
+    "obfuscation_signatures": [],
+    "transport_protocols": [],
+    "platform": "fixture",
+    "confidence": 1,
+    "timeout_sensitivity": false,
+    "verification_feasibility": true
+  },
+  "stage": {
+    "id": "sample",
+    "layer": "static",
+    "providers": [
+      "first",
+      "second",
+      "third"
+    ]
+  },
+  "input": "synthetic fixture only",
+  "raw": {
+    "function": {
+      "symbol": "example",
+      "address": "0x10",
+      "signature": "int example()",
+      "pseudocode": "return 1;",
+      "extra": "keep me"
+    },
+    "call_graph": {
+      "nodes": [
+        "example",
+        "helper"
+      ],
+      "edges": [
+        [
+          "example",
+          "helper"
+        ]
+      ],
+      "unknown_edges": [
+        [
+          "helper",
+          null
+        ]
+      ],
+      "metadata": {
+        "extra": 1
+      }
+    },
+    "strings": {
+      "entries": [
+        {
+          "value": "hello",
+          "encoding": "utf-8",
+          "address": "0x20",
+          "derivation": "observed",
+          "extra": 3
+        }
+      ]
+    },
+    "network": {
+      "protocol": "http-json",
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/fixture"
+        }
+      ],
+      "responses": [
+        {
+          "status": 200
+        }
+      ],
+      "decoded": false,
+      "extra": [
+        1
+      ]
+    },
+    "schema": {
+      "fields": [
+        {
+          "name": "count",
+          "type": "integer",
+          "confidence": 0.8,
+          "tag": 1
+        }
+      ],
+      "extra": "note"
+    }
+  }
+}
