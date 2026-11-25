@@ -4,3 +4,6 @@ Next: run local unit tests; prepare first authorized target, verify selected pro
 
 ## Developmental intelligence upgrade
 Added permanent intake/context/decision records, comparative evaluation and knowledge review index, per-target learning delta and reuse records, separate production handoff and feedback protocol, local search/audit/comparison/review/package integrity utilities and tests. No real new capability promoted and no historical target performance fabricated. External provider runtime and actual cross-repository transfer still unverified. Workbench-level baseline vs knowledge-assisted evaluation remains to be run on real authorized tasks.
+
+## Resource reconciliation and preservation
+Reviewed central catalog against REA-LINDY toolchain, Big_Idea REA capability audit, user's awesome-REA index and Craft Anything README; added missing relevant candidates, fork references and benchmark/ground-truth leads. Added challenge-not-overwrite rule without replacing existing developmental architecture. Current catalog: 77 entries, from 62; aliases/reference sources are not counted as separate runtime providers. External tools remain NOT_RUN until selected and verified. No claim all historical user repositories or recursively linked resources were exhaustively audited.

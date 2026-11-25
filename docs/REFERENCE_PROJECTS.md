@@ -1,3 +1,6 @@
 # Reference projects reviewed 2026-11-25
 [REA-LINDY](https://github.com/jamesrwatsonx-creator/REA-LINDY): README, CLAUDE, docs/00-EXECUTION-PLAN.md, docs/03-TOOLCHAIN-AND-CANDIDATES.md, docs/08-REPOSITORY-MINING.md, docs/09-LINDY-OBSERVATION-SCENARIOS.md, docs/10-CLAUDE-START-PROMPT.md, docs/templates/FEATURE-DOSSIER.md, handoff README. Generalized stage gates, 40 seeded dossiers as a pattern not fixed count, end-to-end scenarios, evidence labels, cross-feature dependency map, candidate cards, repo mining and owner decision handoff. No Lindy-specific product scope imported.
 [Big_Idea](https://github.com/jamesrwatsonx-creator/Big_Idea): CLAUDE.md, docs/REA_CAPABILITY_AUDIT.md, docs/REA_GHIDRA_SETUP.md, scripts/rea-ghidra-preflight.sh. Generalized runtime classification, upstream vs fork, actual REA/Ghidra capabilities and host checks, passive observation vs driver, version receipts, authorized implementation gate, gap-by-gap fidelity. Target was BigIdeasDB Desktop; no verified completed reconstruction claimed. Both reference repositories unchanged.
+
+
+Additional audited resource sources and external comparative research leads: see [RESOURCE_AUDIT.md](RESOURCE_AUDIT.md). Keep this lineage separate from actual target observations.

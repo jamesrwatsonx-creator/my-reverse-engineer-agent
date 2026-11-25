@@ -12,7 +12,13 @@
       "source_status": "metadata-reviewed",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/rea",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        }
+      ]
     },
     {
       "id": "ghidra",
@@ -27,7 +33,13 @@
       "source_status": "metadata-reviewed",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/ghidra-reverse-engineering",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        }
+      ]
     },
     {
       "id": "craft",
@@ -36,10 +48,21 @@
         "all"
       ],
       "purpose": "Independent reconstruction",
-      "source_status": "metadata-reviewed",
+      "source_status": "readme-reviewed",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/storytold/craft-anything",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        },
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/RayCodes_CraftAnything",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        }
+      ],
+      "notes": "README describes early alpha, clean-room default not OS sandbox, Claude first; Codex adapter not live verified in source. Use permitted study and independent verification; actual local interoperability NOT_RUN."
     },
     {
       "id": "playwright",
@@ -165,7 +188,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/JoasASantos/REA-Prompts",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        }
+      ]
     },
     {
       "id": "awesome-rea",
@@ -177,7 +206,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/AIshihzong/awesome-reverse-engineer-anything",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        }
+      ]
     },
     {
       "id": "mitmproxy",
@@ -267,7 +302,13 @@
       "source_status": "metadata-reviewed",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/composio",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        }
+      ]
     },
     {
       "id": "nango",
@@ -333,7 +374,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/n8n",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        }
+      ]
     },
     {
       "id": "keycloak",
@@ -736,7 +783,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/live-Kit-agents",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        }
+      ]
     },
     {
       "id": "pipecat",
@@ -749,7 +802,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/pipecat-voice",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        }
+      ]
     },
     {
       "id": "hermes",
@@ -761,7 +820,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/hermes-agent",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        }
+      ]
     },
     {
       "id": "openviking",
@@ -773,7 +838,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/OpenViking",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        }
+      ]
     },
     {
       "id": "postiz",
@@ -786,7 +857,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/postiz-app",
+          "relationship": "upstream-or-user-mirror; verify exact lineage and version before selection"
+        }
+      ]
     },
     {
       "id": "grill-with-docs",
@@ -796,6 +873,232 @@
       ],
       "purpose": "Owner decision skill; verify path",
       "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "leanrea",
+      "url": "https://github.com/aicodeking/leanrea",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Lightweight direct-CLI skill challenger to REA; compare actual coverage and overhead",
+      "source_status": "readme-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/leanrea",
+          "relationship": "user fork; verify exact revision"
+        }
+      ]
+    },
+    {
+      "id": "rea-lab",
+      "url": "https://github.com/pablodiazjorge/rea-lab",
+      "kinds": [
+        "desktop",
+        "repository",
+        "other"
+      ],
+      "purpose": "Windows Ghidra fixtures, reproducible REA benchmarks and negative evidence",
+      "source_status": "readme-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "rea-casebook",
+      "url": "https://github.com/pablodiazjorge/rea-casebook",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Claude Code evidence ledger and citation consistency candidate; version compatibility required",
+      "source_status": "readme-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "rea-groundtruth",
+      "url": "https://github.com/UnknownHacker1/rea-groundtruth",
+      "kinds": [
+        "desktop",
+        "repository"
+      ],
+      "purpose": "Source-known fixtures and false-negative regression cases",
+      "source_status": "readme-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "dsh-rea",
+      "url": "https://github.com/Fanqi89/dsh-rea",
+      "kinds": [
+        "other",
+        "desktop"
+      ],
+      "purpose": "Optional DeepSeek Harness REA bridge; not needed for Claude/Codex",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/dsh-rea",
+          "relationship": "user fork; verify exact revision"
+        }
+      ]
+    },
+    {
+      "id": "rea-video",
+      "url": "https://github.com/JuneYaooo/rea-video",
+      "kinds": [
+        "other"
+      ],
+      "purpose": "Video/shot/motion analysis; use authorized assets and original independent outputs",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/rea-video",
+          "relationship": "user fork; verify exact revision"
+        }
+      ]
+    },
+    {
+      "id": "automatisch",
+      "url": "https://github.com/automatisch/automatisch",
+      "kinds": [
+        "api",
+        "agent"
+      ],
+      "purpose": "Workflow automation alternative; check license and integration scope",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/automatisch",
+          "relationship": "user fork; verify exact revision"
+        }
+      ]
+    },
+    {
+      "id": "dograh",
+      "url": "https://github.com/dograh-hq/dograh",
+      "kinds": [
+        "agent",
+        "api"
+      ],
+      "purpose": "Voice workflow, telephony and provider composition candidate",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/dograh",
+          "relationship": "user fork; verify exact revision"
+        }
+      ]
+    },
+    {
+      "id": "letta-code",
+      "url": "https://github.com/letta-ai/letta-code",
+      "kinds": [
+        "agent"
+      ],
+      "purpose": "Stateful agent runtime and memory alternative",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/letta-code",
+          "relationship": "user fork; verify exact revision"
+        }
+      ]
+    },
+    {
+      "id": "ghidra-mcp",
+      "url": "https://github.com/LaurieWired/GhidraMCP",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Alternative authorized native analysis adapter; compare to official REA provider",
+      "source_status": "source-index-listed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "ida-pro-mcp",
+      "url": "https://github.com/mrexodia/ida-pro-mcp",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Alternative authorized native provider; commercial tool dependency; verify scope/license",
+      "source_status": "source-index-listed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "rea-reconstruction-companion",
+      "url": "https://github.com/ShadowSwaps/REA-Reconstruction-Companion",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Reconstruction workflow lead; inspect before any adoption",
+      "source_status": "source-index-listed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "rea-python",
+      "url": "https://github.com/kandada/rea-python",
+      "kinds": [
+        "other",
+        "repository"
+      ],
+      "purpose": "Python client candidate; check supported API and releases",
+      "source_status": "source-index-listed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "rea-case-index",
+      "url": "https://github.com/songshikang0111/awesome-REA-cases",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Discovery index only; investigate source claims separately",
+      "source_status": "source-index-listed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "awesome-reverse-engineering",
+      "url": "https://github.com/morluto/awesome-reverse-engineering",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Discovery index; not an executable or verification receipt",
+      "source_status": "source-index-listed",
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING"

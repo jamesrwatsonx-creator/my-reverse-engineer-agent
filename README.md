@@ -31,3 +31,6 @@ python scripts/intelligence.py review --slug example --id candidate-id --reviewe
 python scripts/intelligence.py verify-package --slug example
 ```
 Review is an explicit local index update, not autonomous certification. Run it only after an actual separate review; the script checks record shape, local artifact references and comparison eligibility, not truth or human identity. No global default is changed by the CLI.
+
+## Resource coverage and challenge principle
+[Resource audit](docs/RESOURCE_AUDIT.md) tracks prior-project sources, fork/upstream relationships, benchmark challengers and reference case discovery. [Tool registry](registry/tools.json) distinguishes candidates from verified runtime providers. The central learning principle is to challenge existing knowledge with new evidence, preserve conditional alternatives and change defaults only after review and regression.
