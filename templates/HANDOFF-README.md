@@ -1,0 +1,2 @@
+# Transfer package instructions
+See docs/TRANSFER_PROTOCOL.md. Do not claim package ready until owner scope and required artifacts reviewed. MANIFEST.json contains source_repo, source_commit (40 hex), target_slug, destination, readiness, package_version, approval_ref, files: [{path:"PRODUCT_SPEC.md",sha256:"..."}]. All paths relative to handoff/. Hash after writing; verify-package checks integrity, not readiness. Source package commit is recorded in TRANSFERS after commit.

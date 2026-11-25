@@ -4,7 +4,7 @@ import argparse, datetime, json, pathlib, re, shutil, subprocess, sys
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 KINDS=("web","desktop","mobile","extension","api","agent","repository","game","data","other")
 MODES=("research","selected","fidelity","improve")
-FILES=("README.md","features.md","experience.md","architecture.md","evidence.md","capabilities.md","opportunities.md","STATUS.md","GAP_MATRIX.md","SCENARIOS.md","TOOL_PLAN.md","HANDOFF.md","LAUNCH.md","BRIEF.json")
+FILES=("README.md","features.md","experience.md","architecture.md","evidence.md","capabilities.md","opportunities.md","STATUS.md","GAP_MATRIX.md","SCENARIOS.md","TOOL_PLAN.md","HANDOFF.md","LAUNCH.md","BRIEF.json","INTERVIEW.md","CONTEXT.json","DECISIONS.md","REUSE_LOG.md","LEARNING_DELTA.json","TRANSFERS.md","FEEDBACK.md")
 def load(p): return json.loads(p.read_text(encoding="utf-8"))
 def dump(p,v):
     tmp=p.with_suffix(p.suffix+".tmp")
@@ -24,7 +24,14 @@ def prepare(a,root=ROOT):
     selected=plan(a.kind,root); now=datetime.datetime.now(datetime.timezone.utc).isoformat()
     folder.mkdir(parents=True)
     dump(folder/"BRIEF.json",{"slug":s,"name":a.name,"target":a.target,"kind":a.kind,"mode":a.mode,"goal":a.goal,"created_at":now,"authorization":"UNCONFIRMED; permitted public research only until scoped","build_authorized":False,"destination":None,"acceptance":[],"constraints":[],"owner_questions":[]})
-    content={"README.md":"# "+a.name+"\nPLANNED; see BRIEF.json and LAUNCH.md.",
+    dump(folder/"CONTEXT.json",{"instruction_revision":None,"tool_registry_revision":None,"knowledge_revision":None,"retrieved_ids":[],"planned_tools":[x["id"] for x in selected],"note":"Fill actual commit references before launch; scaffold only"})
+    dump(folder/"LEARNING_DELTA.json",{"schema_version":1,"target_slug":s,"assessment":"PENDING","no_change_reason":None,"items":[]})
+    content={"INTERVIEW.md":"# Owner interview\nOriginal goal recorded in BRIEF.json. Add dated exact non-sensitive Q&A and changes; no answers inferred.",
+    "DECISIONS.md":"# Decisions\nPending owner decisions; record alternatives, rationale and consequences.",
+    "REUSE_LOG.md":"# Prior knowledge reuse\nPending retrieval. Record IDs, adaptations, outcomes and evidence.",
+    "TRANSFERS.md":"# Transfer history\nNo production repo transfer recorded.",
+    "FEEDBACK.md":"# Production feedback\nNo production results recorded.",
+    "README.md":"# "+a.name+"\nPLANNED; see BRIEF.json and LAUNCH.md.",
     "features.md":"# Feature atlas\nUNKNOWN; source-backed IDs pending.",
     "experience.md":"# UX, states and motion\nUNKNOWN.",
     "architecture.md":"# Architecture\nUNKNOWN; separate observation from hypothesis.",
@@ -38,6 +45,8 @@ def prepare(a,root=ROOT):
     "HANDOFF.md":"# Handoff\nPending contracts, evidence, coverage, decision and plan.",
     "LAUNCH.md":(root/"templates/LAUNCH.md").read_text(encoding="utf-8")+"\nSelected folder: investigations/"+s+"/. BRIEF.json contains exact owner goal."}
     for n,c in content.items(): (folder/n).write_text(c+"\n",encoding="utf-8")
+    (folder/"handoff").mkdir()
+    (folder/"handoff/README.md").write_text("# Handoff package\nNot prepared. See docs/TRANSFER_PROTOCOL.md.\n",encoding="utf-8")
     (folder/"features").mkdir()
     (folder/"features/README.md").write_text("# Feature dossiers\nUse templates/FEATURE-DOSSIER.md.\n",encoding="utf-8")
     records.append({"slug":s,"name":a.name,"type":a.kind,"url":a.target,"status":"PLANNED","last_reviewed":now[:10],"summary":"Prepared; no target evidence yet.","tags":[a.kind,a.mode]})

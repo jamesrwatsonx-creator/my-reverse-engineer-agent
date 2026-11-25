@@ -19,3 +19,15 @@ python scripts/workbench.py validate --slug example
 python -m unittest discover -s tests -v
 ```
 Preparation does not access target or install/run external providers. Existing investigations remain intact. This is an execution scaffold, not a completed integrated runtime; selected providers require real host verification.
+
+## Developmental learning and production transfer
+Read [comparative evaluation](docs/COMPARATIVE_EVALUATION.md), [learning lifecycle](docs/LEARNING.md), [two-repository transfer](docs/TRANSFER_PROTOCOL.md), [ChatGPT project workflow](docs/CHATGPT_PROJECT.md). Every target retains interview, baseline context, decisions, receipts, learning deltas and handoff manifest. The shared knowledge index stores reviewed capability variants, methods, compatibility and negative results; never treats folder count as intelligence.
+
+```sh
+python scripts/intelligence.py search --query "webhook retry"
+python scripts/intelligence.py audit --slug example
+python scripts/intelligence.py compare --file path/to/comparison.json
+python scripts/intelligence.py review --slug example --id candidate-id --reviewer reviewer-id --decision validated --reason "Independent fixture reproduced"
+python scripts/intelligence.py verify-package --slug example
+```
+Review is an explicit local index update, not autonomous certification. Run it only after an actual separate review; the script checks record shape, local artifact references and comparison eligibility, not truth or human identity. No global default is changed by the CLI.

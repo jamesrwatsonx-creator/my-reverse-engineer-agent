@@ -1,0 +1,2 @@
+# Learning item
+ID; capability_id; kind; proposing agent/run; target/version; job/interface; context constraints; prior variant IDs; candidate variant; source evidence refs (repo-relative safe files); fixture/result; measured comparison (when claimed); known failures and limitations; license and privacy review; independent reviewer, decision and reason; next verification. Distinguish target observation from independent implementation. Record negative results and uncertainty.

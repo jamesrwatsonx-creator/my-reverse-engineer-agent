@@ -1,2 +1,3 @@
 # Claude Code entrypoint
 AGENTS.md is authoritative for Claude Code and Codex. Read README and universal workflow, then target BRIEF.json, LAUNCH.md and STATUS.md. Run plan/preflight and structural validation; verify selected external tools on local fixtures, then execute stage gates according to owner scope. Ask only blocking questions. Do not substitute a generic goal for the target brief.
+Mandatory additional reading: docs/LEARNING.md, COMPARATIVE_EVALUATION.md, TRANSFER_PROTOCOL.md, CHATGPT_PROJECT.md and knowledge/index.json. Read target INTERVIEW, CONTEXT, DECISIONS, REUSE_LOG and LEARNING_DELTA. Capture learning at checkpoints and before handoff. Separate reviewer for promotion and separate production repo for builds.
