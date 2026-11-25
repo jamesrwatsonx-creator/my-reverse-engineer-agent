@@ -12,3 +12,5 @@ Run `python scripts/resource_refresh.py --output report.json` using authenticate
 
 ## Advanced catalog follow-up
 New candidates and reference-only sources are automatically included by resource_refresh.py on its next scan; their latest source/release/license metadata is not yet verified. Prior source_baseline.json is a historical observation with targeted upstream correction; do not equate historical counts with current catalog. Recursively inspect linked indexes within recorded scope and separate discovery, source review and runtime verification.
+
+Expanded baseline now includes 61 new sources with NOT_CHECKED head/release status. This preserves coverage without implying a scan; perform actual metadata and source review before use.

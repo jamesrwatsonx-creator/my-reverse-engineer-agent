@@ -18,3 +18,5 @@ Local gap planner and audit implemented, new-case scaffold extended, regression 
 
 ## Advanced capability expansion 2026-11-25
 Catalog 152 entries (61 added, including reference-only leads), 33 gap routes (14 added). Upstream main observed 2bb554e8; release 6.10.1; npm/installed runtime unverified. New source heads, releases, licensing and provider fixtures pending; prior baseline is not a fresh scan of the expanded catalog. Planner emits deterministic limitation-aware fallback steps, not execution. Structural tests added; inspect CI for actual result. No target executed, no upstream or owner fork changed.
+
+Freshness inventory reconciliation: 61 new source records explicitly NOT_CHECKED; 179 total tracked sources, 113 previously observed, 5 previously blocked, 61 not checked. This is not a live refresh. Earlier CI exposed missing baseline rows; added pending records without weakening coverage tests.

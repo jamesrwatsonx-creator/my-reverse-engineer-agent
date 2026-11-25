@@ -3,10 +3,11 @@
   "review_date": "2026-11-25",
   "scope": "Default-branch latest commit queries and selected GitHub release tags. Not full history, package or runtime verification.; added twelve gap-closure sources with documentation and metadata review, no runtime verification.; upstream REA head refreshed; new catalog sources pending metadata scan.",
   "counts": {
-    "tracked": 118,
+    "tracked": 179,
     "head_observed": 113,
     "blocked": 5,
-    "releases_observed": 20
+    "releases_observed": 20,
+    "not_checked": 61
   },
   "records": [
     {
@@ -1206,6 +1207,616 @@
       "release_tag": null,
       "reviewed_sha": null,
       "capability_review": "DOCUMENTATION_REVIEW_ONLY",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "angr/angr",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "JonathanSalwan/Triton",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "qilingframework/qiling",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "unicorn-engine/unicorn",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "rizinorg/rz-ghidra",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "j4k0xb/webcrack",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "kuizuo/js-deobfuscator",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "nccgroup/blackboxprotobuf",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "marin-m/pbtk",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "wireshark/wireshark",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "blacktop/ipsw",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "blacktop/ipsw-py",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "blacktop/ipsw-skill",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "panda-re/panda",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "rr-debugger/rr",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "QBDI/QBDI",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "libvmi/libvmi",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "HyperDbg/HyperDbg",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "firecracker-microvm/firecracker",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "containers/bubblewrap",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "google/nsjail",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "qemu/qemu",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "w00tzenheimer/d810-ng",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "baldurk/renderdoc",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "KhronosGroup/SPIRV-Tools",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "KhronosGroup/SPIRV-Cross",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "microsoft/DirectXShaderCompiler",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "lutzroeder/netron",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "onnx/onnx",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "microsoft/onnxruntime",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "google-ai-edge/LiteRT",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "apple/coremltools",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "aiortc/aioquic",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "aiortc/aiortc",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "rexxars/eventsource-parser",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "LearnLib/automatalib",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "renode/renode",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "littlefs-project/littlefs",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "ollama/ollama",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "vllm-project/vllm",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "starsong-consulting/GhydraMCP",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "clearbluejar/pyghidra-mcp",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "zinja-coder/jadx-mcp-server",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "zhuyansen/awesome-ai-reverse-engineering",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "gojue/ecapture",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "fkie-cad/friTap",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "x64dbg/ScyllaHide",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "hluwa/frida-dexdump",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "tklengyel/drakvuf",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "Wenzel/libmicrovmi",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "hvmi/hvmi",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "pop-rip/vtil2",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "AlixAbbasi/Triton-Symbolic",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "MartijnvanPraag/GhidraMCP",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "mrphrazer/ghidra-headless-mcp",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "Fausto-404/ai-mobile-reverse-skills",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "duty1g/x64dbg-mcp-server",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "zhizhuodemao/frida-mcp",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "axelmierczuk/tenrec",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "Claude-Reverser/IDA-instances-MCP",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "safety-research/agent-escape-bench",
+      "head_status": "NOT_CHECKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
       "runtime_status": "NOT_RUN"
     }
   ]
