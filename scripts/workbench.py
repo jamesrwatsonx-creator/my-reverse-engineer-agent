@@ -4,7 +4,7 @@ import argparse, datetime, json, pathlib, re, shutil, subprocess, sys
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 KINDS=("web","desktop","mobile","extension","api","agent","repository","game","data","other")
 MODES=("research","selected","fidelity","improve")
-FILES=("README.md","features.md","experience.md","architecture.md","evidence.md","capabilities.md","opportunities.md","STATUS.md","GAP_MATRIX.md","SCENARIOS.md","TOOL_PLAN.md","HANDOFF.md","LAUNCH.md","BRIEF.json","INTERVIEW.md","CONTEXT.json","DECISIONS.md","REUSE_LOG.md","LEARNING_DELTA.json","TRANSFERS.md","FEEDBACK.md","UPSTREAM_REVIEW.md")
+FILES=("README.md","features.md","experience.md","architecture.md","evidence.md","capabilities.md","opportunities.md","STATUS.md","GAP_MATRIX.md","SCENARIOS.md","TOOL_PLAN.md","HANDOFF.md","LAUNCH.md","BRIEF.json","INTERVIEW.md","CONTEXT.json","DECISIONS.md","REUSE_LOG.md","LEARNING_DELTA.json","TRANSFERS.md","FEEDBACK.md","UPSTREAM_REVIEW.md","GAP_REGISTER.json")
 def load(p): return json.loads(p.read_text(encoding="utf-8"))
 def dump(p,v):
     tmp=p.with_suffix(p.suffix+".tmp")
@@ -24,8 +24,9 @@ def prepare(a,root=ROOT):
     selected=plan(a.kind,root); now=datetime.datetime.now(datetime.timezone.utc).isoformat()
     folder.mkdir(parents=True)
     dump(folder/"BRIEF.json",{"slug":s,"name":a.name,"target":a.target,"kind":a.kind,"mode":a.mode,"goal":a.goal,"created_at":now,"authorization":"UNCONFIRMED; permitted public research only until scoped","build_authorized":False,"destination":None,"acceptance":[],"constraints":[],"owner_questions":[]})
-    dump(folder/"CONTEXT.json",{"instruction_revision":None,"tool_registry_revision":None,"knowledge_revision":None,"retrieved_ids":[],"planned_tools":[x["id"] for x in selected],"upstream_review":"UPSTREAM_REVIEW.md","note":"Fill actual commit references and upstream review before launch; scaffold only"})
+    dump(folder/"CONTEXT.json",{"instruction_revision":None,"tool_registry_revision":None,"knowledge_revision":None,"retrieved_ids":[],"planned_tools":[x["id"] for x in selected],"upstream_review":"UPSTREAM_REVIEW.md","gap_register":"GAP_REGISTER.json","note":"Fill actual commit references and upstream review before launch; scaffold only"})
     dump(folder/"LEARNING_DELTA.json",{"schema_version":1,"target_slug":s,"assessment":"PENDING","no_change_reason":None,"items":[]})
+    dump(folder/"GAP_REGISTER.json",{"schema_version":1,"target_slug":s,"assessment":"PENDING","no_gaps_reason":None,"items":[]})
     content={"UPSTREAM_REVIEW.md":"# Upstream freshness review\nPENDING. Before launch or REA execution, follow docs/UPSTREAM_REVIEW.md and docs/REPLIT.md. Record actual dated sources, changes, scope, decision and blockers; no review performed by scaffold.",
     "INTERVIEW.md":"# Owner interview\nOriginal goal recorded in BRIEF.json. Add dated exact non-sensitive Q&A and changes; no answers inferred.",
     "DECISIONS.md":"# Decisions\nPending owner decisions; record alternatives, rationale and consequences.",
@@ -40,7 +41,7 @@ def prepare(a,root=ROOT):
     "capabilities.md":"# Candidate capabilities\nNo verified alternatives yet.",
     "opportunities.md":"# Owner-aligned opportunities\nPending research.",
     "STATUS.md":"# Status\nPLANNED; no tools or target tests run. Confirm scope and preflight.",
-    "GAP_MATRIX.md":"# Gap matrix\nFeature ID, evidence, test, residual unknown, result and disposition.",
+    "GAP_MATRIX.md":"# Gap matrix\nHuman-readable summary of GAP_REGISTER.json; run gap_engine.py plan/audit. Record feature ID, obligation, evidence, test, residual unknown, result and disposition.",
     "SCENARIOS.md":"# Scenarios\nSeed normal/failure/roles/held-out cases after reconnaissance.",
     "TOOL_PLAN.md":"# Candidate tool plan\n"+"\n".join("- "+x["id"]+": "+x["purpose"]+" — NOT_RUN" for x in selected),
     "HANDOFF.md":"# Handoff\nPending contracts, evidence, coverage, decision and plan.",

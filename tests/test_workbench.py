@@ -17,6 +17,8 @@ class Tests(unittest.TestCase):
             f=w.prepare(a,r); self.assertTrue(w.validate("demo",r)["valid"])
             self.assertFalse(w.load(f/"BRIEF.json")["build_authorized"])
             self.assertIn("PENDING",(f/"UPSTREAM_REVIEW.md").read_text())
+            self.assertEqual(w.load(f/"GAP_REGISTER.json")["assessment"],"PENDING")
+            self.assertEqual(w.load(f/"GAP_REGISTER.json")["target_slug"],"demo")
             self.assertEqual(w.load(f/"CONTEXT.json")["upstream_review"],"UPSTREAM_REVIEW.md")
             self.assertEqual(w.load(r/"registry/index.json")["investigations"][0]["slug"],"existing")
             with self.assertRaises(ValueError): w.prepare(a,r)
