@@ -1389,6 +1389,837 @@
       "pin": null,
       "license_review": "PENDING",
       "reported_license": null
+    },
+    {
+      "id": "angr",
+      "url": "https://github.com/angr/angr",
+      "kinds": [
+        "desktop",
+        "mobile",
+        "game",
+        "other"
+      ],
+      "purpose": "Symbolic binary analysis",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "triton",
+      "url": "https://github.com/JonathanSalwan/Triton",
+      "kinds": [
+        "desktop",
+        "mobile",
+        "game",
+        "other"
+      ],
+      "purpose": "Dynamic symbolic analysis",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "qiling",
+      "url": "https://github.com/qilingframework/qiling",
+      "kinds": [
+        "desktop",
+        "mobile",
+        "game",
+        "other"
+      ],
+      "purpose": "OS-aware emulation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "unicorn",
+      "url": "https://github.com/unicorn-engine/unicorn",
+      "kinds": [
+        "desktop",
+        "mobile",
+        "game",
+        "other"
+      ],
+      "purpose": "CPU emulation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "rz-ghidra",
+      "url": "https://github.com/rizinorg/rz-ghidra",
+      "kinds": [
+        "desktop",
+        "mobile",
+        "game",
+        "other"
+      ],
+      "purpose": "Alternate decompilation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "webcrack",
+      "url": "https://github.com/j4k0xb/webcrack",
+      "kinds": [
+        "web",
+        "extension",
+        "desktop"
+      ],
+      "purpose": "JavaScript normalization",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "js-deobfuscator",
+      "url": "https://github.com/kuizuo/js-deobfuscator",
+      "kinds": [
+        "web",
+        "extension",
+        "desktop"
+      ],
+      "purpose": "Alternate JS normalization",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "blackboxprotobuf",
+      "url": "https://github.com/nccgroup/blackboxprotobuf",
+      "kinds": [
+        "api",
+        "web",
+        "mobile",
+        "desktop"
+      ],
+      "purpose": "Offline schema inference",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "pbtk",
+      "url": "https://github.com/marin-m/pbtk",
+      "kinds": [
+        "api",
+        "web",
+        "mobile",
+        "desktop"
+      ],
+      "purpose": "Authorized descriptor recovery",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "wireshark",
+      "url": "https://github.com/wireshark/wireshark",
+      "kinds": [
+        "api",
+        "web",
+        "mobile",
+        "desktop"
+      ],
+      "purpose": "Offline protocol inspection",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "ipsw",
+      "url": "https://github.com/blacktop/ipsw",
+      "kinds": [
+        "mobile",
+        "desktop"
+      ],
+      "purpose": "Apple artifact inspection",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "ipsw-py",
+      "url": "https://github.com/blacktop/ipsw-py",
+      "kinds": [
+        "mobile",
+        "desktop"
+      ],
+      "purpose": "Apple daemon adapter",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "ipsw-skill",
+      "url": "https://github.com/blacktop/ipsw-skill",
+      "kinds": [
+        "mobile",
+        "desktop"
+      ],
+      "purpose": "Agent reference",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "panda",
+      "url": "https://github.com/panda-re/panda",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Whole-system replay",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "rr",
+      "url": "https://github.com/rr-debugger/rr",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Linux deterministic replay",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "qbdi",
+      "url": "https://github.com/QBDI/QBDI",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Owned-program instrumentation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "libvmi",
+      "url": "https://github.com/libvmi/libvmi",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Approved guest introspection",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "hyperdbg",
+      "url": "https://github.com/HyperDbg/HyperDbg",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Dedicated approved kernel lab",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "firecracker",
+      "url": "https://github.com/firecracker-microvm/firecracker",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "MicroVM isolation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "bubblewrap",
+      "url": "https://github.com/containers/bubblewrap",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Namespace isolation component",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "nsjail",
+      "url": "https://github.com/google/nsjail",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Process isolation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "qemu",
+      "url": "https://github.com/qemu/qemu",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Virtual machine lab",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "d810-ng",
+      "url": "https://github.com/w00tzenheimer/d810-ng",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Licensed IDA simplification candidate",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "renderdoc",
+      "url": "https://github.com/baldurk/renderdoc",
+      "kinds": [
+        "game",
+        "desktop",
+        "web"
+      ],
+      "purpose": "Owned graphics frame inspection",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "spirv-tools",
+      "url": "https://github.com/KhronosGroup/SPIRV-Tools",
+      "kinds": [
+        "game",
+        "desktop",
+        "web"
+      ],
+      "purpose": "Shader validation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "spirv-cross",
+      "url": "https://github.com/KhronosGroup/SPIRV-Cross",
+      "kinds": [
+        "game",
+        "desktop",
+        "web"
+      ],
+      "purpose": "Shader reflection",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "directx-shader-compiler",
+      "url": "https://github.com/microsoft/DirectXShaderCompiler",
+      "kinds": [
+        "game",
+        "desktop",
+        "web"
+      ],
+      "purpose": "DXIL inspection",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "netron",
+      "url": "https://github.com/lutzroeder/netron",
+      "kinds": [
+        "data",
+        "agent",
+        "desktop",
+        "mobile"
+      ],
+      "purpose": "Local model graph inspection",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "onnx",
+      "url": "https://github.com/onnx/onnx",
+      "kinds": [
+        "data",
+        "agent",
+        "desktop",
+        "mobile"
+      ],
+      "purpose": "Model graph validation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "onnxruntime",
+      "url": "https://github.com/microsoft/onnxruntime",
+      "kinds": [
+        "data",
+        "agent",
+        "desktop",
+        "mobile"
+      ],
+      "purpose": "Local inference benchmarking",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "litert",
+      "url": "https://github.com/google-ai-edge/LiteRT",
+      "kinds": [
+        "data",
+        "agent",
+        "desktop",
+        "mobile"
+      ],
+      "purpose": "Mobile model tooling",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "coremltools",
+      "url": "https://github.com/apple/coremltools",
+      "kinds": [
+        "data",
+        "agent",
+        "desktop",
+        "mobile"
+      ],
+      "purpose": "Core ML inspection",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "aioquic",
+      "url": "https://github.com/aiortc/aioquic",
+      "kinds": [
+        "api",
+        "web",
+        "agent"
+      ],
+      "purpose": "Owned QUIC fixture",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "aiortc",
+      "url": "https://github.com/aiortc/aiortc",
+      "kinds": [
+        "api",
+        "web",
+        "agent"
+      ],
+      "purpose": "Owned WebRTC fixture",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "eventsource-parser",
+      "url": "https://github.com/rexxars/eventsource-parser",
+      "kinds": [
+        "api",
+        "web",
+        "agent"
+      ],
+      "purpose": "SSE sample parser",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "automatalib",
+      "url": "https://github.com/LearnLib/automatalib",
+      "kinds": [
+        "api",
+        "web",
+        "agent"
+      ],
+      "purpose": "Automata representation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "renode",
+      "url": "https://github.com/renode/renode",
+      "kinds": [
+        "other"
+      ],
+      "purpose": "Embedded emulation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "littlefs",
+      "url": "https://github.com/littlefs-project/littlefs",
+      "kinds": [
+        "other"
+      ],
+      "purpose": "Filesystem fixtures",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "ollama",
+      "url": "https://github.com/ollama/ollama",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Local inference for authorized confidential evidence",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "vllm",
+      "url": "https://github.com/vllm-project/vllm",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Local inference server",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "ghydramcp",
+      "url": "https://github.com/starsong-consulting/GhydraMCP",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Alternate Ghidra bridge",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "pyghidra-mcp",
+      "url": "https://github.com/clearbluejar/pyghidra-mcp",
+      "kinds": [
+        "desktop",
+        "other"
+      ],
+      "purpose": "Alternate Ghidra bridge",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "jadx-mcp",
+      "url": "https://github.com/zinja-coder/jadx-mcp-server",
+      "kinds": [
+        "mobile"
+      ],
+      "purpose": "Alternative Android static bridge",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Verify source, host, license, installed version and fixture before use."
+    },
+    {
+      "id": "awesome-ai-re",
+      "url": "https://github.com/zhuyansen/awesome-ai-reverse-engineering",
+      "kinds": [],
+      "purpose": "Discovery index",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "ecapture-reference",
+      "url": "https://github.com/gojue/ecapture",
+      "kinds": [],
+      "purpose": "Research reference only",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "fritap-reference",
+      "url": "https://github.com/fkie-cad/friTap",
+      "kinds": [],
+      "purpose": "Research reference only",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "scyllahide-reference",
+      "url": "https://github.com/x64dbg/ScyllaHide",
+      "kinds": [],
+      "purpose": "Research reference only",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "frida-dexdump-reference",
+      "url": "https://github.com/hluwa/frida-dexdump",
+      "kinds": [],
+      "purpose": "Research reference only",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "drakvuf-reference",
+      "url": "https://github.com/tklengyel/drakvuf",
+      "kinds": [],
+      "purpose": "Lab reference only",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "libmicrovmi-reference",
+      "url": "https://github.com/Wenzel/libmicrovmi",
+      "kinds": [],
+      "purpose": "Lab reference",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "hvmi-reference",
+      "url": "https://github.com/hvmi/hvmi",
+      "kinds": [],
+      "purpose": "Lab reference",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "vtil2-reference",
+      "url": "https://github.com/pop-rip/vtil2",
+      "kinds": [],
+      "purpose": "Research lead",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "triton-symbolic-reference",
+      "url": "https://github.com/AlixAbbasi/Triton-Symbolic",
+      "kinds": [],
+      "purpose": "Research lead",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "ghidra-alternative-reference",
+      "url": "https://github.com/MartijnvanPraag/GhidraMCP",
+      "kinds": [],
+      "purpose": "Bridge lead",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "ghidra-headless-reference",
+      "url": "https://github.com/mrphrazer/ghidra-headless-mcp",
+      "kinds": [],
+      "purpose": "Bridge lead",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "mobile-skills-reference",
+      "url": "https://github.com/Fausto-404/ai-mobile-reverse-skills",
+      "kinds": [],
+      "purpose": "Reference instructions",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "x64dbg-mcp-reference",
+      "url": "https://github.com/duty1g/x64dbg-mcp-server",
+      "kinds": [],
+      "purpose": "Bridge lead",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "frida-mcp-reference",
+      "url": "https://github.com/zhizhuodemao/frida-mcp",
+      "kinds": [],
+      "purpose": "Bridge lead",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "tenrec-reference",
+      "url": "https://github.com/axelmierczuk/tenrec",
+      "kinds": [],
+      "purpose": "Bridge lead",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "ida-instances-reference",
+      "url": "https://github.com/Claude-Reverser/IDA-instances-MCP",
+      "kinds": [],
+      "purpose": "Bridge lead",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
+    },
+    {
+      "id": "agent-escape-bench-reference",
+      "url": "https://github.com/safety-research/agent-escape-bench",
+      "kinds": [],
+      "purpose": "Isolation benchmark reference",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "notes": "Reference-only; excluded from runtime selection and gap routes; no secret extraction, protection bypass or stealth workflows."
     }
   ]
 }

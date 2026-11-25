@@ -43,7 +43,10 @@
         "semgrep",
         "ghidra",
         "jadx",
-        "ilspy"
+        "ilspy",
+        "webcrack",
+        "rz-ghidra",
+        "angr"
       ],
       "input": "Authorized shipped artifact or source, runtime classification",
       "method": "Choose appropriate parser/provider; compare known source fixture and alternate analyzer",
@@ -62,7 +65,10 @@
         "wiremock",
         "pact",
         "fast-check",
-        "testcontainers"
+        "testcontainers",
+        "wireshark",
+        "blackboxprotobuf",
+        "eventsource-parser"
       ],
       "input": "Published specs, sanitized permitted samples and owned mock/sandbox",
       "method": "Infer types, version schema, mock and test independent implementation including errors",
@@ -113,7 +119,8 @@
         "z3",
         "hypothesis",
         "fast-check",
-        "tlaplus"
+        "tlaplus",
+        "automatalib"
       ],
       "input": "Permitted input/output observations; own instrumentable program for Daikon",
       "method": "Compare state/decision hypotheses; trace likely invariants; solve constraints; test held-out normal and edge cases",
@@ -210,7 +217,8 @@
         "tlaplus",
         "opentelemetry",
         "aalpy",
-        "testcontainers"
+        "testcontainers",
+        "automatalib"
       ],
       "input": "Authorized ordered event logs or owned traces",
       "method": "Normalize events; discover process model; validate conformance and model bounded retries/concurrency",
@@ -226,7 +234,9 @@
         "kaitai-formats",
         "rea",
         "ghidra",
-        "hypothesis"
+        "hypothesis",
+        "pbtk",
+        "ipsw"
       ],
       "input": "Authorized binary fixtures, format documentation, license",
       "method": "Create independent declarative grammar, compile parser, compare known outputs and malformed sample behavior locally",
@@ -304,6 +314,224 @@
       "method": "Dry-run recipe, review diff, execute only approved change, regression and rollback",
       "acceptance": "Equivalent accepted behavior and improved measured property",
       "boundary": "No copying proprietary source; recipe/license constraints"
+    },
+    {
+      "id": "native-symbolic-analysis",
+      "description": "Difficult native algorithms",
+      "tools": [
+        "rea",
+        "ghidra",
+        "rz-ghidra",
+        "angr",
+        "triton",
+        "z3",
+        "hypothesis"
+      ],
+      "input": "Approved binary and known vectors",
+      "method": "Use bounded native analysis; compare alternate symbolic model",
+      "acceptance": "Path assumptions and held-out behavior",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "code-deobfuscation",
+      "description": "Opaque permitted client code",
+      "tools": [
+        "rea",
+        "tree-sitter",
+        "webcrack",
+        "js-deobfuscator",
+        "angr",
+        "triton",
+        "d810-ng"
+      ],
+      "input": "Approved artifact and original digest",
+      "method": "Normalize separately; compare original and derived semantics on fixtures",
+      "acceptance": "Original-to-derived mapping and regression",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "cross-platform-emulation",
+      "description": "Foreign OS/architecture",
+      "tools": [
+        "rea",
+        "ghidra",
+        "unicorn",
+        "qiling",
+        "qemu",
+        "renode"
+      ],
+      "input": "Authorized artifact, architecture and dependencies",
+      "method": "Classify static format, select compatible isolated emulation",
+      "acceptance": "Known instruction/syscall fixture and residual limits",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "runtime-instrumentation",
+      "description": "Incomplete runtime observations",
+      "tools": [
+        "rea",
+        "qbdi",
+        "rr"
+      ],
+      "input": "Owned instrumentable program",
+      "method": "Use supported ordinary instrumentation and correlate static/runtime events",
+      "acceptance": "Expected event coverage and cleanup",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "deterministic-replay",
+      "description": "Timing-dependent behavior",
+      "tools": [
+        "rea",
+        "rr",
+        "panda",
+        "tlaplus",
+        "fast-check"
+      ],
+      "input": "Owned fixture or approved guest",
+      "method": "Compare compatible replay and independent concurrency model",
+      "acceptance": "Replay consistency and bounded race tests",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "binary-protocol-inference",
+      "description": "Unknown binary schema",
+      "tools": [
+        "rea",
+        "wireshark",
+        "blackboxprotobuf",
+        "pbtk",
+        "kaitai",
+        "hypothesis"
+      ],
+      "input": "Authorized sanitized offline samples",
+      "method": "Use REA decoder first; compare field hypotheses, descriptors and parser",
+      "acceptance": "Held-out samples and malformed input",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "apple-platform-analysis",
+      "description": "Apple metadata/firmware gaps",
+      "tools": [
+        "rea",
+        "ghidra",
+        "ipsw",
+        "ipsw-py"
+      ],
+      "input": "Authorized local Apple artifact and compatible host",
+      "method": "Compare native inventory and specialist parser",
+      "acceptance": "Known format agreement",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "gpu-shader-analysis",
+      "description": "Graphics and shader gaps",
+      "tools": [
+        "rea",
+        "renderdoc",
+        "spirv-tools",
+        "spirv-cross",
+        "directx-shader-compiler"
+      ],
+      "input": "Owned shader or graphics fixture",
+      "method": "Inventory GPU objects; inspect supported shaders and compare rendering",
+      "acceptance": "Known shader and render tolerances",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "local-model-analysis",
+      "description": "Local model structure and inference",
+      "tools": [
+        "rea",
+        "netron",
+        "onnx",
+        "onnxruntime",
+        "litert",
+        "coremltools",
+        "promptfoo"
+      ],
+      "input": "Authorized local model and fixture set",
+      "method": "Inspect headers/graphs, compare independent runtime outcomes",
+      "acceptance": "Graph facts and held-out quality/latency",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "isolated-execution",
+      "description": "Untrusted input and execution",
+      "tools": [
+        "bubblewrap",
+        "nsjail",
+        "firecracker",
+        "qemu",
+        "testcontainers"
+      ],
+      "input": "Approved host and threat model",
+      "method": "Verify egress, mounts, credentials, resource limits and cleanup before analysis",
+      "acceptance": "Isolation and cleanup fixtures",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "realtime-media-protocol",
+      "description": "Streaming and media contracts",
+      "tools": [
+        "rea",
+        "wireshark",
+        "aioquic",
+        "aiortc",
+        "eventsource-parser",
+        "playwright"
+      ],
+      "input": "Owned fixture or authorized sanitized stream",
+      "method": "Compare framing, ordering, reconnect and independent state model",
+      "acceptance": "Held-out streaming and reconnect",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "embedded-firmware",
+      "description": "Embedded formats and behavior",
+      "tools": [
+        "rea",
+        "ghidra",
+        "kaitai",
+        "qiling",
+        "renode",
+        "qemu",
+        "littlefs"
+      ],
+      "input": "Owned firmware and documented memory map",
+      "method": "Inventory formats and supported emulation; independent fixtures",
+      "acceptance": "Known image map and parser",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "resource-recovery",
+      "description": "Provider resource/delivery limits",
+      "tools": [
+        "rea",
+        "rz-ghidra",
+        "ghidra",
+        "angr"
+      ],
+      "input": "Typed error and retained Evidence",
+      "method": "Distinguish acquisition and delivery; recover, narrow, adjust documented budget or alternate",
+      "acceptance": "Evidence retained and measured coverage",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
+    },
+    {
+      "id": "system-runtime-analysis",
+      "description": "Approved kernel and system runtime",
+      "tools": [
+        "rea",
+        "panda",
+        "rr",
+        "libvmi",
+        "hyperdbg",
+        "qemu"
+      ],
+      "input": "Dedicated approved guest and non-sensitive fixture",
+      "method": "Static module inventory and ordinary debugger/replay in approved lab",
+      "acceptance": "Expected events and cleanup",
+      "boundary": "Authorized fixtures only; no secret extraction, access-control/DRM/anti-cheat bypass or stealth. Record unsupported coverage. Verify host, license and isolation."
     }
   ]
 }

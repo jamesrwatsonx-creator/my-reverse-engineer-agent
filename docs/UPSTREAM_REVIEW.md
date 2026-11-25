@@ -15,3 +15,6 @@ review UTC, reviewer/session, target slug, previous receipt/commit, official mai
 - Scope: latest release body excerpt, latest 8 commit titles and fork head; not full diff since previous audit. No upstream code executed, no compatibility test performed, no pin changed. Replit docs reviewed separately.
 
 Mandatory all-resource refresh: follow docs/RESOURCE_FRESHNESS.md at every investigation (full catalog and tracked owner sources, current upstreams, owner-profile discovery, change assessment and per-target relevance), record receipt in UPSTREAM_REVIEW.md and reference immutable report. Recheck selected versions before execution. Never silently auto-update or mark unreviewed changes as adopted.
+
+## Targeted follow-up 2026-11-25
+Main observed 2bb554e8b05b945b1bf6cfe7d25b9b1ca0b60e5c, two commits ahead of b16df9d6; latest observed GitHub release remains rea-agents-6.10.1. Main CLI oversized Evidence retention changes delivery shape; verify package/runtime and cache privacy/pagination before adoption. See ADVANCED_ANALYSIS.md for other native capabilities. No npm check, runtime test, fork synchronization or full deep review.

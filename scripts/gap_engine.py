@@ -20,12 +20,25 @@ def load_routes(root=ROOT):
 def case_path(root,slug):
     if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*",slug): raise ValueError("Invalid target slug")
     return root/"investigations"/slug
+def fallback_policy(gap):
+    """Planning only; never authorize execution."""
+    limitation=gap.get("limitation")
+    if limitation=="restricted":
+        steps=["stop-restricted-lane","permitted-evidence-only","independent-reconstruction"]
+    elif limitation in {"non-identifiable","unavailable-data"}:
+        steps=["record-unknown","independent-model","held-out-validation"]
+    elif limitation=="budget":
+        steps=["inspect-typed-limit","recover-retained-evidence","narrow-scope","review-budget","alternate-verified-provider","record-residual"]
+    else:
+        steps=["verify-scope-and-fixture","reuse-supported-rea-or-primary-method","compare-alternate-provider","independent-model","held-out-validation","record-residual"]
+    return {"steps":steps,"provider_execution_allowed":False}
+
 def plan(register,routes,tools):
     out=[]
     for x in register.get("items",[]):
         r=routes.get(x.get("route_id"))
         if not r: raise ValueError("Unknown gap route for "+str(x.get("id")))
-        out.append({"gap_id":x.get("id"),"feature_id":x.get("feature_id"),"obligation_id":x.get("obligation_id"),"route_id":r["id"],"priority":x.get("priority"),"limitation":x.get("limitation"),"allowed_scope":x.get("allowed_scope"),"candidate_tools":[{"id":t,"url":tools[t]["url"],"status":tools[t]["runtime_status"]} for t in r["tools"]],"required_input":r["input"],"method":r["method"],"acceptance":r["acceptance"],"boundary":r["boundary"],"execution_note":"Candidate plan only. Verify scope, version, license, fixture and target compatibility before use. If restricted, no probing; use permitted evidence or independent alternatives."})
+        out.append({"gap_id":x.get("id"),"feature_id":x.get("feature_id"),"obligation_id":x.get("obligation_id"),"route_id":r["id"],"priority":x.get("priority"),"limitation":x.get("limitation"),"allowed_scope":x.get("allowed_scope"),"candidate_tools":[{"id":t,"url":tools[t]["url"],"status":tools[t]["runtime_status"]} for t in r["tools"]],"required_input":r["input"],"method":r["method"],"acceptance":r["acceptance"],"boundary":r["boundary"],"fallback_policy":fallback_policy(x),"execution_note":"Candidate plan only. Verify scope, version, license, fixture and target compatibility before use. If restricted, no probing; use permitted evidence or independent alternatives."})
     return {"target_slug":register.get("target_slug"),"assessment":register.get("assessment"),"plans":out,"target_accessed":False,"tools_executed":False}
 def nonempty(x): return isinstance(x,str) and bool(x.strip())
 def audit(register,routes,slug=None):

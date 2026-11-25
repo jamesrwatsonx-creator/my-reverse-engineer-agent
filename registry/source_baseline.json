@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "review_date": "2026-11-25",
-  "scope": "Default-branch latest commit queries and selected GitHub release tags. Not full history, package or runtime verification.; added twelve gap-closure sources with documentation and metadata review, no runtime verification.",
+  "scope": "Default-branch latest commit queries and selected GitHub release tags. Not full history, package or runtime verification.; added twelve gap-closure sources with documentation and metadata review, no runtime verification.; upstream REA head refreshed; new catalog sources pending metadata scan.",
   "counts": {
     "tracked": 118,
     "head_observed": 113,
@@ -12,12 +12,19 @@
     {
       "repository": "morluto/rea",
       "head_status": "OBSERVED",
-      "head_sha": "b16df9d6c7d557c6a37335e12bcb4cdcd718eb7c",
+      "head_sha": "2bb554e8b05b945b1bf6cfe7d25b9b1ca0b60e5c",
       "release_status": "OBSERVED",
       "release_tag": "rea-agents-6.10.1",
       "reviewed_sha": null,
       "capability_review": "PENDING_DEEP_REVIEW",
-      "runtime_status": "NOT_RUN"
+      "runtime_status": "NOT_RUN",
+      "previous_observed_sha": "b16df9d6c7d557c6a37335e12bcb4cdcd718eb7c",
+      "observed_comparison": {
+        "status": "ahead",
+        "ahead_by": 2,
+        "behind_by": 0,
+        "note": "Targeted docs and commit review; deep/runtime review pending."
+      }
     },
     {
       "repository": "NationalSecurityAgency/ghidra",

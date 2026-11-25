@@ -7,7 +7,9 @@ class GapEngineTests(unittest.TestCase):
     def sample(self):
         return {"schema_version":1,"target_slug":"demo","assessment":"ASSESSED","items":[{"id":"gap-1","feature_id":"f1","obligation_id":"o1","route_id":"business-logic","priority":"critical","limitation":"non-identifiable","allowed_scope":"Owned fixture only","knowledge_status":"UNKNOWN","functional_status":"PASS","evidence":["e1"],"hypotheses":["candidate independent rule"],"attempts":[{"result":"PASS","receipt":"fixture-result.json"}],"acceptance":"Scoped rule matches held-out cases","residual":"Original mechanism unknown","disposition":"RESOLVED","reason":"Independent alternative passed"}]}
     def test_routes(self):
-        self.assertEqual(len(self.routes),19)
+        self.assertGreaterEqual(len(self.routes),33)
+        self.assertTrue({"native-symbolic-analysis","isolated-execution","local-model-analysis","resource-recovery"}.issubset(self.routes))
+        self.assertFalse(any(not self.tools[t]["kinds"] for route in self.routes.values() for t in route["tools"]))
         self.assertTrue({"daikon","z3","tlaplus"}.issubset(set(self.routes["business-logic"]["tools"])))
         self.assertTrue({"kaitai-compiler","kaitai-formats"}.issubset(set(self.routes["binary-format"]["tools"])))
         self.assertTrue({"k6","locust"}.issubset(set(self.routes["performance"]["tools"])))
@@ -15,6 +17,13 @@ class GapEngineTests(unittest.TestCase):
         p=g.plan(self.sample(),self.routes,self.tools)
         self.assertFalse(p["tools_executed"]);self.assertFalse(p["target_accessed"])
         self.assertEqual(p["plans"][0]["route_id"],"business-logic")
+    def test_fallback_policy(self):
+        x=self.sample()
+        for limitation,first in (("restricted","stop-restricted-lane"),("non-identifiable","record-unknown"),("budget","inspect-typed-limit"),("tool-coverage","verify-scope-and-fixture")):
+            x["items"][0]["limitation"]=limitation
+            p=g.plan(x,self.routes,self.tools)["plans"][0]["fallback_policy"]
+            self.assertEqual(p["steps"][0],first)
+            self.assertFalse(p["provider_execution_allowed"])
     def test_independent_pass_keeps_unknown(self):
         a=g.audit(self.sample(),self.routes,"demo")
         self.assertTrue(a["valid"]);self.assertFalse(a["functional_equivalence_certified"])

@@ -70,3 +70,6 @@ For independent reconstruction use a distinct owner-approved production reposito
 
 ## Preserve developmental intelligence
 New knowledge challenges existing intelligence; it never automatically overwrites it. Apply the permanent principle in docs/LEARNING.md. Retrieve relevant variants and counterevidence before selecting a method; benchmark lightweight/direct CLI, REA or Craft Anything as appropriate rather than mandating the heaviest stack. A failed search result is not proof a feature is absent. Use docs/RESOURCE_AUDIT.md and registry/tools.json as discovery inputs; preserve forks/upstreams, review exact versions and license, verify local fixtures and keep external reports separate from local validated knowledge. When discovering a new relevant resource, record its provenance and role before closeout; do not inflate the runtime catalog with unrelated examples or duplicate aliases.
+
+## Advanced analysis gate
+Read docs/ADVANCED_ANALYSIS.md before selecting providers. Prefer current upstream native Evidence, limits, formats and reconstruction evaluators. Use limitation-specific fallback_policy in gap plans. Reference-only entries with empty kinds cannot be selected. Stop restricted lanes; use independent models and held-out validation. No auto-install or unverified host execution.

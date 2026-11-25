@@ -38,3 +38,6 @@ Review is an explicit local index update, not autonomous certification. Run it o
 [All-resource freshness protocol](docs/RESOURCE_FRESHNESS.md) and [initial source baseline](registry/source_baseline.json): refresh entire catalog, original upstreams and useful owner repositories at each investigation, review deltas and keep installed pins separate. Use `python scripts/resource_refresh.py --output report.json` with authenticated GitHub CLI; read-only metadata/release/compare collection, not automatic installation.
 
 [Universal Gap Closure Engine](docs/GAP_ENGINE.md), [tool recipes](docs/GAP_TOOL_RECIPES.md), and [gap routing registry](registry/gap_routes.json) connect target observations to testable evidence and independent reconstruction. `python scripts/gap_engine.py plan --slug <target>` and `python scripts/gap_engine.py audit --slug <target>` operate on target GAP_REGISTER.json. Explicitly classify gaps before planning; no tool installs or target access by this utility.
+
+## Advanced fallback architecture
+[Advanced analysis](docs/ADVANCED_ANALYSIS.md) records upstream compatibility, specialized routes and provider acceptance. Catalog 152 entries (including reference-only leads); 33 gap routes. Planner emits limitation-sensitive fallback steps; external provider execution and verification remain separate.
