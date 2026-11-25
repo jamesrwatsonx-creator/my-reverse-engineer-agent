@@ -26,3 +26,14 @@ class ResolutionTests(unittest.TestCase):
             item["verification"]["residual_uncertainty"]=[]
             item["evidence"]=["missing"]
             self.assertFalse(g.audit(x,g.load_routes()[0],evidence_store=s)["valid"])
+
+    def test_contradicted_receipt_does_not_close(self):
+        with tempfile.TemporaryDirectory() as d,EvidenceStore(pathlib.Path(d)/"e.sqlite") as s:
+            x=sample(); item=x["items"][0]
+            now=datetime(2026,1,1,tzinfo=timezone.utc)
+            eid=s.append(EvidenceEntry("","fixture",Derivation.OBSERVED,now,"a"*64,"b"*64,(),(),"byte_match",FailureSignature.NONE,ResultStatus.PASS))
+            s.append(EvidenceEntry("","fixture",Derivation.OBSERVED,now,"a"*64,"c"*64,(),(),None,FailureSignature.NONE,ResultStatus.PASS))
+            item.update(evidence=[eid],functional_status="PASS",attempts=[{"result":"PASS","receipt":eid}])
+            a=g.audit(x,g.load_routes()[0],evidence_store=s)
+            self.assertFalse(a["valid"])
+            self.assertEqual(a["unresolved"][0]["disposition"],"OPEN")

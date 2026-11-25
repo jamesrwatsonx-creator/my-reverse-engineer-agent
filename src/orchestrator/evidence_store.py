@@ -159,6 +159,10 @@ class EvidenceStore:
         a,e,p,t,h,s,g,r=row
         return AttemptReceipt(a,e,p,datetime.fromisoformat(t),h,ResultStatus(s),FailureSignature(g),json.loads(r))
 
+    def get_attempt(self, attempt_id: str) -> AttemptReceipt | None:
+        row=self.db.execute('SELECT attempt_id,evidence_id,provider,timestamp,input_hash,status,signature,result FROM attempts WHERE attempt_id=?',(attempt_id,)).fetchone()
+        return self._receipt(row) if row else None
+
     def failures(self, signature: FailureSignature | None=None, input_hash: str | None=None) -> tuple[AttemptReceipt,...]:
         sql="SELECT attempt_id,evidence_id,provider,timestamp,input_hash,status,signature,result FROM attempts WHERE status<>'PASS'"
         args=[]

@@ -45,3 +45,38 @@ class ExecutorTests(unittest.TestCase):
         self.assertIsInstance(r,ExhaustedResult)
         self.assertEqual([a.provider for a in r.trace],["first","second","third","repair","first","second","third"])
         self.assertEqual(len(failures),4)
+
+    def test_repair_output_is_used_and_receipts_linked(self):
+        class NeedsRepair(Fake):
+            def invoke(self, inp):
+                if inp.artifacts:
+                    self.status=ResultStatus.PASS
+                    self.signature=FailureSignature.NONE
+                else:
+                    self.status=ResultStatus.FAIL
+                    self.signature=FailureSignature.PACKED
+                return super().invoke(inp)
+        a=NeedsRepair("first",ResultStatus.FAIL,FailureSignature.PACKED)
+        b=Fake("repair",ResultStatus.PASS,FailureSignature.NONE)
+        stage=Stage("sample",Layer.STATIC,(),("first",),None,(RepairRoute(FailureSignature.PACKED,("repair-stage",)),))
+        repair=Stage("repair-stage",Layer.STATIC,(),("repair",),None,())
+        with tempfile.TemporaryDirectory() as d, EvidenceStore(Path(d)/"e.sqlite") as store:
+            result=execute_stage(stage,FP,{"first":a,"repair":b},Matrix(),store,ProviderInput(stage.id,(),{},"synthetic-fixture"),H,allowed_providers=frozenset({"first","repair"}),execution_id="repair-run",timestamp=NOW,repair_stages={"repair-stage":repair})
+            self.assertIsInstance(result,ExecutionPass)
+            self.assertEqual([x.provider for x in result.trace],["first","repair","first"])
+            receipt=store.get_attempt(result.trace[-1].receipt_id)
+            self.assertNotEqual(receipt.input_hash,H)
+            self.assertIn(receipt.evidence_id,result.result.evidence_ids)
+            self.assertEqual(len(store.failures()),1)
+
+    def test_unauthorized_and_exception_are_distinct(self):
+        class Raises(Fake):
+            def invoke(self,inp): raise TimeoutError()
+        a=Raises("first",ResultStatus.FAIL,FailureSignature.NONE)
+        b=Fake("second",ResultStatus.PASS,FailureSignature.NONE)
+        stage=Stage("sample",Layer.STATIC,(),("second","first"),None,())
+        with tempfile.TemporaryDirectory() as d, EvidenceStore(Path(d)/"e.sqlite") as store:
+            result=execute_stage(stage,FP,{"first":a,"second":b},Matrix(),store,ProviderInput(stage.id,(),{},"synthetic-fixture"),H,allowed_providers=frozenset({"first"}),execution_id="exception-run",timestamp=NOW,repair_stages={})
+            self.assertIsInstance(result,ExhaustedResult)
+            self.assertIsNone(result.trace[0].receipt_id)
+            self.assertEqual(store.failures()[0].status,ResultStatus.TIMEOUT)

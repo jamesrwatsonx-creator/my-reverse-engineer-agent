@@ -33,6 +33,7 @@ class HostSnapshot:
     ptrace_seize: bool
     docker_reachable: bool
     display_present: bool
+    kvm_accessible: bool = False
 
 
 @dataclass(frozen=True)
@@ -130,8 +131,8 @@ def probe_host(which=shutil.which, run=run_probe) -> HostSnapshot:
         except (OSError,subprocess.TimeoutExpired):
             pass
     return HostSnapshot(platform.system(),platform.machine(),jdk,platform.python_version(),
-                        _ptrace_probe(),reachable,bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")
-                        or platform.system() in {"Darwin","Windows"}))
+                        _ptrace_probe(),reachable,bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")),
+                        os.access("/dev/kvm",os.R_OK|os.W_OK))
 
 
 def _missing(requirements,host):
@@ -139,7 +140,7 @@ def _missing(requirements,host):
            "jdk":bool(host.jdk_version),"ptrace_seize":host.ptrace_seize,
            "docker":host.docker_reachable,"display":host.display_present,
            "x86_64":host.architecture in {"x86_64","AMD64"},
-           "kvm":os.access("/dev/kvm",os.R_OK|os.W_OK)}
+           "kvm":host.kvm_accessible}
     return [r for r in requirements if not facts.get(r,False)]
 
 
