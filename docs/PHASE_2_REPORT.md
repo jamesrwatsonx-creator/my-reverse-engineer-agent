@@ -18,7 +18,8 @@ Review branch: phase-2/minimum-execution-foundation, based on Phase 1 0b9e820216
 ## RED/GREEN receipts
 
 - Test-only commit [2917091](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/commit/2917091d6d157135c17698d5eb22302f56579193), [RED CI](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45723833088): 28 tests discovered, seven expected errors (missing runtime modules and EvidenceEntry status contract).
-- Initial implementation commit [ddafe37](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/commit/ddafe3752ec7c67593ca0180bb9d8618d633efed), [GREEN CI](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45723961939): 30 tests passed, compilation and workbench planning succeeded, host snapshot uploaded. This receipt is for that exact commit; subsequent refinement adds tests and requires its own CI receipt.
+- Initial implementation commit [ddafe37](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/commit/ddafe3752ec7c67593ca0180bb9d8618d633efed), [GREEN CI](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45723961939): 30 tests passed, compilation and workbench planning succeeded, host snapshot uploaded. This receipt is for that exact commit.
+- Final implementation commit [9928d61](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/commit/9928d61cdf86f32441406a5727d757782638db5f), [GREEN CI](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45724129063): 33 tests passed (0.220 s), compilation, workbench planning, capability snapshot and artifact upload succeeded. No real target analysis. This final report-only commit records that observed receipt.
 
 ## Closure behavior change
 
@@ -28,14 +29,15 @@ The test test_provenance_not_closure constructs DOCUMENTED/NOT_RUN/RESOLVED, whi
 
 ## Actual execution host snapshot
 
-The actual execution host for the implementation and tests was the GitHub Actions Linux runner, not the user's workstation or the chat container. The chat container cannot resolve GitHub DNS and was not used to claim a local checkout or full-suite execution. Host probe from the successful run at 2026-11-25 23:47 UTC (initial implementation commit):
+The actual execution host for the implementation and tests was the GitHub Actions Linux runner, not the user's workstation or the chat container. The chat container cannot resolve GitHub DNS and was not used to claim a local checkout or full-suite execution. Host probe from the successful run at 2026-11-25 23:48 UTC (final implementation commit):
 - os: "Linux"
 - architecture: "x86_64"
-- jdk_version: "openjdk version \"25.0.5.1\" 2026-11-17 LTS"
+- jdk_version: "openjdk version \"25.0.5\" 2026-10-20 LTS"
 - python_version: "3.11.18"
 - ptrace_seize: true
 - docker_reachable: true
 - display_present: false
+- kvm_accessible: false
 
 | Status | Count |
 |---|---:|
@@ -200,7 +202,7 @@ AVAILABLE_VERIFIED here means only the allowlisted read-only command exited succ
 | ida-instances-reference | UNAVAILABLE | not resolved | No approved provider-specific CLI/host probe; catalog entry only |
 | agent-escape-bench-reference | UNAVAILABLE | not resolved | No approved provider-specific CLI/host probe; catalog entry only |
 
-Full timestamped snapshot: [run artifact and logs](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45723961939). The follow-up additionally records KVM accessibility; display detection is limited to observed display environment variables. No installations, real application or binary analysis ran. PTRACE_SEIZE probe uses only a disposable Python child. Docker reachability check is a local daemon version request; remote DOCKER_HOST values are skipped.
+Full timestamped snapshot: [run artifact and logs](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45724129063). This snapshot additionally records KVM accessibility; display detection is limited to observed display environment variables. No installations, real application or binary analysis ran. PTRACE_SEIZE probe uses only a disposable Python child. Docker reachability check is a local daemon version request; remote DOCKER_HOST values are skipped.
 
 ## Discrepancies and design decisions
 
