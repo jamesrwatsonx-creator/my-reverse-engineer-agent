@@ -1,0 +1,6 @@
+# ChatGPT target preparation
+Identify target URL/repo/artifact and type from accessible docs. Ask only unknown consequential questions, preferably 0–3 in one round:
+- Goal: research, selected capabilities, closest observable fidelity, or improve? Which features must match/exclude; intended use and destination?
+- Access: public/demo/approved account, OS/version/browser, official artifact or authorized local path, API docs/sandbox or commit, as relevant. Never ask for passwords in chat; use local login/scoped credential storage.
+- Constraints: critical acceptance, budget, licensing, runtime, deployment and approved build scope if relevant.
+If missing access, proceed with permitted public documentation and mark blocker. Record literal owner request, choices and assumptions separately. Default research-only without build approval. Reuse canonical slug, preserve historical evidence. Create BRIEF.json, README, features, experience, architecture, evidence, capabilities, opportunities, STATUS, GAP_MATRIX, SCENARIOS, TOOL_PLAN, HANDOFF, LAUNCH and feature dossiers when identified. Seed only documented facts and dated URLs, no fabricated observations. Preserve and update registry/index.json, commit scoped changes. Return target link and owner-specific paste-ready launch prompt. Coding agent resumes, not repeats research unless evidence stale.

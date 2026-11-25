@@ -1,5 +1,2 @@
-# Claude Code instructions
-
-This repository is **My Reverse Engineer Agent (REA)**.
-
-Read and follow [AGENTS.md](AGENTS.md) as the single authoritative policy. These instructions apply identically to Claude Code and Codex. For every new target, create a unique directory in `investigations/`, update `registry/index.json`, and save evidence with provenance. Start high-level; go technical only where evidence supports it. Preserve resumable commits and report unsupported assumptions.
+# Claude Code entrypoint
+AGENTS.md is authoritative for Claude Code and Codex. Read README and universal workflow, then target BRIEF.json, LAUNCH.md and STATUS.md. Run plan/preflight and structural validation; verify selected external tools on local fixtures, then execute stage gates according to owner scope. Ask only blocking questions. Do not substitute a generic goal for the target brief.

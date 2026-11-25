@@ -1,0 +1,804 @@
+{
+  "schema_version": 1,
+  "reviewed": "2026-11-25",
+  "entries": [
+    {
+      "id": "rea",
+      "url": "https://github.com/morluto/rea",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Passive browser/JS/native analysis and evidence",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "ghidra",
+      "url": "https://github.com/NationalSecurityAgency/ghidra",
+      "kinds": [
+        "desktop",
+        "mobile",
+        "game",
+        "other"
+      ],
+      "purpose": "Conditional native analysis",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "craft",
+      "url": "https://github.com/jamesrwatsonx-creator/craft-anything",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Independent reconstruction",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "playwright",
+      "url": "https://github.com/microsoft/playwright",
+      "kinds": [
+        "web",
+        "extension",
+        "agent"
+      ],
+      "purpose": "Browser drive/trace/replay",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "playwright-mcp",
+      "url": "https://github.com/microsoft/playwright-mcp",
+      "kinds": [
+        "web",
+        "extension",
+        "agent"
+      ],
+      "purpose": "Agent browser adapter",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "obscura",
+      "url": "https://github.com/jamesrwatsonx-creator/obscura",
+      "kinds": [
+        "web",
+        "agent"
+      ],
+      "purpose": "Alternative browser driver",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "treg",
+      "url": "https://github.com/jamesrwatsonx-creator/treg-openrouter-for-tools",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "External tools",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "omniget",
+      "url": "https://github.com/jamesrwatsonx-creator/omniget",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Supported public media",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "last30days",
+      "url": "https://github.com/jamesrwatsonx-creator/last30days-skill",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Recent public discussion",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "jev-guard",
+      "url": "https://github.com/jamesrwatsonx-creator/jev-guard",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Optional risk hints",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "jev-ultrafast",
+      "url": "https://github.com/jamesrwatsonx-creator/jev-ultrafast",
+      "kinds": [
+        "web",
+        "agent"
+      ],
+      "purpose": "Optional action routing",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "github",
+      "url": "https://github.com/cli/cli",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Authorized repository discovery",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "rea-prompts",
+      "url": "https://github.com/jamesrwatsonx-creator/REA-Prompts",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Prompt/skill library",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "awesome-rea",
+      "url": "https://github.com/jamesrwatsonx-creator/awesome-reverse-engineer-anything",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Discovery list",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "mitmproxy",
+      "url": "https://github.com/mitmproxy/mitmproxy",
+      "kinds": [
+        "web",
+        "api"
+      ],
+      "purpose": "Own/sandbox HTTP capture",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "quicktype",
+      "url": "https://github.com/quicktype/quicktype",
+      "kinds": [
+        "web",
+        "api",
+        "data"
+      ],
+      "purpose": "Sample type inference",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "openapi-generator",
+      "url": "https://github.com/OpenAPITools/openapi-generator",
+      "kinds": [
+        "api",
+        "agent"
+      ],
+      "purpose": "Client/server stubs",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "schemathesis",
+      "url": "https://github.com/schemathesis/schemathesis",
+      "kinds": [
+        "api"
+      ],
+      "purpose": "Sandbox API contract tests",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "wiremock",
+      "url": "https://github.com/wiremock/wiremock",
+      "kinds": [
+        "api"
+      ],
+      "purpose": "Mocks",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "pact",
+      "url": "https://github.com/pact-foundation/pact-js",
+      "kinds": [
+        "api"
+      ],
+      "purpose": "Contract tests",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "composio",
+      "url": "https://github.com/ComposioHQ/composio",
+      "kinds": [
+        "web",
+        "api",
+        "agent"
+      ],
+      "purpose": "Integration catalog",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "nango",
+      "url": "https://github.com/NangoHQ/nango",
+      "kinds": [
+        "web",
+        "api",
+        "agent"
+      ],
+      "purpose": "OAuth lifecycle; review license",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "activepieces",
+      "url": "https://github.com/activepieces/activepieces",
+      "kinds": [
+        "api",
+        "agent"
+      ],
+      "purpose": "Workflow connectors",
+      "source_status": "public-source-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "airbyte",
+      "url": "https://github.com/airbytehq/airbyte",
+      "kinds": [
+        "api",
+        "data"
+      ],
+      "purpose": "Data connectors; license varies",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "mcp-registry",
+      "url": "https://github.com/modelcontextprotocol/registry",
+      "kinds": [
+        "api",
+        "agent"
+      ],
+      "purpose": "MCP discovery",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "n8n",
+      "url": "https://github.com/n8n-io/n8n",
+      "kinds": [
+        "api",
+        "agent"
+      ],
+      "purpose": "Workflows; source-available",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "keycloak",
+      "url": "https://github.com/keycloak/keycloak",
+      "kinds": [
+        "web",
+        "api",
+        "agent"
+      ],
+      "purpose": "Independent identity",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "authlib",
+      "url": "https://github.com/lepture/authlib",
+      "kinds": [
+        "web",
+        "api"
+      ],
+      "purpose": "OAuth/OIDC",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "aalpy",
+      "url": "https://github.com/DES-Lab/AALpy",
+      "kinds": [
+        "api",
+        "agent",
+        "other"
+      ],
+      "purpose": "State machine modeling on approved fixtures",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "learnlib",
+      "url": "https://github.com/LearnLib/learnlib",
+      "kinds": [
+        "api",
+        "agent",
+        "other"
+      ],
+      "purpose": "Automata learning on approved fixtures",
+      "source_status": "public-source-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "hypothesis",
+      "url": "https://github.com/HypothesisWorks/hypothesis",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Property-based tests",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "temporal",
+      "url": "https://github.com/temporalio/temporal",
+      "kinds": [
+        "api",
+        "agent"
+      ],
+      "purpose": "Durable workflow",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "sqlglot",
+      "url": "https://github.com/tobymao/sqlglot",
+      "kinds": [
+        "data",
+        "repository"
+      ],
+      "purpose": "SQL analysis",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "prisma",
+      "url": "https://github.com/prisma/prisma",
+      "kinds": [
+        "data",
+        "web"
+      ],
+      "purpose": "Independent schema",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "dbt",
+      "url": "https://github.com/dbt-labs/dbt-core",
+      "kinds": [
+        "data"
+      ],
+      "purpose": "Data tests",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "postgres",
+      "url": "https://github.com/postgres/postgres",
+      "kinds": [
+        "data",
+        "web"
+      ],
+      "purpose": "Independent relational DB",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "sdv",
+      "url": "https://github.com/sdv-dev/SDV",
+      "kinds": [
+        "data",
+        "agent"
+      ],
+      "purpose": "Synthetic structured data; review license",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "distilabel",
+      "url": "https://github.com/argilla-io/distilabel",
+      "kinds": [
+        "data",
+        "agent"
+      ],
+      "purpose": "Synthetic AI task data",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "argilla",
+      "url": "https://github.com/argilla-io/argilla",
+      "kinds": [
+        "data",
+        "agent"
+      ],
+      "purpose": "Curation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "promptfoo",
+      "url": "https://github.com/promptfoo/promptfoo",
+      "kinds": [
+        "agent",
+        "data"
+      ],
+      "purpose": "Independent AI evaluation",
+      "source_status": "metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "deepeval",
+      "url": "https://github.com/confident-ai/deepeval",
+      "kinds": [
+        "agent",
+        "data"
+      ],
+      "purpose": "AI evaluation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "ragas",
+      "url": "https://github.com/explodinggradients/ragas",
+      "kinds": [
+        "agent",
+        "data"
+      ],
+      "purpose": "RAG evaluation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "scikit-learn",
+      "url": "https://github.com/scikit-learn/scikit-learn",
+      "kinds": [
+        "data",
+        "agent"
+      ],
+      "purpose": "Independent algorithm alternatives",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "optuna",
+      "url": "https://github.com/optuna/optuna",
+      "kinds": [
+        "data",
+        "agent"
+      ],
+      "purpose": "Optimize independent model",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "networkx",
+      "url": "https://github.com/networkx/networkx",
+      "kinds": [
+        "data",
+        "agent"
+      ],
+      "purpose": "Synthetic graph",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "neo4j",
+      "url": "https://github.com/neo4j/neo4j",
+      "kinds": [
+        "data",
+        "agent"
+      ],
+      "purpose": "Graph DB; edition license",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "jadx",
+      "url": "https://github.com/jadx/jadx",
+      "kinds": [
+        "mobile"
+      ],
+      "purpose": "Approved Android static analysis",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "apktool",
+      "url": "https://github.com/iBotPeaches/Apktool",
+      "kinds": [
+        "mobile"
+      ],
+      "purpose": "Approved resource inspection",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "ilspy",
+      "url": "https://github.com/icsharpcode/ILSpy",
+      "kinds": [
+        "desktop"
+      ],
+      "purpose": "Approved .NET analysis",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "appium",
+      "url": "https://github.com/appium/appium",
+      "kinds": [
+        "mobile"
+      ],
+      "purpose": "Mobile automation",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "axe",
+      "url": "https://github.com/dequelabs/axe-core",
+      "kinds": [
+        "web",
+        "extension"
+      ],
+      "purpose": "Accessibility",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "tree-sitter",
+      "url": "https://github.com/tree-sitter/tree-sitter",
+      "kinds": [
+        "repository",
+        "desktop",
+        "web"
+      ],
+      "purpose": "Syntax analysis",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "semgrep",
+      "url": "https://github.com/semgrep/semgrep",
+      "kinds": [
+        "repository",
+        "desktop",
+        "web"
+      ],
+      "purpose": "Authorized source checks",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "opentelemetry",
+      "url": "https://github.com/open-telemetry/opentelemetry-collector",
+      "kinds": [
+        "web",
+        "api",
+        "agent"
+      ],
+      "purpose": "Independent observability",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "browser-use",
+      "url": "https://github.com/browser-use/browser-use",
+      "kinds": [
+        "web",
+        "agent"
+      ],
+      "purpose": "Alternate browser driver",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "stagehand",
+      "url": "https://github.com/browserbase/stagehand",
+      "kinds": [
+        "web",
+        "agent"
+      ],
+      "purpose": "Alternate browser driver",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "livekit",
+      "url": "https://github.com/livekit/agents",
+      "kinds": [
+        "agent",
+        "api"
+      ],
+      "purpose": "Realtime voice",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "pipecat",
+      "url": "https://github.com/pipecat-ai/pipecat",
+      "kinds": [
+        "agent",
+        "api"
+      ],
+      "purpose": "Realtime voice",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "hermes",
+      "url": "https://github.com/NousResearch/hermes-agent",
+      "kinds": [
+        "agent"
+      ],
+      "purpose": "Agent runtime",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "openviking",
+      "url": "https://github.com/volcengine/OpenViking",
+      "kinds": [
+        "agent"
+      ],
+      "purpose": "Agent context",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "postiz",
+      "url": "https://github.com/gitroomhq/postiz-app",
+      "kinds": [
+        "agent",
+        "api"
+      ],
+      "purpose": "Social publishing",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    },
+    {
+      "id": "grill-with-docs",
+      "url": "https://github.com/mattpocock/skills",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Owner decision skill; verify path",
+      "source_status": "candidate-unverified",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING"
+    }
+  ]
+}

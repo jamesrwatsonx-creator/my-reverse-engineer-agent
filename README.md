@@ -1,52 +1,21 @@
-# My Reverse Engineer Agent (REA)
+# My Reverse Engineer Agent — universal investigation and reconstruction workbench
+One cumulative evidence-grounded system for applications, websites, APIs, extensions, desktop/mobile software, agents, repositories and other software. Claude Code and Codex use the same contract. REA is one provider, not the entire system.
 
-**Private reverse-engineering research repository for Claude Code and Codex.**
+## Start here
+1. [AGENTS.md](AGENTS.md) — authoritative instructions.
+2. [Workflow](docs/WORKFLOW.md), [intake](docs/INTAKE.md), [target playbooks](docs/TARGET_PLAYBOOKS.md).
+3. [Gap closure](docs/GAP_CLOSURE.md), [toolchain](docs/TOOLCHAIN.md), [searchable candidate catalog](registry/tools.json).
+4. [Fidelity and handoff](docs/FIDELITY_AND_HANDOFF.md), [cumulative learning](docs/LEARNING.md), [reference projects](docs/REFERENCE_PROJECTS.md), [status](docs/STATUS.md).
 
-Every application, website, repository, product, agent, API or system gets **one permanent investigation folder**. This is a cumulative, evidence-grounded knowledge base for understanding existing systems and identifying reusable ideas, patterns, capabilities and opportunities.
+## ChatGPT → coding agent
+Tell ChatGPT: "Go to my reverse engineer agent repo and prepare to investigate [target]." It reads the universal contract, assesses the public target, asks only missing essentials (0–3 questions), prepares/updates the canonical investigation folder, records owner scope and generates LAUNCH.md. Open this repo in Claude Code or Codex and paste the target launch prompt. The agent executes the appropriate gated workflow. Build independently only when authorized.
 
-## Quick start
-
-Tell Claude Code or Codex:
-
-> Reverse engineer [TARGET / URL] and save the investigation to my private GitHub repository `jamesrwatsonx-creator/my-reverse-engineer-agent`. Follow `AGENTS.md`. Reuse the target folder if it already exists; otherwise create `investigations/<target-slug>/`. Begin with a high-level analysis, then inspect features, UX, branding, architecture hypotheses, evidence and reusable capabilities. Update `registry/index.json` and commit resumable checkpoints. Never confuse inference with verified facts.
-
-## Repository
-
-```text
-my-reverse-engineer-agent/
-├── README.md                   # Introduction and quick start
-├── AGENTS.md                   # Shared rules for Codex + Claude Code
-├── CLAUDE.md                   # Claude Code entrypoint
-├── investigations/
-│   ├── README.md
-│   └── <target-slug>/
-│       ├── README.md           # Target overview, status, verdict
-│       ├── features.md         # Feature inventory and user value
-│       ├── experience.md       # Branding, visual system, UX and motion
-│       ├── architecture.md     # Known behavior versus hypotheses
-│       ├── evidence.md         # Sources, dates and reproducible steps
-│       ├── capabilities.md     # Portable implementation patterns
-│       ├── opportunities.md    # Differentiation and build options
-│       └── assets/             # Authorized sanitized captures
-├── templates/
-│   └── investigation.md        # Canonical investigation template
-└── registry/
-    └── index.json              # Searchable investigation catalog
+Python 3.10+ (stdlib):
+```sh
+python scripts/workbench.py prepare --slug example --name Example --target https://example.com --kind web --mode selected --goal "Reproduce selected workflow"
+python scripts/workbench.py plan --kind web
+python scripts/workbench.py preflight --kind web
+python scripts/workbench.py validate --slug example
+python -m unittest discover -s tests -v
 ```
-
-## Research principles
-
-- **OBSERVED** means directly witnessed and recorded.
-- **DOCUMENTED** means a cited first-party specification or other identified source.
-- **INFERRED** means a plausible explanation that still requires validation.
-- **UNKNOWN** means not established.
-
-Do not present inferred internal architecture as confirmed. Preserve provenance, confidence, capture method, and limitations. Only inspect authorized or publicly accessible resources. Never store secrets, account data or copyrighted third-party source code without permission. Independently implement reusable patterns rather than copying proprietary software.
-
-## Integration with Maliky Repository Intelligence
-
-REA discovers and explains **external systems and patterns**. Maliky Repository Intelligence catalogs **owned repositories and reusable assets**. Later, verified REA capability records can be exported with provenance into Repository Intelligence without contaminating its owned-source evidence.
-
-## Completion criteria
-
-Each investigation has a uniquely named target folder, evidence, high-level summary, feature inventory, UX notes, architecture uncertainty, reusable capability records, next actions, a current registry entry and a commit. Mark work `PARTIAL` or `BLOCKED` when evidence or access is insufficient.
+Preparation does not access target or install/run external providers. Existing investigations remain intact. This is an execution scaffold, not a completed integrated runtime; selected providers require real host verification.
