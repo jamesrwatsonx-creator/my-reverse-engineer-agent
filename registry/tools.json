@@ -1404,7 +1404,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "very-high",
+      "upstream_overlap": "Partial: native Ghidra value flow; symbolic execution distinct",
+      "phase1_capability": "Symbolic binary analysis; indirect-dispatch hypotheses"
     },
     {
       "id": "triton",
@@ -1420,7 +1423,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "very-high",
+      "upstream_overlap": "Partial: Ghidra/Frida observations; symbolic execution distinct",
+      "phase1_capability": "Dynamic symbolic execution and expression analysis"
     },
     {
       "id": "qiling",
@@ -1436,7 +1442,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "very-high",
+      "upstream_overlap": "Partial: native artifact inspection; execution emulation distinct; not full-system universally",
+      "phase1_capability": "OS-aware binary and firmware emulation"
     },
     {
       "id": "unicorn",
@@ -1452,7 +1461,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Partial: native disassembly; CPU emulation distinct",
+      "phase1_capability": "CPU instruction emulation on controlled fixtures"
     },
     {
       "id": "rz-ghidra",
@@ -1468,7 +1480,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "specialized",
+      "upstream_overlap": "Substantial: REA Ghidra and Rizin interfaces; alternate backend only for measured delta",
+      "phase1_capability": "Alternative Rizin Ghidra decompilation backend"
     },
     {
       "id": "webcrack",
@@ -1483,7 +1498,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "very-high",
+      "upstream_overlap": "Partial: REA JavaScript graph and source analysis; compare transformations",
+      "phase1_capability": "JavaScript normalization/deobfuscation"
     },
     {
       "id": "js-deobfuscator",
@@ -1514,7 +1532,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Substantial: REA wire fields, framing and candidate readings; re-encoding/inference needs fixture",
+      "phase1_capability": "Schema-less Protobuf interpretation and re-encoding"
     },
     {
       "id": "pbtk",
@@ -1530,7 +1551,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Partial: REA supplied FileDescriptorSet interpretation; descriptor discovery distinct",
+      "phase1_capability": "Descriptor recovery from authorized artifacts"
     },
     {
       "id": "wireshark",
@@ -1546,7 +1570,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Partial: native HAR/SAZ/mitmproxy/qlog and tested HTTP/3 profile; general packet capture distinct",
+      "phase1_capability": "Packet and protocol inspection"
     },
     {
       "id": "ipsw",
@@ -1560,7 +1587,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Partial: native artifact readers; specialized Apple coverage requires comparison",
+      "phase1_capability": "Apple firmware and binary artifact inspection"
     },
     {
       "id": "ipsw-py",
@@ -1602,7 +1632,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Partial: browser scenario replay is not whole-system replay",
+      "phase1_capability": "Whole-system record/replay"
     },
     {
       "id": "rr",
@@ -1616,7 +1649,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Partial: native debugger/Frida observations; deterministic replay distinct",
+      "phase1_capability": "Deterministic Linux process replay"
     },
     {
       "id": "qbdi",
@@ -1630,7 +1666,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Partial: Frida and debugger providers; instruction coverage compare",
+      "phase1_capability": "Dynamic binary instrumentation"
     },
     {
       "id": "libvmi",
@@ -1644,7 +1683,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "specialized",
+      "upstream_overlap": "Partial: process observation, not hypervisor guest introspection",
+      "phase1_capability": "Approved guest introspection"
     },
     {
       "id": "hyperdbg",
@@ -1658,7 +1700,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "specialized",
+      "upstream_overlap": "Partial: GDB/Rizin/Frida, not hypervisor-level observation",
+      "phase1_capability": "Dedicated approved hypervisor debugging lab"
     },
     {
       "id": "firecracker",
@@ -1672,7 +1717,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Distinct: REA provider cleanup not a host isolation guarantee",
+      "phase1_capability": "MicroVM isolation component"
     },
     {
       "id": "bubblewrap",
@@ -1686,7 +1734,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Distinct: no comparable supervisor isolation contract established",
+      "phase1_capability": "Linux namespace isolation component"
     },
     {
       "id": "nsjail",
@@ -1700,7 +1751,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Distinct: no comparable supervisor isolation contract established",
+      "phase1_capability": "Controlled process isolation component"
     },
     {
       "id": "qemu",
@@ -1743,7 +1797,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Partial: static GPU metadata, not graphics runtime",
+      "phase1_capability": "Owned graphics-frame inspection"
     },
     {
       "id": "spirv-tools",
@@ -1758,7 +1815,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Partial: static CUDA/HIP/PTX inspection is not SPIR-V validation",
+      "phase1_capability": "SPIR-V IR validation and analysis"
     },
     {
       "id": "spirv-cross",
@@ -1804,7 +1864,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Partial: GGUF/safetensors declarations, not executable graph",
+      "phase1_capability": "Local model graph visualization"
     },
     {
       "id": "onnx",
@@ -1820,7 +1883,10 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING",
-      "notes": "Verify source, host, license, installed version and fixture before use."
+      "notes": "Verify source, host, license, installed version and fixture before use.",
+      "phase1_priority": "high",
+      "upstream_overlap": "Distinct: REA model artifact guide explicitly excludes ONNX",
+      "phase1_capability": "ONNX model structure and validation"
     },
     {
       "id": "onnxruntime",
