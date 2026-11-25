@@ -103,7 +103,13 @@
       "source_status": "metadata-reviewed",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/h4ckf0r0day/obscura",
+          "relationship": "verified original upstream of owner fork"
+        }
+      ]
     },
     {
       "id": "treg",
@@ -115,7 +121,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/superdesigndev/treg",
+          "relationship": "verified original upstream of owner fork"
+        }
+      ]
     },
     {
       "id": "omniget",
@@ -127,7 +139,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/OpenSelena/libreget",
+          "relationship": "verified original upstream of owner fork"
+        }
+      ]
     },
     {
       "id": "last30days",
@@ -139,7 +157,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/mvanhorn/last30days-skill",
+          "relationship": "verified original upstream of owner fork"
+        }
+      ]
     },
     {
       "id": "jev-guard",
@@ -151,7 +175,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/leepokai/jev-guard",
+          "relationship": "verified original upstream of owner fork"
+        }
+      ]
     },
     {
       "id": "jev-ultrafast",
@@ -164,7 +194,13 @@
       "source_status": "candidate-unverified",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/browser-use/jev-ultrafast",
+          "relationship": "verified original upstream of owner fork"
+        }
+      ]
     },
     {
       "id": "github",
@@ -645,15 +681,16 @@
     },
     {
       "id": "jadx",
-      "url": "https://github.com/jadx/jadx",
+      "url": "https://github.com/skylot/jadx",
       "kinds": [
         "mobile"
       ],
       "purpose": "Approved Android static analysis",
-      "source_status": "candidate-unverified",
+      "source_status": "release-and-head-reviewed",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "previous_url": "https://github.com/jadx/jadx"
     },
     {
       "id": "apktool",
@@ -1039,7 +1076,13 @@
       "source_status": "source-index-listed",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/ghidra-mcp",
+          "relationship": "owner-profile alternative; verify lineage before selecting"
+        }
+      ]
     },
     {
       "id": "ida-pro-mcp",
@@ -1052,7 +1095,13 @@
       "source_status": "source-index-listed",
       "runtime_status": "NOT_RUN",
       "pin": null,
-      "license_review": "PENDING"
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/ida-pro-mcp",
+          "relationship": "owner-profile alternative; verify lineage before selecting"
+        }
+      ]
     },
     {
       "id": "rea-reconstruction-companion",
@@ -1123,6 +1172,25 @@
         {
           "url": "https://replit.com/changelog",
           "relationship": "release updates"
+        }
+      ]
+    },
+    {
+      "id": "blender-agent-sdk",
+      "url": "https://github.com/yazzang-homelab/blender-agent-sdk",
+      "kinds": [
+        "other",
+        "game"
+      ],
+      "purpose": "Candidate for independently recreating authorized 3D scenes and animation workflows; verify Blender/MCP interfaces",
+      "source_status": "head-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "related_sources": [
+        {
+          "url": "https://github.com/jamesrwatsonx-creator/blender-agent-sdk",
+          "relationship": "owner mirror; verify lineage"
         }
       ]
     }

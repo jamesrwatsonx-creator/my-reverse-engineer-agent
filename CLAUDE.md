@@ -3,3 +3,5 @@ AGENTS.md is authoritative for Claude Code and Codex. Read README and universal 
 Mandatory additional reading: docs/LEARNING.md, COMPARATIVE_EVALUATION.md, TRANSFER_PROTOCOL.md, CHATGPT_PROJECT.md and knowledge/index.json. Read target INTERVIEW, CONTEXT, DECISIONS, REUSE_LOG and LEARNING_DELTA. Capture learning at checkpoints and before handoff. Separate reviewer for promotion and separate production repo for builds.
 
 First-stage gate: recheck original morluto/rea upstream and Replit official docs according to docs/UPSTREAM_REVIEW.md and REPLIT.md; append review receipt before invoking REA. Never assume cached review or fork is current.
+
+Mandatory all-resource refresh: follow docs/RESOURCE_FRESHNESS.md at every investigation (full catalog and tracked owner sources, current upstreams, owner-profile discovery, change assessment and per-target relevance), record receipt in UPSTREAM_REVIEW.md and reference immutable report. Recheck selected versions before execution. Never silently auto-update or mark unreviewed changes as adopted.

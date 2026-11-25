@@ -34,3 +34,5 @@ Review is an explicit local index update, not autonomous certification. Run it o
 
 ## Resource coverage and challenge principle
 [Resource audit](docs/RESOURCE_AUDIT.md) tracks prior-project sources, fork/upstream relationships, benchmark challengers and reference case discovery. [Tool registry](registry/tools.json) distinguishes candidates from verified runtime providers. The central learning principle is to challenge existing knowledge with new evidence, preserve conditional alternatives and change defaults only after review and regression.
+
+[All-resource freshness protocol](docs/RESOURCE_FRESHNESS.md) and [initial source baseline](registry/source_baseline.json): refresh entire catalog, original upstreams and useful owner repositories at each investigation, review deltas and keep installed pins separate. Use `python scripts/resource_refresh.py --output report.json` with authenticated GitHub CLI; read-only metadata/release/compare collection, not automatic installation.

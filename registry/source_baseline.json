@@ -1,0 +1,1073 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-25",
+  "scope": "Default-branch latest commit queries and selected GitHub release tags. Not full history, package or runtime verification.",
+  "counts": {
+    "tracked": 106,
+    "head_observed": 101,
+    "blocked": 5,
+    "releases_observed": 11
+  },
+  "records": [
+    {
+      "repository": "morluto/rea",
+      "head_status": "OBSERVED",
+      "head_sha": "b16df9d6c7d557c6a37335e12bcb4cdcd718eb7c",
+      "release_status": "OBSERVED",
+      "release_tag": "rea-agents-6.10.1",
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "NationalSecurityAgency/ghidra",
+      "head_status": "OBSERVED",
+      "head_sha": "50b78476df100fd360f6623223c5e4510c569c5c",
+      "release_status": "OBSERVED",
+      "release_tag": "Ghidra_12.2_build",
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/craft-anything",
+      "head_status": "OBSERVED",
+      "head_sha": "078cf0c4842c72d0b3d86a8c208515e2223510cc",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "microsoft/playwright",
+      "head_status": "OBSERVED",
+      "head_sha": "81f985211281bf435a112eaf6532293d3c7523fb",
+      "release_status": "OBSERVED",
+      "release_tag": "v1.65.1",
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "microsoft/playwright-mcp",
+      "head_status": "OBSERVED",
+      "head_sha": "2337aff0213d28db41d3e3daf48cee19b3d0bd82",
+      "release_status": "OBSERVED",
+      "release_tag": "v0.0.86",
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/obscura",
+      "head_status": "OBSERVED",
+      "head_sha": "0d9a2f764ffdb097269da048002c593865e83a9e",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/treg-openrouter-for-tools",
+      "head_status": "OBSERVED",
+      "head_sha": "f954a4f51492daaa647cf204b2eb9249ac2937ae",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/omniget",
+      "head_status": "OBSERVED",
+      "head_sha": "b4c733f5a8a699634845e445fc8f162acde547c9",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/last30days-skill",
+      "head_status": "OBSERVED",
+      "head_sha": "c7460f6114449ddfe6ea3fc2f23c3d910c0e740c",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/jev-guard",
+      "head_status": "OBSERVED",
+      "head_sha": "cda06c49ceaac207904142ec92bfab793bbd18b1",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/jev-ultrafast",
+      "head_status": "OBSERVED",
+      "head_sha": "1231850a0bf1a0c0341fe408ef1668dbbfdfac46",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "cli/cli",
+      "head_status": "OBSERVED",
+      "head_sha": "b546819fd547ef8c97da470bb00f2aaad4165c84",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/REA-Prompts",
+      "head_status": "OBSERVED",
+      "head_sha": "9756618f25af1920c8965f8969820eed22247936",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/awesome-reverse-engineer-anything",
+      "head_status": "OBSERVED",
+      "head_sha": "578cb1108760eed8cf09a22b49355909cf86c91f",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "mitmproxy/mitmproxy",
+      "head_status": "OBSERVED",
+      "head_sha": "046618526875cad96d23043bef78b3ffd422b033",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "quicktype/quicktype",
+      "head_status": "BLOCKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "OpenAPITools/openapi-generator",
+      "head_status": "OBSERVED",
+      "head_sha": "cad816d23e0edeb76a4ee4db936a1a727e3e042e",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "schemathesis/schemathesis",
+      "head_status": "OBSERVED",
+      "head_sha": "15b71f59650924c7fac09387eb5c32a6f67f1ad4",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "wiremock/wiremock",
+      "head_status": "OBSERVED",
+      "head_sha": "b567dcbd8a36237efb23c59fd4281f0f71a912e6",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "pact-foundation/pact-js",
+      "head_status": "OBSERVED",
+      "head_sha": "7b9bfe661c353f8c738541b7ba472d7772d8e343",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "ComposioHQ/composio",
+      "head_status": "OBSERVED",
+      "head_sha": "5788a1aefd0acdc7542e946a673aa7b302367e55",
+      "release_status": "OBSERVED",
+      "release_tag": "@composio/cli@0.6.4",
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "NangoHQ/nango",
+      "head_status": "OBSERVED",
+      "head_sha": "a68420ff4f5977a0ff5bcc2a4227a4d04a03ef3e",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "activepieces/activepieces",
+      "head_status": "OBSERVED",
+      "head_sha": "98c6c8e9750a6c38bff94913b1a3ee192e4f2065",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "airbytehq/airbyte",
+      "head_status": "OBSERVED",
+      "head_sha": "f7ea050568ee208ac19f30935b98c64cbb619ddd",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "modelcontextprotocol/registry",
+      "head_status": "OBSERVED",
+      "head_sha": "0c74fa6fa58a40ab43f900c7c8a77a0cd0634a55",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "n8n-io/n8n",
+      "head_status": "OBSERVED",
+      "head_sha": "465632ae52190a57ac24de7e1ddf98727d620657",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "keycloak/keycloak",
+      "head_status": "OBSERVED",
+      "head_sha": "3acd4da3778245724c4b9953fb593a6b28dadecb",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "lepture/authlib",
+      "head_status": "BLOCKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "DES-Lab/AALpy",
+      "head_status": "OBSERVED",
+      "head_sha": "b3ed2fb48cb77840fb4cfa6bf7d8aab50c70d18a",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "LearnLib/learnlib",
+      "head_status": "OBSERVED",
+      "head_sha": "51aec213478b8074c21515c81fd162d78efb8c8c",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "HypothesisWorks/hypothesis",
+      "head_status": "OBSERVED",
+      "head_sha": "b9d568cc54d01e9be704cb430135f2fa545e8a0c",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "temporalio/temporal",
+      "head_status": "OBSERVED",
+      "head_sha": "0faacd54e08a4ac01712c21b789311574f47d41c",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "tobymao/sqlglot",
+      "head_status": "OBSERVED",
+      "head_sha": "b1896fd0f5d22ff6477a78bddfad34025c6bb687",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "prisma/prisma",
+      "head_status": "BLOCKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "dbt-labs/dbt-core",
+      "head_status": "BLOCKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "postgres/postgres",
+      "head_status": "OBSERVED",
+      "head_sha": "4255812efdbcf7f1acf6be2211e1b5b11c4d4240",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "sdv-dev/SDV",
+      "head_status": "OBSERVED",
+      "head_sha": "0d6ad1e66bc73e765bed098c2002f6c511cc20e2",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "argilla-io/distilabel",
+      "head_status": "OBSERVED",
+      "head_sha": "313fac85b1a2472dd88db1a31c2b754599f46476",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "argilla-io/argilla",
+      "head_status": "OBSERVED",
+      "head_sha": "5338519accb13ae422f8bf9c0642651c249c49af",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "promptfoo/promptfoo",
+      "head_status": "OBSERVED",
+      "head_sha": "4a30804e923995e3a4249a8ba60e64cb24eed23d",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "confident-ai/deepeval",
+      "head_status": "OBSERVED",
+      "head_sha": "9ec5e7650d49611a1e6169af2ea02b816e01c93c",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "explodinggradients/ragas",
+      "head_status": "BLOCKED",
+      "head_sha": null,
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "scikit-learn/scikit-learn",
+      "head_status": "OBSERVED",
+      "head_sha": "7c426b6d7f5eacc57abfd58880cf6187bd09cbdc",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "optuna/optuna",
+      "head_status": "OBSERVED",
+      "head_sha": "7af3521261415ffcef9bc05ee9d7504d745abc9e",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "networkx/networkx",
+      "head_status": "OBSERVED",
+      "head_sha": "c220ac4fa9ee3f42ef927b8bf13fc933924ae763",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "neo4j/neo4j",
+      "head_status": "OBSERVED",
+      "head_sha": "2994b43b44f35bf6520bd2667ab181bb76a45585",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "skylot/jadx",
+      "head_status": "OBSERVED",
+      "head_sha": "d6c683fc940c4687387f8ae9188c7b8eecc91c85",
+      "release_status": "OBSERVED",
+      "release_tag": "v1.5.7",
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "iBotPeaches/Apktool",
+      "head_status": "OBSERVED",
+      "head_sha": "fbaeb4779d7aaed2c3097cd496de2bc9150ab869",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "icsharpcode/ILSpy",
+      "head_status": "OBSERVED",
+      "head_sha": "05c2e753189d770b16059c278acbb794f79bb328",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "appium/appium",
+      "head_status": "OBSERVED",
+      "head_sha": "df431dd2719d55e29fdf504947282e6f972cae69",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "dequelabs/axe-core",
+      "head_status": "OBSERVED",
+      "head_sha": "32d9bd503128d4b52d818ca89140c1debe5d70d5",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "tree-sitter/tree-sitter",
+      "head_status": "OBSERVED",
+      "head_sha": "127254c1d6f8dd3b8a8e7726423904bf0b48beda",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "semgrep/semgrep",
+      "head_status": "OBSERVED",
+      "head_sha": "c4dbe9ee2fc6d0022ba02ef6b97c5954ed9549e3",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "open-telemetry/opentelemetry-collector",
+      "head_status": "OBSERVED",
+      "head_sha": "ae17ab78314f13d72f8e633a68bfd001166b237d",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "browser-use/browser-use",
+      "head_status": "OBSERVED",
+      "head_sha": "94784c1f7ecb6b0a5f565b7f9fba59e395b7e048",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "browserbase/stagehand",
+      "head_status": "OBSERVED",
+      "head_sha": "a64ed2a87f4128a918f8ab2dca6f59f0c5aed1a7",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "livekit/agents",
+      "head_status": "OBSERVED",
+      "head_sha": "623f72755e7408bce23ccbea2318166fdd9c5320",
+      "release_status": "OBSERVED",
+      "release_tag": "livekit-agents@1.9.0",
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "pipecat-ai/pipecat",
+      "head_status": "OBSERVED",
+      "head_sha": "c6290d027f763faa85ccfba6a2c19da0c143e68d",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "NousResearch/hermes-agent",
+      "head_status": "OBSERVED",
+      "head_sha": "c84e8d7f81a8a12860dd802c24910c74115e36b6",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "volcengine/OpenViking",
+      "head_status": "OBSERVED",
+      "head_sha": "af412110b367ec404560629dada718ba1172a1cf",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "gitroomhq/postiz-app",
+      "head_status": "OBSERVED",
+      "head_sha": "44df988cb1840dc5eb50755536b3e6e326d27fc3",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "mattpocock/skills",
+      "head_status": "OBSERVED",
+      "head_sha": "6f7f7831a625f040a8e06a0e7954826b87ce775a",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "aicodeking/leanrea",
+      "head_status": "OBSERVED",
+      "head_sha": "09ba4aa0217f82cd880f855a60b877f59f39b22b",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "pablodiazjorge/rea-lab",
+      "head_status": "OBSERVED",
+      "head_sha": "857660602d9eb2bb4f123d77b048298c7fc30434",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "pablodiazjorge/rea-casebook",
+      "head_status": "OBSERVED",
+      "head_sha": "2f609f2ce157cc1d4b86e70e63e3e9c9bbaed6d8",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "UnknownHacker1/rea-groundtruth",
+      "head_status": "OBSERVED",
+      "head_sha": "5b48f366368c9fbe2abaaab810aba6814c27190b",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "Fanqi89/dsh-rea",
+      "head_status": "OBSERVED",
+      "head_sha": "f0af7f9bec0d27880b678e116f00889a73c4d4d4",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "JuneYaooo/rea-video",
+      "head_status": "OBSERVED",
+      "head_sha": "c11f1bd8fd3edd26a40e8f45be828be685417700",
+      "release_status": "OBSERVED",
+      "release_tag": "v0.1.0",
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "automatisch/automatisch",
+      "head_status": "OBSERVED",
+      "head_sha": "41f3c56a163103cae761bb44f03638cb84e859ee",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "dograh-hq/dograh",
+      "head_status": "OBSERVED",
+      "head_sha": "b5e30bd65d75ce6487ca40f5af60a284fe585146",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "letta-ai/letta-code",
+      "head_status": "OBSERVED",
+      "head_sha": "34e9c5057583593269697ac34648f1da6c18cd53",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "LaurieWired/GhidraMCP",
+      "head_status": "OBSERVED",
+      "head_sha": "1e980252087b2479a21b9ca6d82d5829538651a7",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "mrexodia/ida-pro-mcp",
+      "head_status": "OBSERVED",
+      "head_sha": "13e480cb1198f923154b63669e8cb2faee5deaea",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "ShadowSwaps/REA-Reconstruction-Companion",
+      "head_status": "OBSERVED",
+      "head_sha": "9822c4fe5d2c9bd1b9483134378f91caa7ab521e",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "kandada/rea-python",
+      "head_status": "OBSERVED",
+      "head_sha": "2c2764566251a7d73aafbbf6f5632c96f993e7ae",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "songshikang0111/awesome-REA-cases",
+      "head_status": "OBSERVED",
+      "head_sha": "4feae0ba2d62013bfb87f077c1be9288d76e34fe",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "morluto/awesome-reverse-engineering",
+      "head_status": "OBSERVED",
+      "head_sha": "b32dcde24885a83eb8bddb1f453bded0ccfaedc4",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/rea",
+      "head_status": "OBSERVED",
+      "head_sha": "e9fe6437a7da381f0aa5aa77571dcf03317122e7",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/ghidra-reverse-engineering",
+      "head_status": "OBSERVED",
+      "head_sha": "9a723ce99952771b8368329503aa589ae233e916",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "storytold/craft-anything",
+      "head_status": "OBSERVED",
+      "head_sha": "0a4e66ba75c81ffa9a860c2987064d1ad61ab305",
+      "release_status": "OBSERVED",
+      "release_tag": "v0.6.1",
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/RayCodes_CraftAnything",
+      "head_status": "OBSERVED",
+      "head_sha": "4303b7f7a9d6c3a6b75db40a74ccd7f28bc933e7",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "JoasASantos/REA-Prompts",
+      "head_status": "OBSERVED",
+      "head_sha": "9756618f25af1920c8965f8969820eed22247936",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "AIshihzong/awesome-reverse-engineer-anything",
+      "head_status": "OBSERVED",
+      "head_sha": "a395116f603cd9a7ab801a7729c0a914a90c5441",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/composio",
+      "head_status": "OBSERVED",
+      "head_sha": "f9ce49953598e13371c406ac346846696a4d8385",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/n8n",
+      "head_status": "OBSERVED",
+      "head_sha": "53ade12c27e73c10be539a8866680b348db2265f",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/live-Kit-agents",
+      "head_status": "OBSERVED",
+      "head_sha": "3bf38c7878d2f368c4e1daca7e6a67b84cfeaf0f",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/pipecat-voice",
+      "head_status": "OBSERVED",
+      "head_sha": "62f05a838f0a7a735b92f2fab706b53d1ac8c24b",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/hermes-agent",
+      "head_status": "OBSERVED",
+      "head_sha": "261a4efb90d7dbe4e71786861858f721b4ab730c",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/OpenViking",
+      "head_status": "OBSERVED",
+      "head_sha": "98a0104aaa975f6348256c78c7a2276398d54700",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/postiz-app",
+      "head_status": "OBSERVED",
+      "head_sha": "e454b8b5962c819a1a22b9e2cc3d378c29b19345",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/leanrea",
+      "head_status": "OBSERVED",
+      "head_sha": "09ba4aa0217f82cd880f855a60b877f59f39b22b",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/dsh-rea",
+      "head_status": "OBSERVED",
+      "head_sha": "f0af7f9bec0d27880b678e116f00889a73c4d4d4",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/rea-video",
+      "head_status": "OBSERVED",
+      "head_sha": "cf12cc73353635dc859cd7fb8a0c471c03ab150d",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/automatisch",
+      "head_status": "OBSERVED",
+      "head_sha": "41f3c56a163103cae761bb44f03638cb84e859ee",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/dograh",
+      "head_status": "OBSERVED",
+      "head_sha": "b5e30bd65d75ce6487ca40f5af60a284fe585146",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/letta-code",
+      "head_status": "OBSERVED",
+      "head_sha": "bca294190315fa6945ffec7a19c1eafaada8731c",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "h4ckf0r0day/obscura",
+      "head_status": "OBSERVED",
+      "head_sha": "efe1c95962b33935fe9c53851566211074efe147",
+      "release_status": "OBSERVED",
+      "release_tag": "v0.2.7",
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "superdesigndev/treg",
+      "head_status": "OBSERVED",
+      "head_sha": "804f71bcf35c6770a8cf1ae6c1cfc9ed8389fd73",
+      "release_status": "BLOCKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "OpenSelena/libreget",
+      "head_status": "OBSERVED",
+      "head_sha": "dff2b974ec798e76a3c6d95d2e3b7273173dc674",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "mvanhorn/last30days-skill",
+      "head_status": "OBSERVED",
+      "head_sha": "ed7ec6752b766ea3eb62239b374900764e9b5453",
+      "release_status": "OBSERVED",
+      "release_tag": "v4.6.0",
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "leepokai/jev-guard",
+      "head_status": "OBSERVED",
+      "head_sha": "cda06c49ceaac207904142ec92bfab793bbd18b1",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "browser-use/jev-ultrafast",
+      "head_status": "OBSERVED",
+      "head_sha": "cf3c406f0fc4becff8986ed4d4d37b7b9f102e45",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/ida-pro-mcp",
+      "head_status": "OBSERVED",
+      "head_sha": "c133c3853faa111a9b00ee615c013b720d0c4acd",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/ghidra-mcp",
+      "head_status": "OBSERVED",
+      "head_sha": "61a1fbc8ad1078c64a4fa99e05dfbe2d092f82f0",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "jamesrwatsonx-creator/blender-agent-sdk",
+      "head_status": "OBSERVED",
+      "head_sha": "706c86a45706bb6743fc6e63800d9860c359f725",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "yazzang-homelab/blender-agent-sdk",
+      "head_status": "OBSERVED",
+      "head_sha": "706c86a45706bb6743fc6e63800d9860c359f725",
+      "release_status": "NOT_CHECKED",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}
