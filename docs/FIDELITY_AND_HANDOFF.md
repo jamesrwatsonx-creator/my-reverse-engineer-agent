@@ -7,3 +7,6 @@ Handoff: feature matrix, screen/motion spec, system/dependency/sequence/state di
 Handoff is an explicit research snapshot separate from the production repository: see TRANSFER_PROTOCOL.md. Publish an approved package with versioned source commit, dependency lock plan, provenance, fidelity obligations, test and unresolved-gap receipts, and a content-hash manifest. Do not export raw evidence by default. Record actual build-ready vs blocked obligations; scaffolding and untested dependencies are not build-ready. Before release complete learning delta review and preserve unresolved candidates; no forced promotion.
 
 Include gap audit, scoped obligation inventory, evidence/functional outcome distinction, remaining uncertainty and reproduction receipts. Report each fidelity axis by verified obligations/total (including untested/blocked), no percentages when no denominator. Production readiness is separate, never inferred from feature matching.
+
+## Native REA verification
+Where installed MCP schemas support them, retain authentic REA Evidence and use reconstruction coverage, function/artifact and screenshot comparisons, dependency/unknown closure. External observations have separate provenance and cannot be promoted into canonical REA records. Require independent held-out tests and explicit missing coverage; use ADVANCED_ANALYSIS.md for provider receipts.

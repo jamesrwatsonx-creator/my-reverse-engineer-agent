@@ -19,3 +19,6 @@ All are candidates, NOT_RUN locally. Current source/release metadata recorded in
 - Performance: approved independent deployment -> k6 OR Locust, same workload -> OpenTelemetry if instrumented -> comparable measurements and SLO result. Never use live third-party load to infer backend capacity.
 - Migration: approved own source -> OpenRewrite recipe/dry-run -> test baseline vs candidate -> commit reviewed diff; do not rewrite original proprietary code.
 Use one tool when adequate. Correlate run/scenario/step and evidence IDs; record exact artifact schemas, actual installed versions, permissions, fixture receipts and fallback; independently prove each composition before promotion.
+
+## Advanced specialist candidates
+See ADVANCED_ANALYSIS.md and registry/gap_routes.json for new route-specific inputs, method, acceptance and boundaries. Use REA first where capable; optional providers must demonstrate additional coverage on known fixtures. Reference-only entries have empty kinds and cannot enter runtime routes. No installation, runtime compatibility, source review or exact CLI syntax asserted for new candidates. Verify source, license, host and actual installed interfaces before adoption.

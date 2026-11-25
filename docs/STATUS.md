@@ -15,3 +15,6 @@ Full-resource freshness policy: 106 GitHub sources scanned at HEAD level (101 ob
 Universal Gap Closure Engine added: 19 explicit gap routes, 10 new proposed tools plus two Kaitai components; 91 catalog resources and 118 tracked GitHub sources. New resources inspected at docs/metadata level; 20 catalog source release observations in baseline. No external runtime executed. New local plan/audit and fixtures are structural; live provider tests required.
 
 Local gap planner and audit implemented, new-case scaffold extended, regression tests added. Provider execution remains manual/agent-directed after verification, not automated by the local planner.
+
+## Advanced capability expansion 2026-11-25
+Catalog 152 entries (61 added, including reference-only leads), 33 gap routes (14 added). Upstream main observed 2bb554e8; release 6.10.1; npm/installed runtime unverified. New source heads, releases, licensing and provider fixtures pending; prior baseline is not a fresh scan of the expanded catalog. Planner emits deterministic limitation-aware fallback steps, not execution. Structural tests added; inspect CI for actual result. No target executed, no upstream or owner fork changed.

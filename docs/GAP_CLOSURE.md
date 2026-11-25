@@ -19,3 +19,6 @@ Each gap gets ID, feature/obligation, current status, evidence, competing explan
 
 ## Extended universal execution
 The 19 gap classes, method routing and tests are in registry/gap_routes.json and docs/GAP_ENGINE.md. Include feature discovery, client analysis, binary formats, agent behavior, background concurrency, performance, deployment, edge cases and migration. Use explicit epistemic vs functional outcomes, and stop based on authorization, identifiability, evidence gain and budget. Tool-specific setup/inputs/output/limitations in GAP_TOOL_RECIPES.md. Existing matrix is a summary; the new protocol extends rather than replaces it.
+
+## Advanced surfaces
+Use the new routes for symbolic analysis, permitted code normalization, emulation, ordinary runtime observation, replay, offline binary protocols, Apple artifacts, GPU shaders, local models, isolation, streaming, firmware, resource recovery and approved system runtime. Independent alternatives and held-out tests remain necessary when original internals are inaccessible. See ADVANCED_ANALYSIS.md.

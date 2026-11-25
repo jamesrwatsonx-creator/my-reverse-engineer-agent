@@ -15,3 +15,6 @@ Mixed targets may combine lanes. Feature atlas dynamically covers onboarding/aut
 
 
 After reconnaissance and owner scope, follow docs/GAP_ENGINE.md and GAP_TOOL_RECIPES.md. Populate GAP_REGISTER.json with scoped obligations and explicit gap classes; run gap_engine.py plan --slug <target>, choose verified tools by evidence and gap, record attempts/fixtures/results/residuals, run audit at handoff and route reusable lessons through LEARNING_DELTA. Do not use irrelevant or unauthorized tools. No arbitrary fidelity percentage.
+
+## Mixed and specialized targets
+For authorized native, firmware, graphics, model and streaming surfaces, select advanced gap routes after classification. Use upstream built-in inventory before optional specialist tools. Dedicated approved fixtures and isolation gates precede dynamic analysis. See ADVANCED_ANALYSIS.md.
