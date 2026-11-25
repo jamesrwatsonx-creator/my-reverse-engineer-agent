@@ -16,6 +16,8 @@ class Tests(unittest.TestCase):
             a=argparse.Namespace(slug="demo",name="Demo",target="https://example.com",kind="web",mode="research",goal="Understand")
             f=w.prepare(a,r); self.assertTrue(w.validate("demo",r)["valid"])
             self.assertFalse(w.load(f/"BRIEF.json")["build_authorized"])
+            self.assertIn("PENDING",(f/"UPSTREAM_REVIEW.md").read_text())
+            self.assertEqual(w.load(f/"CONTEXT.json")["upstream_review"],"UPSTREAM_REVIEW.md")
             self.assertEqual(w.load(r/"registry/index.json")["investigations"][0]["slug"],"existing")
             with self.assertRaises(ValueError): w.prepare(a,r)
     def test_slug(self):

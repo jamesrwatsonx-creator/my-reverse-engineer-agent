@@ -2,7 +2,7 @@
 One cumulative evidence-grounded system for applications, websites, APIs, extensions, desktop/mobile software, agents, repositories and other software. Claude Code and Codex use the same contract. REA is one provider, not the entire system.
 
 ## Start here
-1. [AGENTS.md](AGENTS.md) — authoritative instructions.
+1. [AGENTS.md](AGENTS.md) — authoritative instructions; first perform the [upstream freshness review](docs/UPSTREAM_REVIEW.md) and [Replit assessment](docs/REPLIT.md).
 2. [Workflow](docs/WORKFLOW.md), [intake](docs/INTAKE.md), [target playbooks](docs/TARGET_PLAYBOOKS.md).
 3. [Gap closure](docs/GAP_CLOSURE.md), [toolchain](docs/TOOLCHAIN.md), [searchable candidate catalog](registry/tools.json).
 4. [Fidelity and handoff](docs/FIDELITY_AND_HANDOFF.md), [cumulative learning](docs/LEARNING.md), [reference projects](docs/REFERENCE_PROJECTS.md), [status](docs/STATUS.md).

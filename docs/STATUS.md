@@ -7,3 +7,5 @@ Added permanent intake/context/decision records, comparative evaluation and know
 
 ## Resource reconciliation and preservation
 Reviewed central catalog against REA-LINDY toolchain, Big_Idea REA capability audit, user's awesome-REA index and Craft Anything README; added missing relevant candidates, fork references and benchmark/ground-truth leads. Added challenge-not-overwrite rule without replacing existing developmental architecture. Current catalog: 77 entries, from 62; aliases/reference sources are not counted as separate runtime providers. External tools remain NOT_RUN until selected and verified. No claim all historical user repositories or recursively linked resources were exhaustively audited.
+
+Added upstream freshness gate at initialization, coding-agent launch and before resuming REA. Recorded initial upstream main/release/fork baseline (source review only), Replit docs review and hosted platform candidate; catalog now 78. New scaffold contains UPSTREAM_REVIEW.md. No external runtime or deployment tested.

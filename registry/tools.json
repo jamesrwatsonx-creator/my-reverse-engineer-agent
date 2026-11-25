@@ -1102,6 +1102,29 @@
       "runtime_status": "NOT_RUN",
       "pin": null,
       "license_review": "PENDING"
+    },
+    {
+      "id": "replit",
+      "url": "https://replit.com/",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Hosted independent app development, prototype, testing and deployment candidate; assess relevance each investigation",
+      "source_status": "official-docs-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "resource_type": "commercial-hosted-platform",
+      "related_sources": [
+        {
+          "url": "https://docs.replit.com/",
+          "relationship": "official docs"
+        },
+        {
+          "url": "https://replit.com/changelog",
+          "relationship": "release updates"
+        }
+      ]
     }
   ]
 }
