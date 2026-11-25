@@ -11,3 +11,5 @@ Reviewed central catalog against REA-LINDY toolchain, Big_Idea REA capability au
 Added upstream freshness gate at initialization, coding-agent launch and before resuming REA. Recorded initial upstream main/release/fork baseline (source review only), Replit docs review and hosted platform candidate; catalog now 78. New scaffold contains UPSTREAM_REVIEW.md. No external runtime or deployment tested.
 
 Full-resource freshness policy: 106 GitHub sources scanned at HEAD level (101 observed, 5 blocked), 11 selected release tags verified, 79 candidates. See registry/source_baseline.json and docs/INITIAL_RESOURCE_REVIEW.md. No automatic updates to other repos; deep review/runtime pending.
+
+Universal Gap Closure Engine added: 19 explicit gap routes, 10 new proposed tools plus two Kaitai components; 91 catalog resources and 118 tracked GitHub sources. New resources inspected at docs/metadata level; 20 catalog source release observations in baseline. No external runtime executed. New local plan/audit and fixtures are structural; live provider tests required.

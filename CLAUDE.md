@@ -5,3 +5,5 @@ Mandatory additional reading: docs/LEARNING.md, COMPARATIVE_EVALUATION.md, TRANS
 First-stage gate: recheck original morluto/rea upstream and Replit official docs according to docs/UPSTREAM_REVIEW.md and REPLIT.md; append review receipt before invoking REA. Never assume cached review or fork is current.
 
 Mandatory all-resource refresh: follow docs/RESOURCE_FRESHNESS.md at every investigation (full catalog and tracked owner sources, current upstreams, owner-profile discovery, change assessment and per-target relevance), record receipt in UPSTREAM_REVIEW.md and reference immutable report. Recheck selected versions before execution. Never silently auto-update or mark unreviewed changes as adopted.
+
+After reconnaissance and owner scope, follow docs/GAP_ENGINE.md and GAP_TOOL_RECIPES.md. Populate GAP_REGISTER.json with scoped obligations and explicit gap classes; run gap_engine.py plan --slug <target>, choose verified tools by evidence and gap, record attempts/fixtures/results/residuals, run audit at handoff and route reusable lessons through LEARNING_DELTA. Do not use irrelevant or unauthorized tools. No arbitrary fidelity percentage.

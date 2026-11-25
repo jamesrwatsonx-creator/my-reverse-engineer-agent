@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "description": "Explicit gap classification and candidate methods; no automatic target access, installation, or proof",
+  "routes": [
+    {
+      "id": "feature-discovery",
+      "description": "Incomplete feature discovery",
+      "tools": [
+        "rea",
+        "playwright",
+        "obscura",
+        "omniget",
+        "last30days",
+        "github"
+      ],
+      "input": "Permitted docs, demos, feature evidence and prior cases",
+      "method": "Map actors and journeys, triangulate independent sources, mark inaccessible surfaces",
+      "acceptance": "Feature obligations with evidence and blocked inventory",
+      "boundary": "Do not infer absence from a missing observation"
+    },
+    {
+      "id": "frontend-motion",
+      "description": "Visual, interaction and motion fidelity",
+      "tools": [
+        "playwright",
+        "rea",
+        "obscura",
+        "axe",
+        "craft",
+        "rea-video"
+      ],
+      "input": "Authorized screenshots, DOM snapshots, interaction traces and licensed assets",
+      "method": "Capture viewport/state matrix, measure design and motion, reproduce independently and compare",
+      "acceptance": "Visual, a11y and behavior checks across viewports",
+      "boundary": "No exact proprietary asset transfer"
+    },
+    {
+      "id": "client-code",
+      "description": "Client-side implementation uncertainty",
+      "tools": [
+        "rea",
+        "tree-sitter",
+        "semgrep",
+        "ghidra",
+        "jadx",
+        "ilspy"
+      ],
+      "input": "Authorized shipped artifact or source, runtime classification",
+      "method": "Choose appropriate parser/provider; compare known source fixture and alternate analyzer",
+      "acceptance": "Supported artifacts and false-negative checks",
+      "boundary": "No hidden source or unauthorized artifacts"
+    },
+    {
+      "id": "api-contract",
+      "description": "Incomplete API contracts",
+      "tools": [
+        "rea",
+        "mitmproxy",
+        "quicktype",
+        "openapi-generator",
+        "schemathesis",
+        "wiremock",
+        "pact",
+        "fast-check",
+        "testcontainers"
+      ],
+      "input": "Published specs, sanitized permitted samples and owned mock/sandbox",
+      "method": "Infer types, version schema, mock and test independent implementation including errors",
+      "acceptance": "Held-out contract compatibility",
+      "boundary": "No undocumented private endpoint probing"
+    },
+    {
+      "id": "data-schema",
+      "description": "Unknown data model or persistence",
+      "tools": [
+        "quicktype",
+        "sqlglot",
+        "prisma",
+        "dbt",
+        "postgres",
+        "hypothesis",
+        "testcontainers",
+        "z3"
+      ],
+      "input": "Lawful examples or exports and observed lifecycle",
+      "method": "Derive candidate schema/constraints, round trip and test migrations/constraints in disposable DB",
+      "acceptance": "Held-out schema and lifecycle acceptance",
+      "boundary": "Physical remote database schema remains unknown"
+    },
+    {
+      "id": "auth-permissions",
+      "description": "Authentication and access boundaries",
+      "tools": [
+        "nango",
+        "keycloak",
+        "authlib",
+        "playwright",
+        "z3",
+        "testcontainers"
+      ],
+      "input": "Published scopes and authorized role fixtures",
+      "method": "Model access matrix, verify deny-by-default, revocation and tenant isolation in own implementation",
+      "acceptance": "Every critical role/action tested, no unauthorized disclosure",
+      "boundary": "No credential extraction or bypass"
+    },
+    {
+      "id": "business-logic",
+      "description": "Hidden rules and state transitions",
+      "tools": [
+        "aalpy",
+        "learnlib",
+        "daikon",
+        "z3",
+        "hypothesis",
+        "fast-check",
+        "tlaplus"
+      ],
+      "input": "Permitted input/output observations; own instrumentable program for Daikon",
+      "method": "Compare state/decision hypotheses; trace likely invariants; solve constraints; test held-out normal and edge cases",
+      "acceptance": "Counterexamples and measured rule coverage",
+      "boundary": "Likely invariants are not proven source logic"
+    },
+    {
+      "id": "integrations",
+      "description": "Incomplete third-party integrations",
+      "tools": [
+        "composio",
+        "nango",
+        "activepieces",
+        "airbyte",
+        "mcp-registry",
+        "n8n",
+        "treg",
+        "wiremock",
+        "testcontainers"
+      ],
+      "input": "Official action/trigger/scope docs and approved provider sandbox",
+      "method": "Map each integration contract, test connection, actions, webhooks, retries and disconnect",
+      "acceptance": "Per-action and trigger receipts",
+      "boundary": "Provider secrets and private agreements unavailable"
+    },
+    {
+      "id": "backend-architecture",
+      "description": "Unobservable server architecture",
+      "tools": [
+        "craft",
+        "openapi-generator",
+        "temporal",
+        "opentelemetry",
+        "testcontainers"
+      ],
+      "input": "Documented interfaces and independent requirements",
+      "method": "Compare competing architectures, build minimal independent fixture, instrument own services",
+      "acceptance": "Functional contracts and measured tradeoffs",
+      "boundary": "No claim of original server source"
+    },
+    {
+      "id": "algorithm",
+      "description": "Unknown proprietary algorithm",
+      "tools": [
+        "scikit-learn",
+        "optuna",
+        "z3",
+        "hypothesis",
+        "promptfoo"
+      ],
+      "input": "Task requirements, lawful independent datasets and benchmark",
+      "method": "Specify outcome, compare independent candidates, hold out examples and evaluate cost/quality",
+      "acceptance": "Scoped outcome equivalence or superior performance",
+      "boundary": "No model extraction or guaranteed original algorithm"
+    },
+    {
+      "id": "training-data",
+      "description": "Unavailable original training data",
+      "tools": [
+        "distilabel",
+        "argilla",
+        "sdv",
+        "promptfoo",
+        "deepeval",
+        "ragas"
+      ],
+      "input": "Licensed/consented/synthetic task data and independent evaluation set",
+      "method": "Build data card, dedupe, split by entity/time, evaluate task performance and human review",
+      "acceptance": "Quality/privacy/license and contamination checks",
+      "boundary": "Original private dataset unavailable"
+    },
+    {
+      "id": "agent-behavior",
+      "description": "AI agent decision and memory behavior",
+      "tools": [
+        "promptfoo",
+        "deepeval",
+        "ragas",
+        "hermes",
+        "openviking",
+        "fast-check"
+      ],
+      "input": "Documented tools, authorized transcripts or synthetic scenarios",
+      "method": "Define tasks, assess repeated success/latency/cost, permissions, recovery and state persistence",
+      "acceptance": "Held-out distributions and safety gates",
+      "boundary": "No hidden prompt or model extraction"
+    },
+    {
+      "id": "async-workflow",
+      "description": "Hidden background processes and concurrency",
+      "tools": [
+        "pm4py",
+        "temporal",
+        "tlaplus",
+        "opentelemetry",
+        "aalpy",
+        "testcontainers"
+      ],
+      "input": "Authorized ordered event logs or owned traces",
+      "method": "Normalize events; discover process model; validate conformance and model bounded retries/concurrency",
+      "acceptance": "Replay and invariant/liveness checks with explicit model bounds",
+      "boundary": "Unobserved background tasks remain unknown"
+    },
+    {
+      "id": "binary-format",
+      "description": "Unknown file or binary data format",
+      "tools": [
+        "kaitai",
+        "kaitai-compiler",
+        "kaitai-formats",
+        "rea",
+        "ghidra",
+        "hypothesis"
+      ],
+      "input": "Authorized binary fixtures, format documentation, license",
+      "method": "Create independent declarative grammar, compile parser, compare known outputs and malformed sample behavior locally",
+      "acceptance": "Held-out valid/invalid fixture checks",
+      "boundary": "Not automatic format recovery; no bypass"
+    },
+    {
+      "id": "performance",
+      "description": "Uncertain performance or scalability",
+      "tools": [
+        "k6",
+        "locust",
+        "opentelemetry",
+        "testcontainers"
+      ],
+      "input": "Owned or explicitly load-authorized environment, representative workload and budget",
+      "method": "Freeze workload and SLO, compare candidate architectures, measure latency/errors/resource use",
+      "acceptance": "Thresholds and reproducible receipts",
+      "boundary": "Never load-test third-party target without explicit authorization"
+    },
+    {
+      "id": "deployment",
+      "description": "Infrastructure and deployment uncertainty",
+      "tools": [
+        "testcontainers",
+        "postgres",
+        "temporal",
+        "replit",
+        "opentelemetry"
+      ],
+      "input": "Approved environment, infrastructure requirements and pinned service images",
+      "method": "Reproduce dependencies in disposable fixtures, test migrations, restore and rollback; evaluate hosting",
+      "acceptance": "Reproducible integration/deploy receipt",
+      "boundary": "No inference of original hosting internals"
+    },
+    {
+      "id": "edge-cases",
+      "description": "Undocumented edge cases and failure paths",
+      "tools": [
+        "hypothesis",
+        "fast-check",
+        "schemathesis",
+        "playwright",
+        "z3"
+      ],
+      "input": "Independent implementation and explicit allowed input domains",
+      "method": "Generate properties and stateful tests, shrink failures, add regression cases",
+      "acceptance": "Reproducible counterexamples and coverage",
+      "boundary": "No automated probing of unapproved systems"
+    },
+    {
+      "id": "network-data",
+      "description": "Missing network or proprietary records",
+      "tools": [
+        "networkx",
+        "neo4j",
+        "sdv"
+      ],
+      "input": "Opt-in data or synthetic graph and consent constraints",
+      "method": "Model independent network cold start, evaluate representative matching objectives",
+      "acceptance": "Quality and privacy metrics on lawful data",
+      "boundary": "Original users and relationship history cannot be reproduced"
+    },
+    {
+      "id": "migration",
+      "description": "Implementation migration and maintainability",
+      "tools": [
+        "openrewrite",
+        "tree-sitter",
+        "fast-check",
+        "hypothesis",
+        "testcontainers"
+      ],
+      "input": "Own or licensed code, compatible recipe and baseline tests",
+      "method": "Dry-run recipe, review diff, execute only approved change, regression and rollback",
+      "acceptance": "Equivalent accepted behavior and improved measured property",
+      "boundary": "No copying proprietary source; recipe/license constraints"
+    }
+  ]
+}

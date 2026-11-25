@@ -15,3 +15,7 @@ Goal: maximize observable equivalence without claiming inaccessible originals.
 | Private training data | task-specific licensed/open/consented + synthetic data, dedupe/curate, split by entity/time | distilabel, argilla, sdv, promptfoo, deepeval, ragas | data card, consent/license, contamination and privacy checks, human review, held-out eval; original dataset unavailable |
 | Existing network / relationships | opt-in network, lawful seed data, synthetic graph | networkx, neo4j, sdv | independent matching quality/cold start; existing users/history unrecoverable |
 Each gap gets ID, feature/obligation, current status, evidence, competing explanations, discriminating test, allowed scope, target tolerance, result, residual uncertainty, cost and owner disposition. Prioritize critical obligations and highest evidence gain. Active testing only on owned or explicitly permitted fixtures; prohibited lanes stay blocked. Production readiness separate from fidelity.
+
+
+## Extended universal execution
+The 19 gap classes, method routing and tests are in registry/gap_routes.json and docs/GAP_ENGINE.md. Include feature discovery, client analysis, binary formats, agent behavior, background concurrency, performance, deployment, edge cases and migration. Use explicit epistemic vs functional outcomes, and stop based on authorization, identifiability, evidence gain and budget. Tool-specific setup/inputs/output/limitations in GAP_TOOL_RECIPES.md. Existing matrix is a summary; the new protocol extends rather than replaces it.

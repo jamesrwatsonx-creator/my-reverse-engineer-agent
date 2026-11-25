@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "review_date": "2026-11-25",
-  "scope": "Default-branch latest commit queries and selected GitHub release tags. Not full history, package or runtime verification.",
+  "scope": "Default-branch latest commit queries and selected GitHub release tags. Not full history, package or runtime verification.; added twelve gap-closure sources with documentation and metadata review, no runtime verification.",
   "counts": {
-    "tracked": 106,
-    "head_observed": 101,
+    "tracked": 118,
+    "head_observed": 113,
     "blocked": 5,
-    "releases_observed": 11
+    "releases_observed": 20
   },
   "records": [
     {
@@ -1067,6 +1067,138 @@
       "release_tag": null,
       "reviewed_sha": null,
       "capability_review": "PENDING_DEEP_REVIEW",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "codespecs/daikon",
+      "default_branch": "master",
+      "head_status": "OBSERVED",
+      "head_sha": "236c8c82a530e091a8db7822509a96e594bf5fd6",
+      "release_status": "NO_VERIFIED_RELEASE",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "DOCUMENTATION_REVIEW_ONLY",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "kaitai-io/kaitai_struct",
+      "default_branch": "master",
+      "head_status": "OBSERVED",
+      "head_sha": "4fb24924d21317dfba9209c47c892770d2834d7a",
+      "release_status": "NO_VERIFIED_RELEASE",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "DOCUMENTATION_REVIEW_ONLY",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "process-intelligence-solutions/pm4py",
+      "default_branch": "release",
+      "head_status": "OBSERVED",
+      "head_sha": "fca1180f4df3f338adfb2d6ac4c958164e317355",
+      "release_status": "OBSERVED",
+      "release_tag": "2.7.22",
+      "reviewed_sha": null,
+      "capability_review": "DOCUMENTATION_REVIEW_ONLY",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "dubzzz/fast-check",
+      "default_branch": "main",
+      "head_status": "OBSERVED",
+      "head_sha": "993d2a1522bf18264e4add59ae7526c375668ff2",
+      "release_status": "OBSERVED",
+      "release_tag": "v4.11.0",
+      "reviewed_sha": null,
+      "capability_review": "DOCUMENTATION_REVIEW_ONLY",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "grafana/k6",
+      "default_branch": "master",
+      "head_status": "OBSERVED",
+      "head_sha": "6d021433ff6b5de0ff78dfa44dc9f332a0f13087",
+      "release_status": "OBSERVED",
+      "release_tag": "v2.4.0",
+      "reviewed_sha": null,
+      "capability_review": "DOCUMENTATION_REVIEW_ONLY",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "locustio/locust",
+      "default_branch": "master",
+      "head_status": "OBSERVED",
+      "head_sha": "5084aa10b9d57d83b6181bc3ab2f87cb38dc7076",
+      "release_status": "OBSERVED",
+      "release_tag": "2.47.0",
+      "reviewed_sha": null,
+      "capability_review": "DOCUMENTATION_REVIEW_ONLY",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "testcontainers/testcontainers-python",
+      "default_branch": "main",
+      "head_status": "OBSERVED",
+      "head_sha": "6146aa1170f415fcc825ed9bddc4eacbeb937a12",
+      "release_status": "OBSERVED",
+      "release_tag": "testcontainers-v4.15.0",
+      "reviewed_sha": null,
+      "capability_review": "DOCUMENTATION_REVIEW_ONLY",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "Z3Prover/z3",
+      "default_branch": "master",
+      "head_status": "OBSERVED",
+      "head_sha": "a2cc0c789289300da6c5296b71de245c0b6dffec",
+      "release_status": "OBSERVED",
+      "release_tag": "z3-5.3.3",
+      "reviewed_sha": null,
+      "capability_review": "DOCUMENTATION_REVIEW_ONLY",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "tlaplus/tlaplus",
+      "default_branch": "master",
+      "head_status": "OBSERVED",
+      "head_sha": "bc1b506bdcad80bb518bf3776a9161c34ff0fc4c",
+      "release_status": "OBSERVED",
+      "release_tag": "v1.7.4",
+      "reviewed_sha": null,
+      "capability_review": "DOCUMENTATION_REVIEW_ONLY",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "openrewrite/rewrite",
+      "default_branch": "main",
+      "head_status": "OBSERVED",
+      "head_sha": "4d2110dbbf7098a3185b6eb0e94c7f5f55a20d35",
+      "release_status": "OBSERVED",
+      "release_tag": "v8.117.0",
+      "reviewed_sha": null,
+      "capability_review": "DOCUMENTATION_REVIEW_ONLY",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "kaitai-io/kaitai_struct_compiler",
+      "default_branch": "master",
+      "head_status": "OBSERVED",
+      "head_sha": "f1a9666ded575d38fa3bc4fc62cbb507272adac6",
+      "release_status": "OBSERVED",
+      "release_tag": "0.11",
+      "reviewed_sha": null,
+      "capability_review": "DOCUMENTATION_REVIEW_ONLY",
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "repository": "kaitai-io/kaitai_struct_formats",
+      "default_branch": "master",
+      "head_status": "OBSERVED",
+      "head_sha": "8d8353c5059e6cff0d9500313d6650000aab92c2",
+      "release_status": "NO_VERIFIED_RELEASE",
+      "release_tag": null,
+      "reviewed_sha": null,
+      "capability_review": "DOCUMENTATION_REVIEW_ONLY",
       "runtime_status": "NOT_RUN"
     }
   ]

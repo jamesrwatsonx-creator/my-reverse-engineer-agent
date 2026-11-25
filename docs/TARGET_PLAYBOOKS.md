@@ -12,3 +12,6 @@
 | data | licensed schema/model card/sample | statistical validation, independent synthetic/consented dataset |
 | other | determine format, actors, constraints, interface | choose closest lanes and disclose unknowns |
 Mixed targets may combine lanes. Feature atlas dynamically covers onboarding/auth/roles, navigation, interactions/motion, CRUD/search/filter, import/export, collaboration, billing, messaging, integration, automation, realtime/offline, AI, analytics, notifications, accessibility, localization, security/privacy and admin when relevant. Capture primary and cross-feature journeys, empty/error/permission states, lifecycle and retries. Do not impose irrelevant features or fixed dossier count.
+
+
+After reconnaissance and owner scope, follow docs/GAP_ENGINE.md and GAP_TOOL_RECIPES.md. Populate GAP_REGISTER.json with scoped obligations and explicit gap classes; run gap_engine.py plan --slug <target>, choose verified tools by evidence and gap, record attempts/fixtures/results/residuals, run audit at handoff and route reusable lessons through LEARNING_DELTA. Do not use irrelevant or unauthorized tools. No arbitrary fidelity percentage.

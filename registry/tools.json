@@ -1193,6 +1193,202 @@
           "relationship": "owner mirror; verify lineage"
         }
       ]
+    },
+    {
+      "id": "daikon",
+      "url": "https://github.com/codespecs/daikon",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Likely invariants from authorized program traces; Java Chicory or documented front end",
+      "notes": "Official manual reviewed; license requires file-level review",
+      "source_status": "docs-and-metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "reported_license": "NOASSERTION"
+    },
+    {
+      "id": "kaitai",
+      "url": "https://github.com/kaitai-io/kaitai_struct",
+      "kinds": [
+        "desktop",
+        "mobile",
+        "game",
+        "data",
+        "api",
+        "other"
+      ],
+      "purpose": "Declarative binary format grammar and generated parsers",
+      "notes": "Umbrella repository, compiler and runtime required",
+      "source_status": "docs-and-metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "reported_license": null
+    },
+    {
+      "id": "pm4py",
+      "url": "https://github.com/process-intelligence-solutions/pm4py",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Process discovery and conformance on authorized event logs",
+      "notes": "Closed-source commercial use needs separate license assessment",
+      "source_status": "docs-and-metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "reported_license": "AGPL-3.0"
+    },
+    {
+      "id": "fast-check",
+      "url": "https://github.com/dubzzz/fast-check",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Property and model-based tests for JS/TS, shrinking counterexamples",
+      "notes": "Verify Node/test runner and plugin compatibility",
+      "source_status": "docs-and-metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "reported_license": "MIT"
+    },
+    {
+      "id": "k6",
+      "url": "https://github.com/grafana/k6",
+      "kinds": [
+        "web",
+        "api",
+        "agent",
+        "repository",
+        "other"
+      ],
+      "purpose": "Owned or explicitly authorized performance tests and thresholds",
+      "notes": "Check AGPL and hosted usage; no third-party load",
+      "source_status": "docs-and-metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "reported_license": "AGPL-3.0"
+    },
+    {
+      "id": "locust",
+      "url": "https://github.com/locustio/locust",
+      "kinds": [
+        "web",
+        "api",
+        "agent",
+        "repository",
+        "other"
+      ],
+      "purpose": "Python scenario-driven performance/load tests on permitted systems",
+      "notes": "2.47.0 control endpoint changes; no third-party load",
+      "source_status": "docs-and-metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "reported_license": "MIT"
+    },
+    {
+      "id": "testcontainers",
+      "url": "https://github.com/testcontainers/testcontainers-python",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Reproducible disposable container fixtures for integration tests",
+      "notes": "Requires authorized compatible container runtime, pinned images; not a security sandbox",
+      "source_status": "docs-and-metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "reported_license": "Apache-2.0"
+    },
+    {
+      "id": "z3",
+      "url": "https://github.com/Z3Prover/z3",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Constraint satisfiability and counterexamples for independently specified rules",
+      "notes": "README states MIT; verify bundled redistributables and actual solver package",
+      "source_status": "docs-and-metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "reported_license": "NOASSERTION"
+    },
+    {
+      "id": "tlaplus",
+      "url": "https://github.com/tlaplus/tlaplus",
+      "kinds": [
+        "all"
+      ],
+      "purpose": "Formal specification and TLC model checking of concurrent workflows",
+      "notes": "Java 11+ per README; model limits, verify stable vs prerelease",
+      "source_status": "docs-and-metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "reported_license": "MIT"
+    },
+    {
+      "id": "openrewrite",
+      "url": "https://github.com/openrewrite/rewrite",
+      "kinds": [
+        "repository",
+        "desktop",
+        "web",
+        "api",
+        "agent",
+        "other"
+      ],
+      "purpose": "Recipe-driven source migration and refactoring on own code",
+      "notes": "Tiered licensing; verify individual parser/recipe, dry run and diff",
+      "source_status": "docs-and-metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "reported_license": "Apache-2.0"
+    },
+    {
+      "id": "kaitai-compiler",
+      "url": "https://github.com/kaitai-io/kaitai_struct_compiler",
+      "kinds": [
+        "desktop",
+        "mobile",
+        "game",
+        "data",
+        "api",
+        "other"
+      ],
+      "purpose": "Compile independent .ksy schema into parser code",
+      "notes": "Review compiler and generated code/runtime terms separately",
+      "source_status": "docs-and-metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "reported_license": "GPL-3.0"
+    },
+    {
+      "id": "kaitai-formats",
+      "url": "https://github.com/kaitai-io/kaitai_struct_formats",
+      "kinds": [
+        "desktop",
+        "mobile",
+        "game",
+        "data",
+        "api",
+        "other"
+      ],
+      "purpose": "Reference format descriptions; per-format license",
+      "notes": "Discovery/schema library, not executable; review each .ksy license",
+      "source_status": "docs-and-metadata-reviewed",
+      "runtime_status": "NOT_RUN",
+      "pin": null,
+      "license_review": "PENDING",
+      "reported_license": null
     }
   ]
 }
