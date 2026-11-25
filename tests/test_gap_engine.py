@@ -1,4 +1,7 @@
-import pathlib,sys,unittest
+import pathlib,sys,unittest,tempfile
+from datetime import datetime,timezone
+from src.orchestrator.contracts import EvidenceEntry,Derivation,FailureSignature,ResultStatus
+from src.orchestrator.evidence_store import EvidenceStore
 P=pathlib.Path(__file__).resolve().parents[1];sys.path.insert(0,str(P/"scripts"))
 import gap_engine as g
 class GapEngineTests(unittest.TestCase):
@@ -25,7 +28,11 @@ class GapEngineTests(unittest.TestCase):
             self.assertEqual(p["steps"][0],first)
             self.assertFalse(p["provider_execution_allowed"])
     def test_independent_pass_keeps_unknown(self):
-        a=g.audit(self.sample(),self.routes,"demo")
+        x=self.sample()
+        with tempfile.TemporaryDirectory() as d,EvidenceStore(pathlib.Path(d)/"e.sqlite") as store:
+            eid=store.append(EvidenceEntry("","fixture",Derivation.OBSERVED,datetime(2026,1,1,tzinfo=timezone.utc),"a"*64,"b"*64,(),(),"behavioral_equivalence",FailureSignature.NONE,ResultStatus.PASS))
+            x["items"][0].update(evidence=[eid],attempts=[{"result":"PASS","receipt":eid}])
+            a=g.audit(x,self.routes,"demo",store)
         self.assertTrue(a["valid"]);self.assertFalse(a["functional_equivalence_certified"])
         self.assertEqual(a["unresolved"][0]["knowledge_status"],"UNKNOWN")
     def test_missing_receipt(self):

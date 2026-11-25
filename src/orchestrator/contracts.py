@@ -10,6 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
+import re
 from typing import Callable, Mapping, Protocol, TypeAlias
 
 
@@ -238,6 +239,20 @@ class EvidenceEntry:
     contradicts: tuple[str, ...]
     verification_method: str | None
     failure_signature: FailureSignature
+    status: ResultStatus
+
+    def __post_init__(self) -> None:
+        if self.timestamp.tzinfo is None or self.timestamp.utcoffset() is None:
+            raise ValueError('Evidence timestamp must be timezone-aware')
+        if not isinstance(self.status, ResultStatus) or not isinstance(self.derivation, Derivation) or not isinstance(self.failure_signature, FailureSignature):
+            raise ValueError('Evidence status, derivation and signature must be enums')
+        for digest in (self.input_artifact_hash, self.output_artifact_hash):
+            if digest is not None and (not isinstance(digest, str) or not re.fullmatch(r'[0-9a-f]{64}', digest)):
+                raise ValueError('Invalid SHA-256 digest')
+        if self.status is ResultStatus.PASS and (self.input_artifact_hash is None or self.output_artifact_hash is None):
+            raise ValueError('PASS requires input and output hashes')
+        if (self.input_artifact_hash is None or self.output_artifact_hash is None) and not self.limitations:
+            raise ValueError('Missing artifact hashes require limitations')
 
 
 @dataclass(frozen=True)
@@ -247,3 +262,12 @@ class GateAssessment:
     evidence_ids: tuple[str, ...]
     verification_method: str | None
     residual_uncertainty: tuple[str, ...]
+
+    def acceptable_for(self, fingerprint: TargetFingerprint) -> bool:
+        """Admissibility only, not execution or correctness verification."""
+        if self.color is GateColor.GREEN:
+            return bool(self.evidence_ids and self.verification_method in
+                        {"byte_match", "oracle_harness", "behavioral_equivalence"})
+        return (self.color is GateColor.YELLOW and not fingerprint.verification_feasibility
+                and bool(self.evidence_ids) and bool(self.residual_uncertainty)
+                and all(isinstance(x, str) and x.strip() for x in self.residual_uncertainty))

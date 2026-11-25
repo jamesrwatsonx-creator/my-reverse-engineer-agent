@@ -9,4 +9,11 @@ jobs:
         with:
           python-version: "3.11"
       - run: python -m unittest discover -s tests -v
+      - run: python -m compileall -q src/orchestrator
       - run: python scripts/workbench.py plan --kind web
+      - name: Capture local runner capability snapshot
+        run: python -m src.orchestrator.capability_matrix --catalog registry/tools.json --output phase2-capabilities.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phase2-capabilities
+          path: phase2-capabilities.json
