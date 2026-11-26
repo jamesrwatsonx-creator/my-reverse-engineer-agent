@@ -126,7 +126,7 @@ class DagEngine:
         graph=_validate(self.graphs.get(fingerprint.archetype.value,[]))
         if not graph:raise ValueError("Archetype graph not authored")
         unresolved=unresolved or {}
-        results={};trace=[];fired=set()
+        results={};trace=[];fired=set();events={}
         pending={k for k,v in graph.items() if v["kind"]=="analysis"}
         def save(ident,result):
             results[ident]=result;trace.append(ident)
@@ -143,7 +143,9 @@ class DagEngine:
             gap=unresolved.get(parent,{})
             query=DiscoveryQuery(graph[parent]["capability"],graph[parent].get("language"),fingerprint.archetype,signature,
                 ("MIT","Apache-2.0","BSD-2-Clause","BSD-3-Clause","ISC"),"synthetic-fixture",
-                gap.get("observable_behavior",""),gap.get("undetermined_mechanism",""),receipt_ids)
+                gap.get("observable_behavior",""),gap.get("undetermined_mechanism",""),receipt_ids,
+                tuple(c.artifact_type for c in _contracts(graph[parent]["output_contract"])),
+                tuple(a.failure_signature.value for a in results[parent].attempts))
             candidates=[];refs=[];attempts=[];exhaustion=[]
             for name in row["providers"]:
                 provider=self.discovery.get(name)
@@ -181,11 +183,17 @@ class DagEngine:
                 save(ident,StageResult(StageStatus.EXHAUSTED,tuple(refs),tuple(exhaustion),tuple(attempts),
                     reason="No discovery candidate; no automatic integration",trigger_receipts=receipt_ids))
 
-        while pending:
+        while pending or events:
             # A stage becomes decidable once all dependencies are terminal.
             ready=sorted(k for k in pending if set(graph[k]["preconditions"])<=results.keys())
+            ready=sorted((*ready,*events))
             if not ready:raise RuntimeError("Validated graph cannot progress")
-            ident=ready[0];pending.remove(ident);row=graph[ident]
+            ident=ready[0]
+            if ident in events:
+                args=events.pop(ident)
+                discover(*args)
+                continue
+            pending.remove(ident);row=graph[ident]
             pre=row["preconditions"]
             if any(results[k].status is not StageStatus.PASS for k in pre):
                 save(ident,StageResult(StageStatus.NOT_READY,reason="Prerequisite not PASS: "+", ".join(k for k in pre if results[k].status is not StageStatus.PASS)));continue
@@ -219,15 +227,24 @@ class DagEngine:
             for template in sorted(row["on_fail"]):
                 tr=graph[template]["trigger"]
                 if tr=="EXHAUSTED":
-                    discover(template,ident,tr,linked,signature,(event_artifact("exhaustion-receipt",payload,eid),))
+                    events[template+"@"+ident]=(template,ident,tr,linked,signature,(event_artifact("exhaustion-receipt",payload,eid),))
                 elif tr=="UNRESOLVED" and ident in unresolved:
                     gap=unresolved[ident]
                     if not all(isinstance(gap.get(k),str) and gap[k].strip() for k in ("observable_behavior","undetermined_mechanism")):
                         save(template+"@"+ident,StageResult(StageStatus.UNSATISFIED_INPUT,reason="Missing named unresolved behavior/mechanism",trigger_receipts=linked));fired.add(template);continue
+                    observation_ids=gap.get("evidence_ids",[])
+                    observations=[self.store.get(i) for i in observation_ids if isinstance(i,str)]
+                    if not observations or len(observations)!=len(observation_ids) or any(
+                            o is None or o.status is not ResultStatus.PASS or o.derivation not in {Derivation.OBSERVED,Derivation.DERIVED}
+                            or self.store.contradictions(o.evidence_id) for o in observations):
+                        save(template+"@"+ident,StageResult(StageStatus.UNSATISFIED_INPUT,reason="Unresolved behavior needs persisted noncontradicted fixture observation",trigger_receipts=linked));fired.add(template);continue
                     gap_payload={"observable_behavior":gap["observable_behavior"],"undetermined_mechanism":gap["undetermined_mechanism"],
-                                 "evidence_ids":gap.get("evidence_ids",[]),"exhaustion_receipts":list(linked)}
-                    discover(template,ident,tr,linked,signature,(event_artifact("unresolved-gap",gap_payload,eid),))
+                                 "evidence_ids":observation_ids,"exhaustion_receipts":list(linked)}
+                    brief_links=(*linked,*observation_ids)
+                    events[template+"@"+ident]=(template,ident,tr,brief_links,signature,(event_artifact("unresolved-gap",gap_payload,eid),))
         for name,row in sorted(graph.items()):
             if row["kind"]=="discovery" and name not in fired:
                 save(name,StageResult(StageStatus.SKIPPED,reason="No matching terminal event"))
-        return DagResult(fingerprint.archetype.value,results,tuple(trace))
+        result=DagResult(fingerprint.archetype.value,results,tuple(trace))
+        self.store.record_dag_run(execution_id,{**asdict(result),"candidate_integrations":[],"timestamp":timestamp})
+        return result

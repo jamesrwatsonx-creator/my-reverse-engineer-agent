@@ -16,7 +16,9 @@ def gh(args):
     if args[1:3]==["auth","status"]: data="authenticated"
     elif args[1:3]==["search","repos"]: data=d["search"]
     elif args[1:3]==["repo","view"]: data=d["details"][args[3]]
-    elif args[1]=="api": data={"content":base64.b64encode(d["readme"].encode()).decode()}
+    elif args[1]=="api" and args[2].endswith("/readme"): data={"content":base64.b64encode(d["readme"].encode()).decode()}
+    elif args[1]=="api" and "/commits?" in args[2]: data=d["commits"]
+    elif args[1]=="api": data={"open_issues_count":d["open_issues_count"]}
     elif args[1:3]==["issue","list"]: data=d["issues"]
     else: raise AssertionError(args)
     return CompletedProcess(args,0,json.dumps(data),"")
@@ -28,6 +30,8 @@ class DiscoveryTests(unittest.TestCase):
         self.assertEqual(r.status,ResultStatus.PASS)
         self.assertEqual([c.canonical_path for c in r.candidates],["fixture/also","fixture/fit","fixture/copyleft"])
         self.assertEqual(r.candidates[0].license,"MIT")
+        self.assertEqual(r.candidates[0].maintenance_signal.open_issues_count,3)
+        self.assertEqual(r.candidates[0].maintenance_signal.last_commit_date,"2026-01-01T00:00:00Z")
         self.assertEqual(r.candidates[-1].license_risk,"high")
         self.assertFalse(r.candidates[-1].eligible)
         self.assertTrue(all(c.capability_match==Q.capability for c in r.candidates))
@@ -50,3 +54,16 @@ class DiscoveryTests(unittest.TestCase):
             self.assertEqual(len(calls),1)
             self.assertEqual(second.candidates[0].derivation,Derivation.INFERRED)
             self.assertTrue(second.evidence_ids)
+
+    def test_star_changes_do_not_change_order(self):
+        def swapped(args):
+            r=gh(args)
+            if args[1:3]==["search","repos"]:
+                rows=json.loads(r.stdout)
+                for row in rows:
+                    if row.get("stargazersCount") is not None:row["stargazersCount"]=1000-row["stargazersCount"]
+                return CompletedProcess(args,0,json.dumps(rows),"")
+            return r
+        a=GitHubSearchProvider(run=gh,clock=lambda:NOW).invoke(Q)
+        b=GitHubSearchProvider(run=swapped,clock=lambda:NOW).invoke(Q)
+        self.assertEqual([c.canonical_path for c in a.candidates],[c.canonical_path for c in b.candidates])

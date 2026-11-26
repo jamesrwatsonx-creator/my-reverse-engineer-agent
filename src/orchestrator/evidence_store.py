@@ -76,6 +76,11 @@ class EvidenceStore:
         )""")
         for op in ("UPDATE","DELETE"):
             self.db.execute(f"CREATE TRIGGER IF NOT EXISTS immutable_discovery_{op.lower()} BEFORE {op} ON discovery BEGIN SELECT RAISE(ABORT,'append-only ledger'); END;")
+        self.db.execute("""CREATE TABLE IF NOT EXISTS dag_runs (
+          execution_id TEXT PRIMARY KEY, payload TEXT NOT NULL
+        )""")
+        for op in ("UPDATE","DELETE"):
+            self.db.execute(f"CREATE TRIGGER IF NOT EXISTS immutable_dag_runs_{op.lower()} BEFORE {op} ON dag_runs BEGIN SELECT RAISE(ABORT,'append-only ledger'); END;")
         self.db.commit()
 
     def __enter__(self):
@@ -215,3 +220,14 @@ class EvidenceStore:
                 if not self.contradictions(eid):
                     matches.append({"evidence_id":eid,"provider":provider,"query":prior,"result":json.loads(r)})
         return tuple(matches)
+
+    def record_dag_run(self, execution_id: str, payload: dict) -> None:
+        data=canonical(payload)
+        with self.db:
+            self.db.execute("INSERT OR IGNORE INTO dag_runs VALUES (?,?)",(execution_id,data))
+            actual=self.db.execute("SELECT payload FROM dag_runs WHERE execution_id=?",(execution_id,)).fetchone()[0]
+            if actual!=data: raise ValueError("DAG execution ID reused with different trace")
+
+    def get_dag_run(self, execution_id: str) -> dict | None:
+        row=self.db.execute("SELECT payload FROM dag_runs WHERE execution_id=?",(execution_id,)).fetchone()
+        return json.loads(row[0]) if row else None

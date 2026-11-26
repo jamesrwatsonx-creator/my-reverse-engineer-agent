@@ -154,7 +154,7 @@
           {
             "artifact_type": "verification",
             "required_fields": {
-              "fixture_result": null
+              "fixture_result": "PASS"
             }
           }
         ],
@@ -375,7 +375,7 @@
           {
             "artifact_type": "verification",
             "required_fields": {
-              "fixture_result": null
+              "fixture_result": "PASS"
             }
           }
         ],

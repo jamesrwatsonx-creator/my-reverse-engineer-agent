@@ -86,9 +86,14 @@ class GitHubSearchProvider:
                     rejects.append(name+": invalid canonical path");continue
                 if details.get("isArchived") is not False:
                     rejects.append(canonical+": archived or unknown archive status");continue
-                date=details.get("pushedAt")
+                pushed=details.get("pushedAt")
+                meta=json.loads(self._command(["gh","api","repos/"+canonical]))
+                commits=json.loads(self._command(["gh","api","repos/"+canonical+"/commits?per_page=1"]))
+                date=(commits[0].get("commit",{}).get("committer") or {}).get("date") if isinstance(commits,list) and commits else None
+                count=meta.get("open_issues_count") if isinstance(meta,dict) else None
+                if not isinstance(count,int) or isinstance(count,bool) or count<0: count=None
                 try:
-                    when=datetime.fromisoformat(date.replace("Z","+00:00"))
+                    when=datetime.fromisoformat((date or pushed).replace("Z","+00:00"))
                     age=(self.clock()-when).days
                 except (AttributeError,TypeError,ValueError):
                     rejects.append(canonical+": unknown maintenance date");continue
@@ -110,7 +115,7 @@ class GitHubSearchProvider:
                 if re.search(r"(?i)requires (?:our|a paid|the hosted) (?:cloud|service|subscription|account)|hosted[- ]only|saas[- ]only",text):
                     rejects.append(canonical+": service-coupled candidate");continue
                 candidates.append(DiscoveryCandidate(canonical,query.capability,lic,
-                    MaintenanceSignal(date,None,False),row.get("stargazersCount"),
+                    MaintenanceSignal(date,count,False),row.get("stargazersCount"),
                     "Review exact license and dependencies; inspect implementation and run authorized held-out capability fixture; issue sample="+str(len(issues)),
                     Derivation.INFERRED,"high" if copyleft else "review-required",not copyleft,
                     "Bounded README and metadata reviewed; not implementation proof",4))
@@ -118,7 +123,7 @@ class GitHubSearchProvider:
             candidates.sort(key=lambda c:(not c.eligible,c.canonical_path.casefold()))
             return DiscoveryResult(ResultStatus.PASS if candidates else ResultStatus.EMPTY,FailureSignature.NONE,
                 tuple(candidates),(),Derivation.OBSERVED,
-                ("API metadata observed; capability fit inferred. Open issue count unknown (sample is not total). No copying or auto-integration.",),tuple(rejects))
+                ("API metadata observed; capability fit inferred. GitHub open_issues_count can include pull requests; issue sample is not total. No copying or auto-integration.",),tuple(rejects))
         except subprocess.TimeoutExpired:
             return DiscoveryResult(ResultStatus.TIMEOUT,FailureSignature.NONE,tuple(candidates),(),Derivation.UNKNOWN,("Bounded command timeout",),tuple(rejects))
         except (OSError,RuntimeError,ValueError,TypeError,KeyError) as exc:

@@ -26,7 +26,12 @@ class DagTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d,EvidenceStore(Path(d)/"e.db") as s:
             discovery={"browser_research":BrowserResearchProvider(capture=lambda q:F["har"]),"knowledge_retrieval":KnowledgeRetrievalProvider(s,web_search=lambda q:F["web"])}
             graph={"cloud-api":stages}
-            return DagEngine(graph,providers,Matrix(),s,discovery).run(FP,input_hash="a"*64,execution_id="fixture",timestamp=NOW,allowed_providers=frozenset((*providers,*discovery)),unresolved=unresolved or {})
+            if unresolved:
+                obs=s.append(EvidenceEntry("","fixture",Derivation.OBSERVED,NOW,"a"*64,"b"*64,(),(),"oracle_harness",FailureSignature.NONE,ResultStatus.PASS,ObservationScope("observable behavior","a"*64)))
+                unresolved={k:{**v,"evidence_ids":[obs] if v.get("evidence_ids")==["fixture-observation"] else v.get("evidence_ids",[])} for k,v in unresolved.items()}
+            result=DagEngine(graph,providers,Matrix(),s,discovery).run(FP,input_hash="a"*64,execution_id="fixture",timestamp=NOW,allowed_providers=frozenset((*providers,*discovery)),unresolved=unresolved or {})
+            self.assertEqual(s.get_dag_run("fixture")["trace"],list(result.trace))
+            return result
     def test_independent_stage_continues(self):
         a,b,c=Fake("A",True),Fake("B"),Fake("C")
         r=self.run_graph([stage("B",("A",)),stage("C"),stage("A")],{"A":a,"B":b,"C":c})
@@ -59,3 +64,33 @@ class DagTests(unittest.TestCase):
         graphs=load_graphs(Path(__file__).resolve().parents[1]/"routes/stages.json")
         self.assertEqual(set(graphs),{"cloud-api","packed-binary"})
         with self.assertRaises(ValueError):self.run_graph([stage("A",("B",)),stage("B",("A",))],{})
+
+    def test_discovery_uses_sorted_ready_queue_and_rejects_missing_observation(self):
+        alt=stage("discover-alternative-providers",kind="discovery",providers=["knowledge_retrieval"])
+        alt["trigger"]="EXHAUSTED"
+        brief=stage("discover-construction-brief",kind="discovery",providers=["browser_research"])
+        brief["trigger"]="UNRESOLVED"
+        a=stage("A",on_fail=["discover-alternative-providers","discover-construction-brief"])
+        r=self.run_graph([a,stage("B"),alt,brief],{"A":Fake("A",True),"B":Fake("B")},{"A":{"observable_behavior":"rate limiting","undetermined_mechanism":"unknown","evidence_ids":["missing"]}})
+        self.assertEqual(r.stages["discover-construction-brief@A"].status,StageStatus.UNSATISFIED_INPUT)
+        self.assertLess(r.trace.index("B"),r.trace.index("discover-alternative-providers@A"))
+
+    def test_authored_graphs_all_stages_with_synthetic_adapters(self):
+        graphs=load_graphs(Path(__file__).resolve().parents[1]/"routes/stages.json")
+        for archetype,rows in graphs.items():
+            outputs={s["id"]:s["output_contract"] for s in rows if s["kind"]=="analysis"}
+            class Adapter:
+                def __init__(self,name): self.name=name
+                def invoke(self,inp):
+                    arts=[]
+                    for spec in outputs[inp.stage_id]:
+                        payload={k:("fixture" if v is None else v) for k,v in spec["required_fields"].items()}
+                        arts.append(Artifact(spec["artifact_type"],"fixture",digest(payload),"fixture-source",self.name,Derivation.OBSERVED,(),payload))
+                    return ProviderResult(ResultStatus.PASS,FailureSignature.NONE,tuple(arts),(),Derivation.OBSERVED,("synthetic shape only",),(),None,None)
+            names={p for s in rows if s["kind"]=="analysis" for p in s["providers"]}
+            providers={n:Adapter(n) for n in names}
+            fp=TargetFingerprint(Archetype(archetype),"fixture",None,None,(),(),None,1,False,True)
+            with tempfile.TemporaryDirectory() as d,EvidenceStore(Path(d)/"e.db") as s:
+                r=DagEngine(graphs,providers,Matrix(),s,{}).run(fp,input_hash="a"*64,execution_id=archetype,timestamp=NOW,allowed_providers=frozenset(names))
+                self.assertTrue(all(r.stages[k].status is StageStatus.PASS for k in outputs))
+                self.assertTrue(all(r.stages[k].status is StageStatus.SKIPPED for k in r.stages if k not in outputs))

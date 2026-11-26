@@ -312,6 +312,8 @@ class DiscoveryQuery:
     observable_behavior: str
     undetermined_mechanism: str
     trigger_receipts: tuple[str, ...]
+    artifact_types_attempted: tuple[str, ...] = ()
+    failure_signatures: tuple[str, ...] = ()
 
     def __post_init__(self):
         if (not isinstance(self.capability,str) or not self.capability.strip()

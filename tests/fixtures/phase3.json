@@ -73,7 +73,17 @@
       }
     },
     "readme": "rate limiting middleware for Python; local standalone library",
-    "issues": []
+    "issues": [],
+    "commits": [
+      {
+        "commit": {
+          "committer": {
+            "date": "2026-01-01T00:00:00Z"
+          }
+        }
+      }
+    ],
+    "open_issues_count": 3
   },
   "har": {
     "log": {
