@@ -10,7 +10,7 @@ catalog=json.loads(Path("registry/tools.json").read_text())
 manifest=json.loads(Path("routes/provisioning.json").read_text())
 graphs=json.loads(Path("routes/stages.json").read_text())["graphs"]
 ids={e["id"] for e in catalog["entries"]}
-assert set(manifest)=={p for g in graphs.values() for s in g for p in s["providers"]}
+assert set(manifest)=={p for g in graphs.values() for s in g for rung in s["ladder"] for p in rung["providers"]}
 assert all(v["registry_id"] is None or v["registry_id"] in ids for v in manifest.values())
 matrix=None if "--manifest-only" in sys.argv else CapabilityMatrix.discover(catalog)
 if matrix:

@@ -1,15 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "graphs": {
     "cloud-api": [
       {
         "id": "capture",
         "layer": "transport",
         "preconditions": [],
-        "providers": [
-          "rea",
-          "mitmproxy"
-        ],
         "input_contract": [],
         "output_contract": [
           {
@@ -25,17 +21,84 @@
         ],
         "gate": "fixture-contract",
         "kind": "analysis",
-        "capability": "authorized network capture"
+        "capability": "authorized network capture",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [
+              "rea"
+            ],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [
+              "mitmproxy"
+            ],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ],
+            "discovery_stages": [
+              "discover-alternative-providers"
+            ]
+          }
+        ],
+        "streaming_capture": {
+          "method": "IO.read",
+          "threshold_bytes": 4096,
+          "chunk_bytes": 1024,
+          "max_bytes": 16384,
+          "storage": "content-addressed-disk",
+          "fixture_only": true
+        }
       },
       {
         "id": "protocol-classify",
         "layer": "transport",
         "preconditions": [
           "capture"
-        ],
-        "providers": [
-          "rea",
-          "wireshark"
         ],
         "input_contract": [
           {
@@ -57,7 +120,66 @@
         "on_fail": [],
         "gate": "fixture-contract",
         "kind": "analysis",
-        "capability": "protocol classification"
+        "capability": "protocol classification",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [
+              "rea",
+              "wireshark"
+            ],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          }
+        ]
       },
       {
         "id": "schema-infer",
@@ -65,10 +187,6 @@
         "preconditions": [
           "protocol-classify",
           "capture"
-        ],
-        "providers": [
-          "rea",
-          "blackboxprotobuf"
         ],
         "input_contract": [
           {
@@ -97,17 +215,75 @@
         ],
         "gate": "fixture-contract",
         "kind": "analysis",
-        "capability": "schema inference"
+        "capability": "schema inference",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [
+              "rea",
+              "blackboxprotobuf"
+            ],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ],
+            "discovery_stages": [
+              "discover-alternative-providers"
+            ]
+          }
+        ]
       },
       {
         "id": "state-machine",
         "layer": "persistent-state",
         "preconditions": [
           "schema-infer"
-        ],
-        "providers": [
-          "aalpy",
-          "learnlib"
         ],
         "input_contract": [
           {
@@ -129,17 +305,72 @@
         "on_fail": [],
         "gate": "fixture-contract",
         "kind": "analysis",
-        "capability": "state machine inference"
+        "capability": "state machine inference",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [
+              "aalpy",
+              "learnlib"
+            ],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          }
+        ]
       },
       {
         "id": "verify",
         "layer": "persistent-state",
         "preconditions": [
           "state-machine"
-        ],
-        "providers": [
-          "rea",
-          "hypothesis"
         ],
         "input_contract": [
           {
@@ -161,16 +392,72 @@
         "on_fail": [],
         "gate": "fixture-contract",
         "kind": "analysis",
-        "capability": "held-out behavior comparison"
+        "capability": "held-out behavior comparison",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [
+              "rea"
+            ],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [
+              "hypothesis"
+            ],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          }
+        ]
       },
       {
         "id": "discover-alternative-providers",
         "layer": "static",
         "preconditions": [],
-        "providers": [
-          "github_search",
-          "knowledge_retrieval"
-        ],
         "input_contract": [
           {
             "artifact_type": "exhaustion-receipt",
@@ -192,7 +479,66 @@
         "gate": "fixture-contract",
         "kind": "discovery",
         "capability": "alternative capability research",
-        "trigger": "EXHAUSTED"
+        "trigger": "EXHAUSTED",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [
+              "github_search",
+              "knowledge_retrieval"
+            ],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          }
+        ]
       }
     ],
     "packed-binary": [
@@ -200,10 +546,6 @@
         "id": "fingerprint",
         "layer": "static",
         "preconditions": [],
-        "providers": [
-          "rea",
-          "ghidra"
-        ],
         "input_contract": [],
         "output_contract": [
           {
@@ -216,17 +558,72 @@
         "on_fail": [],
         "gate": "fixture-contract",
         "kind": "analysis",
-        "capability": "binary format identification"
+        "capability": "binary format identification",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [
+              "rea",
+              "ghidra"
+            ],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          }
+        ]
       },
       {
         "id": "unpack",
         "layer": "static",
         "preconditions": [
           "fingerprint"
-        ],
-        "providers": [
-          "rea",
-          "qiling"
         ],
         "input_contract": [
           {
@@ -249,17 +646,76 @@
         ],
         "gate": "fixture-contract",
         "kind": "analysis",
-        "capability": "authorized artifact normalization"
+        "capability": "authorized artifact normalization",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [
+              "rea"
+            ],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [
+              "qiling"
+            ],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ],
+            "discovery_stages": [
+              "discover-alternative-providers"
+            ]
+          }
+        ]
       },
       {
         "id": "emulation-decrypt",
         "layer": "dynamic-dispatch",
         "preconditions": [
           "unpack"
-        ],
-        "providers": [
-          "qiling",
-          "unicorn"
         ],
         "input_contract": [
           {
@@ -282,17 +738,75 @@
         ],
         "gate": "fixture-contract",
         "kind": "analysis",
-        "capability": "controlled fixture emulation"
+        "capability": "controlled fixture emulation",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [
+              "qiling",
+              "unicorn"
+            ],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ],
+            "discovery_stages": [
+              "discover-alternative-providers"
+            ]
+          }
+        ]
       },
       {
         "id": "re-static",
         "layer": "static",
         "preconditions": [
           "emulation-decrypt"
-        ],
-        "providers": [
-          "rea",
-          "ghidra"
         ],
         "input_contract": [
           {
@@ -314,17 +828,72 @@
         "on_fail": [],
         "gate": "fixture-contract",
         "kind": "analysis",
-        "capability": "static function representation"
+        "capability": "static function representation",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [
+              "rea",
+              "ghidra"
+            ],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          }
+        ]
       },
       {
         "id": "symbolic-resolve",
         "layer": "dynamic-dispatch",
         "preconditions": [
           "re-static"
-        ],
-        "providers": [
-          "angr",
-          "triton"
         ],
         "input_contract": [
           {
@@ -350,17 +919,75 @@
         ],
         "gate": "fixture-contract",
         "kind": "analysis",
-        "capability": "indirect call graph analysis"
+        "capability": "indirect call graph analysis",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [
+              "angr",
+              "triton"
+            ],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ],
+            "discovery_stages": [
+              "discover-construction-brief"
+            ]
+          }
+        ]
       },
       {
         "id": "verify",
         "layer": "dynamic-dispatch",
         "preconditions": [
           "symbolic-resolve"
-        ],
-        "providers": [
-          "rea",
-          "hypothesis"
         ],
         "input_contract": [
           {
@@ -382,16 +1009,72 @@
         "on_fail": [],
         "gate": "fixture-contract",
         "kind": "analysis",
-        "capability": "held-out control flow comparison"
+        "capability": "held-out control flow comparison",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [
+              "rea"
+            ],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [
+              "hypothesis"
+            ],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          }
+        ]
       },
       {
         "id": "discover-alternative-providers",
         "layer": "static",
         "preconditions": [],
-        "providers": [
-          "github_search",
-          "knowledge_retrieval"
-        ],
         "input_contract": [
           {
             "artifact_type": "exhaustion-receipt",
@@ -413,17 +1096,71 @@
         "gate": "fixture-contract",
         "kind": "discovery",
         "capability": "alternative capability research",
-        "trigger": "EXHAUSTED"
+        "trigger": "EXHAUSTED",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [
+              "github_search",
+              "knowledge_retrieval"
+            ],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          }
+        ]
       },
       {
         "id": "discover-construction-brief",
         "layer": "persistent-state",
         "preconditions": [],
-        "providers": [
-          "browser_research",
-          "github_search",
-          "knowledge_retrieval"
-        ],
         "input_contract": [
           {
             "artifact_type": "unresolved-gap",
@@ -445,7 +1182,67 @@
         "gate": "fixture-contract",
         "kind": "discovery",
         "capability": "independent implementation research",
-        "trigger": "UNRESOLVED"
+        "trigger": "UNRESOLVED",
+        "ladder": [
+          {
+            "rung": 1,
+            "paradigm": "static",
+            "providers": [],
+            "trigger_signatures": []
+          },
+          {
+            "rung": 2,
+            "paradigm": "symbolic-emulation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 3,
+            "paradigm": "live-instrumentation",
+            "providers": [],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          },
+          {
+            "rung": 4,
+            "paradigm": "black-box-discovery",
+            "providers": [
+              "browser_research",
+              "github_search",
+              "knowledge_retrieval"
+            ],
+            "trigger_signatures": [
+              "PACKED",
+              "ENCRYPTED_STRINGS",
+              "DISPATCHER_LOOP",
+              "UNRESOLVED_INDIRECT",
+              "UNKNOWN_PROTOCOL",
+              "HOST_UNSUPPORTED",
+              "CIRCUIT_OPEN",
+              "SHADER_OPAQUE",
+              "MODEL_GRAPH_UNKNOWN"
+            ]
+          }
+        ]
       }
     ]
   }

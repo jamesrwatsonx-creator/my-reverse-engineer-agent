@@ -87,7 +87,7 @@ class DagTests(unittest.TestCase):
                         payload={k:("fixture" if v is None else v) for k,v in spec["required_fields"].items()}
                         arts.append(Artifact(spec["artifact_type"],"fixture",digest(payload),"fixture-source",self.name,Derivation.OBSERVED,(),payload))
                     return ProviderResult(ResultStatus.PASS,FailureSignature.NONE,tuple(arts),(),Derivation.OBSERVED,("synthetic shape only",),(),None,None)
-            names={p for s in rows if s["kind"]=="analysis" for p in s["providers"]}
+            names={p for s in rows if s["kind"]=="analysis" for rung in s["ladder"] for p in rung["providers"]}
             providers={n:Adapter(n) for n in names}
             fp=TargetFingerprint(Archetype(archetype),"fixture",None,None,(),(),None,1,False,True)
             with tempfile.TemporaryDirectory() as d,EvidenceStore(Path(d)/"e.db") as s:

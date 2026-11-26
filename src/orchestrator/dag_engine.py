@@ -1,6 +1,6 @@
 """Deterministic, fixture-only DAG scheduler. No policy loop or real-target adapter."""
 from __future__ import annotations
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from enum import Enum
 import json
 from pathlib import Path
@@ -8,7 +8,8 @@ from .contracts import (Artifact,ArtifactContract,Stage,Layer,ProviderInput,Targ
     DiscoveryQuery,DiscoveryResult,DiscoveryCandidate,DiscoveryKind,EvidenceEntry,ObservationScope,
     ResultStatus,FailureSignature,Derivation)
 from .evidence_store import digest
-from .executor import execute_stage,ExecutionPass
+from .executor import execute_stage,ExecutionPass,ExhaustedResult
+from .streaming_capture import normalize_capture_result
 
 class StageStatus(str,Enum):
     PASS="PASS"
@@ -45,7 +46,7 @@ class DagResult:
 
 def load_graphs(path):
     data=json.loads(Path(path).read_text(encoding="utf-8"))
-    if data.get("schema_version")!=1:raise ValueError("Unsupported stage schema")
+    if data.get("schema_version") not in {1,2}:raise ValueError("Unsupported stage schema")
     graphs=data["graphs"]
     for graph in graphs.values():_validate(graph)
     return graphs
@@ -60,6 +61,14 @@ def _contracts(rows):
     return tuple(out)
 
 
+PARADIGMS=("static","symbolic-emulation","live-instrumentation","black-box-discovery")
+
+def provider_ladder(row):
+    # Legacy in-memory Phase 3 fixture rows retain their original single rung.
+    if "ladder" not in row:
+        return ({"rung":1,"paradigm":"static","providers":row["providers"],"trigger_signatures":[]},)
+    return tuple(row["ladder"])
+
 def _validate(rows):
     stages={}
     for row in rows:
@@ -69,8 +78,23 @@ def _validate(rows):
         if row["kind"] not in {"analysis","discovery"} or row["gate"]!="fixture-contract":
             raise ValueError("Unknown stage kind or gate")
         Layer(row["layer"])
-        if not row["providers"] or len(set(row["providers"]))!=len(row["providers"]):
-            raise ValueError("Providers must be a nonempty ordered unique list")
+        ladder=provider_ladder(row)
+        if "ladder" in row:
+            if "providers" in row or [(r["rung"],r["paradigm"]) for r in ladder]!=list(enumerate(PARADIGMS,1)):
+                raise ValueError("Exactly four ordered paradigms required")
+            for rung in ladder:
+                for sig in rung["trigger_signatures"]:
+                    if FailureSignature(sig) in {FailureSignature.PINNED,FailureSignature.TIMEOUT_ADVERSARIAL,FailureSignature.NONE}:
+                        raise ValueError("Unsafe or ambiguous automatic escalation signature")
+            if set(ladder[3].get("discovery_stages",[]))!=set(row["on_fail"]):
+                raise ValueError("Rung four discovery routes must match on_fail")
+        names=[p for rung in ladder for p in rung["providers"]]
+        if not names or len(set(names))!=len(names):
+            raise ValueError("Providers must be ordered and unique within stage")
+        if "streaming_capture" in row:
+            spec=row["streaming_capture"]
+            if spec["method"]!="IO.read" or not 0<spec["chunk_bytes"]<=spec["threshold_bytes"]<=spec["max_bytes"]:
+                raise ValueError("Invalid streaming capture spec")
         _contracts(row["input_contract"]);_contracts(row["output_contract"])
         stages[ident]=row
     for ident,row in stages.items():
@@ -116,8 +140,10 @@ def check_contract(contracts,artifacts):
 
 
 class DagEngine:
-    def __init__(self,graphs,providers,matrix,store,discovery):
+    def __init__(self,graphs,providers,matrix,store,discovery,*,stream_reader=None,artifact_directory=None,circuit_threshold=3,circuit_cooldown_seconds=60):
         self.graphs=graphs;self.providers=providers;self.matrix=matrix;self.store=store;self.discovery=discovery
+        self.stream_reader=stream_reader;self.artifact_directory=artifact_directory
+        self.circuit_threshold=circuit_threshold;self.circuit_cooldown_seconds=circuit_cooldown_seconds
         for rows in graphs.values():_validate(rows)
 
     def run(self,fingerprint:TargetFingerprint,*,input_hash:str,execution_id:str,timestamp,
@@ -147,7 +173,7 @@ class DagEngine:
                 tuple(c.artifact_type for c in _contracts(graph[parent]["output_contract"])),
                 tuple(a.failure_signature.value for a in results[parent].attempts))
             candidates=[];refs=[];attempts=[];exhaustion=[]
-            for name in row["providers"]:
+            for name in (p for rung in provider_ladder(row) for p in rung["providers"]):
                 provider=self.discovery.get(name)
                 if name not in allowed_providers or provider is None or getattr(provider,"name",None)!=name:
                     attempts.append((name,"SKIPPED","not authorized or no discovery adapter"));continue
@@ -202,13 +228,33 @@ class DagEngine:
             missing=check_contract(input_contract,artifacts)
             if missing:
                 save(ident,StageResult(StageStatus.UNSATISFIED_INPUT,unsatisfied=missing,reason="Input contract not satisfied"));continue
-            stage=Stage(ident,Layer(row["layer"]),tuple(pre),tuple(row["providers"]),
-                lambda r: not check_contract(output_contract,r.artifacts),(),input_contract,output_contract)
             stage_hash=digest({"root":input_hash,"stage":ident,"inputs":[a.sha256 for a in artifacts]})
-            inp=ProviderInput(ident,artifacts,{},"synthetic-fixture")
-            r=execute_stage(stage,fingerprint,self.providers,self.matrix,self.store,inp,stage_hash,
-                allowed_providers=allowed_providers,execution_id=execution_id,timestamp=timestamp,repair_stages={},
-                passed_preconditions=frozenset(k for k in pre if results[k].status is StageStatus.PASS))
+            spec=row.get("streaming_capture")
+            inp=ProviderInput(ident,artifacts,{"streaming_capture":spec} if spec else {},"synthetic-fixture")
+            transform=(lambda result:normalize_capture_result(result,spec,self.stream_reader,self.artifact_directory)) if spec else None
+            combined=[];prior_signatures=set();started=False;discovery_allowed="ladder" not in row
+            r=ExhaustedResult(ident,(),"No eligible rung")
+            for rung in provider_ladder(row):
+                names=rung["providers"]; destinations=rung.get("discovery_stages",[])
+                if not names and not destinations:continue  # inapplicable paradigm, not an attempt
+                triggers={FailureSignature(s) for s in rung["trigger_signatures"]}
+                if started and (not prior_signatures.intersection(triggers) or prior_signatures.intersection({FailureSignature.PINNED,FailureSignature.TIMEOUT_ADVERSARIAL})):
+                    # Stop the ladder on a nonmatching structural outcome.
+                    break
+                if destinations:discovery_allowed=True
+                if not names:continue
+                started=True
+                stage=Stage(ident,Layer(row["layer"]),tuple(pre),tuple(names),
+                    lambda result:not check_contract(output_contract,result.artifacts),(),input_contract,output_contract)
+                r=execute_stage(stage,fingerprint,self.providers,self.matrix,self.store,inp,stage_hash,
+                    allowed_providers=allowed_providers,execution_id=execution_id+":rung-"+str(rung["rung"]),timestamp=timestamp,repair_stages={},
+                    passed_preconditions=frozenset(k for k in pre if results[k].status is StageStatus.PASS),
+                    circuit_threshold=self.circuit_threshold,circuit_cooldown_seconds=self.circuit_cooldown_seconds,
+                    transform_result=transform)
+                combined.extend(replace(a,rung=rung["rung"]) for a in r.trace)
+                prior_signatures={a.failure_signature for a in r.trace}
+                if isinstance(r,ExecutionPass):break
+            r=replace(r,trace=tuple(combined))
             attempt_receipts=tuple(a.receipt_id for a in r.trace if a.receipt_id)
             evidence=tuple(self.store.get_attempt(a).evidence_id for a in attempt_receipts)
             if isinstance(r,ExecutionPass):
@@ -224,7 +270,7 @@ class DagEngine:
             linked=(*attempt_receipts,eid)
             save(ident,StageResult(StageStatus.EXHAUSTED,(*evidence,eid),linked,r.trace,reason=r.reason))
             signature=next((a.failure_signature for a in r.trace if a.status is not None and a.failure_signature is not FailureSignature.NONE),FailureSignature.NONE)
-            for template in sorted(row["on_fail"]):
+            for template in sorted(row["on_fail"] if discovery_allowed else []):
                 tr=graph[template]["trigger"]
                 if tr=="EXHAUSTED":
                     events[template+"@"+ident]=(template,ident,tr,linked,signature,(event_artifact("exhaustion-receipt",payload,eid),))

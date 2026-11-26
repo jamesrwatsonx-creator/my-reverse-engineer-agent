@@ -87,7 +87,7 @@ class AddendumTests(unittest.TestCase):
                 a=Artifact("network-capture","fixture",digest(payload),"fixture-source",self.name,Derivation.OBSERVED,(),payload)
                 return ProviderResult(ResultStatus.PASS,FailureSignature.NONE,(a,),(),Derivation.OBSERVED,(),(),None,None)
         with tempfile.TemporaryDirectory() as d,EvidenceStore(Path(d)/"e.db") as s:
-            r=DagEngine({"cloud-api":[row]},{"rea":Capture()},Matrix(),s,{},stream_reader=read,artifact_directory=Path(d)/"blobs").run(FP,input_hash="a"*64,execution_id="stream",timestamp=NOW,allowed_providers=frozenset({"rea"}))
+            r=DagEngine({"cloud-api":[row,next(x for x in graphs["cloud-api"] if x["id"]=="discover-alternative-providers")]},{"rea":Capture()},Matrix(),s,{},stream_reader=read,artifact_directory=Path(d)/"blobs").run(FP,input_hash="a"*64,execution_id="stream",timestamp=NOW,allowed_providers=frozenset({"rea"}))
             self.assertEqual(r.stages["capture"].status,StageStatus.PASS)
             payload=r.stages["capture"].artifacts[0].payload
             self.assertNotIn("stream_handle",payload)
