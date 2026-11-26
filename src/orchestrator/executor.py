@@ -8,6 +8,7 @@ from typing import Mapping
 from .contracts import (Stage,TargetFingerprint,ProviderInput,ProviderResult,Provider,
                         ResultStatus,FailureSignature,Derivation,ObservationScope)
 from .evidence_store import EvidenceStore, canonical, digest
+from .circuit_breaker import CircuitBreaker
 
 
 @dataclass(frozen=True)
@@ -18,6 +19,7 @@ class Attempt:
     failure_signature: FailureSignature
     receipt_id: str | None
     reason: str
+    rung: int | None = None
 
 
 @dataclass(frozen=True)
@@ -38,7 +40,9 @@ def execute_stage(stage: Stage, fingerprint: TargetFingerprint,
                   providers: Mapping[str,Provider], matrix, store: EvidenceStore,
                   input: ProviderInput, input_hash: str, *, allowed_providers: frozenset[str],
                   execution_id: str, timestamp: datetime, repair_stages: Mapping[str,Stage],
-                  passed_preconditions: frozenset[str]=frozenset()) -> ExecutionPass | ExhaustedResult:
+                  passed_preconditions: frozenset[str]=frozenset(),
+                  circuit_threshold: int=3,circuit_cooldown_seconds: float=60,
+                  transform_result=None) -> ExecutionPass | ExhaustedResult:
     """Call only explicitly authorized fixture adapters; receipt before advancing.
 
     Provider PASS is not verified closure. Optional supplied stage predicate is
@@ -55,6 +59,7 @@ def execute_stage(stage: Stage, fingerprint: TargetFingerprint,
         raise ValueError("Input hash must be SHA-256")
     input=replace(input,parameters={**input.parameters,"target_fingerprint":asdict(fingerprint)})
     trace=[]
+    circuit=CircuitBreaker(store,circuit_threshold,circuit_cooldown_seconds)
     def run_once(current: Stage, inp: ProviderInput, round_id: str, attempt_input_hash: str):
         if not set(current.preconditions)<=passed_preconditions:
             return None,None
@@ -65,6 +70,13 @@ def execute_stage(stage: Stage, fingerprint: TargetFingerprint,
             if not matrix.is_available(name):
                 trace.append(Attempt(current.id,name,None,FailureSignature.HOST_UNSUPPORTED,None,matrix.why_unavailable(name)))
                 continue
+            attempt_id=f"{execution_id}:{current.id}:{round_id}:{i}"
+            prior=store.get_attempt(attempt_id)
+            if prior is not None:
+                raise ValueError("Attempt already persisted; explicit replay/resume is required")
+            if not circuit.admit(name,attempt_id,timestamp):
+                trace.append(Attempt(current.id,name,None,FailureSignature.CIRCUIT_OPEN,None,"Circuit open; no invocation"))
+                continue
             try:
                 result=providers[name].invoke(inp)
                 if not isinstance(result,ProviderResult):
@@ -73,6 +85,8 @@ def execute_stage(stage: Stage, fingerprint: TargetFingerprint,
                     raise ValueError("Invalid provider status, signature or derivation")
                 if any(not re.fullmatch(r"[0-9a-f]{64}",a.sha256) for a in result.artifacts):
                     raise ValueError("Invalid provider artifact hash")
+                if transform_result is not None and result.status is ResultStatus.PASS:
+                    result=transform_result(result)
                 canonical(asdict(result))  # reject nonserializable results before ledger write
                 if result.status is ResultStatus.PASS and not result.artifacts:
                     result=replace(result,status=ResultStatus.EMPTY,
@@ -92,7 +106,8 @@ def execute_stage(stage: Stage, fingerprint: TargetFingerprint,
                 status=ResultStatus.TIMEOUT if isinstance(exc,(TimeoutError,subprocess.TimeoutExpired)) else ResultStatus.FAIL
                 result=ProviderResult(status,FailureSignature.NONE,(),(),Derivation.UNKNOWN,
                                       ("Adapter exception or invalid response: "+type(exc).__name__,),(),None,None)
-            receipt=store.record_attempt(f"{execution_id}:{current.id}:{round_id}:{i}",name,timestamp,attempt_input_hash,result,ObservationScope(current.id,attempt_input_hash))
+            receipt=store.record_attempt(attempt_id,name,timestamp,attempt_input_hash,result,ObservationScope(current.id,attempt_input_hash))
+            circuit.complete(name,receipt)
             trace.append(Attempt(current.id,name,result.status,result.failure_signature,receipt.attempt_id,
                                  "provider result; not global verification"))
             if result.status is ResultStatus.PASS:

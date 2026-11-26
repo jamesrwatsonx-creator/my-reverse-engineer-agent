@@ -81,6 +81,13 @@ class EvidenceStore:
         )""")
         for op in ("UPDATE","DELETE"):
             self.db.execute(f"CREATE TRIGGER IF NOT EXISTS immutable_dag_runs_{op.lower()} BEFORE {op} ON dag_runs BEGIN SELECT RAISE(ABORT,'append-only ledger'); END;")
+        self.db.execute("""CREATE TABLE IF NOT EXISTS circuit_events (
+          seq INTEGER PRIMARY KEY, event_id TEXT UNIQUE NOT NULL,
+          provider TEXT NOT NULL, payload TEXT NOT NULL
+        )""")
+        self.db.execute("CREATE INDEX IF NOT EXISTS circuit_provider ON circuit_events(provider,seq)")
+        for op in ("UPDATE","DELETE"):
+            self.db.execute(f"CREATE TRIGGER IF NOT EXISTS immutable_circuit_{op.lower()} BEFORE {op} ON circuit_events BEGIN SELECT RAISE(ABORT,'append-only ledger'); END;")
         self.db.commit()
 
     def __enter__(self):
@@ -231,3 +238,18 @@ class EvidenceStore:
     def get_dag_run(self, execution_id: str) -> dict | None:
         row=self.db.execute("SELECT payload FROM dag_runs WHERE execution_id=?",(execution_id,)).fetchone()
         return json.loads(row[0]) if row else None
+
+    def circuit_history(self, provider: str) -> tuple[dict,...]:
+        return tuple(json.loads(row[0]) for row in self.db.execute(
+            "SELECT payload FROM circuit_events WHERE provider=? ORDER BY seq",(provider,)))
+
+    def circuit_event(self, event_id: str) -> dict | None:
+        row=self.db.execute("SELECT payload FROM circuit_events WHERE event_id=?",(event_id,)).fetchone()
+        return json.loads(row[0]) if row else None
+
+    def append_circuit_event(self, event_id: str, provider: str, payload: dict) -> None:
+        data=canonical(payload)
+        with self.db:
+            self.db.execute("INSERT OR IGNORE INTO circuit_events(event_id,provider,payload) VALUES (?,?,?)",(event_id,provider,data))
+            actual=self.db.execute("SELECT provider,payload FROM circuit_events WHERE event_id=?",(event_id,)).fetchone()
+            if actual!=(provider,data):raise ValueError("Circuit event identity reused")
