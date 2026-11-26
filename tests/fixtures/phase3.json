@@ -1,0 +1,103 @@
+{
+  "github": {
+    "search": [
+      {
+        "fullName": "fixture/fit",
+        "description": "rate limiting middleware",
+        "url": "https://github.com/fixture/fit",
+        "language": "Python",
+        "license": {
+          "key": "mit"
+        },
+        "updatedAt": "2026-01-01T00:00:00Z",
+        "stargazersCount": 1
+      },
+      {
+        "fullName": "fixture/also",
+        "description": "rate limiting middleware",
+        "url": "https://github.com/fixture/also",
+        "language": "Python",
+        "license": {
+          "key": "mit"
+        },
+        "updatedAt": "2026-01-01T00:00:00Z",
+        "stargazersCount": 999
+      },
+      {
+        "fullName": "fixture/archive",
+        "description": "rate limiting middleware",
+        "license": {
+          "key": "mit"
+        }
+      },
+      {
+        "fullName": "fixture/copyleft",
+        "description": "rate limiting middleware",
+        "license": {
+          "key": "gpl-3.0"
+        }
+      }
+    ],
+    "details": {
+      "fixture/fit": {
+        "nameWithOwner": "fixture/fit",
+        "licenseInfo": {
+          "spdxId": "MIT"
+        },
+        "pushedAt": "2026-01-01T00:00:00Z",
+        "isArchived": false
+      },
+      "fixture/also": {
+        "nameWithOwner": "fixture/also",
+        "licenseInfo": {
+          "spdxId": "MIT"
+        },
+        "pushedAt": "2026-01-01T00:00:00Z",
+        "isArchived": false
+      },
+      "fixture/archive": {
+        "nameWithOwner": "fixture/archive",
+        "licenseInfo": {
+          "spdxId": "MIT"
+        },
+        "pushedAt": "2026-01-01T00:00:00Z",
+        "isArchived": true
+      },
+      "fixture/copyleft": {
+        "nameWithOwner": "fixture/copyleft",
+        "licenseInfo": {
+          "spdxId": "GPL-3.0-only"
+        },
+        "pushedAt": "2026-01-01T00:00:00Z",
+        "isArchived": false
+      }
+    },
+    "readme": "rate limiting middleware for Python; local standalone library",
+    "issues": []
+  },
+  "har": {
+    "log": {
+      "version": "1.2",
+      "entries": [
+        {
+          "request": {
+            "method": "GET",
+            "url": "https://fixture.invalid/api/rate",
+            "headers": []
+          },
+          "response": {
+            "status": 429,
+            "headers": []
+          }
+        }
+      ]
+    }
+  },
+  "web": [
+    {
+      "url": "https://fixture.invalid/reference",
+      "quote": "A rate limiting response may use a retry interval.",
+      "verification_required": "Replay a controlled response fixture and check status and retry interval"
+    }
+  ]
+}
