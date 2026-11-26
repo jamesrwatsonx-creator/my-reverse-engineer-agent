@@ -16,43 +16,50 @@
 | src/providers/github_search_provider.py | Bounded GitHub CLI research with explicit opt-in live execution, injectable mocked runner, in-memory command cache and paced live calls. Metadata, README and issue sample, maintenance and license filtering, deterministic ordering independent of stars. Tests: archive rejection, copyleft risk, maintenance and star invariance. |
 | src/providers/browser_research_provider.py | Authorized capture callback; sanitized HAR fixture projection into feature/capability-matched candidate endpoints and behavioral hypotheses; Tier 4 inferred, no target requests or browser automation implemented here. Test: cached HAR. |
 | src/providers/knowledge_retrieval_provider.py | Prior matching discovery results and optionally validated learning cards first; optional injected web callback when no candidates match. Test: previous result reused, web callback not repeated. |
-| routes/stages.json | Two proof-of-concept graphs; all referenced providers ordered, two or more per stage. |
+| routes/stages.json | Two proof-of-concept graphs in schema v2; four explicit paradigms per stage, ordered providers and signature-gated escalation. |
 | routes/provisioning.json; docs/PROVISIONING.md; scripts/provision-check.sh | Manifest and read-only checks, graph coverage validation; no installation. test_provisioning. |
 | tests/fixtures/phase3.json | Deterministic mocked GitHub, sanitized HAR and web search fixture. |
+| src/orchestrator/circuit_breaker.py | Append-only per-provider circuit transitions; configurable failure threshold/cooldown; OPEN skip, bounded HALF_OPEN probe, CLOSED reset; analysis and discovery admission. |
+| src/orchestrator/streaming_capture.py | Bounded fixture CDP IO.read/IO.close streaming to SHA-256-addressed files; capture-stage reference projection before evidence persistence. |
+| tests/test_phase3_addendum.py; tests/fixtures/phase3-large-payload.txt | Five regression tests for ladder matching, circuit restart, half-open recovery, discovery admission, and 9,300-byte streaming fixture. |
 | .github/workflows/workbench.yml | Existing suite plus provider compilation and uploaded provisioning output. |
 
 ### RED/GREEN evidence
 
 - [RED commit](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/commit/782f150febcf72811593c92ccf1d3867a745bca7), [CI 45727640341](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45727640341): 37 tests discovered, four expected errors (missing DAG module, missing discovery provider modules, missing ObservationScope, missing graph/manifest).
 - [First implementation](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/commit/5352a1d5b736f79abb56a30da23f149e375726d7), [CI 45727856817](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45727856817): 42 tests passed; compilation, planning, capability snapshot and provisioning succeeded.
-- [Final implementation](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/commit/0e27ececc28a60a17b0e5904d0d49922dc19548d), [CI 45727952827](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45727952827): 45 tests passed (0.511 s); compilation, workbench planning, capability snapshot, provisioning and upload succeeded. Test logs are direct observations. This report-only commit records that result, not a new target analysis.
+- [Final implementation](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/commit/0e27ececc28a60a17b0e5904d0d49922dc19548d), [CI 45727952827](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45727952827): 45 tests passed (0.511 s); compilation, workbench planning, capability snapshot, provisioning and upload succeeded. Test logs are direct observations. This was the pre-addendum baseline.
+- [Addendum RED](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45728124748): 46 tests discovered; expected import failure for missing circuit breaker in the addendum test module (streaming module also absent).
+- [Addendum GREEN](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45728226168): 49 tests passed.
+- [Final implementation commit](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/commit/e36a5f734ecdd7ea75aabc32696098b89a7d4ac3), [CI 45728304206](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45728304206): 50 tests passed (1.089 s), compilation, workbench planning, capability snapshot, provisioning and artifact upload succeeded. This report-only commit records that observed result.
 
-## 2. Archetype graphs
+## 2. Archetype graphs — ladder schema v2
 
 ### cloud-api
 
-| Stage | Layer | Preconditions / trigger | Ordered providers | Input → output contract | On failure | Gate |
+| Stage | Layer | Preconditions / trigger | Ordered ladder (nonempty rungs) | Input → output contract | Discovery event | Gate |
 |---|---|---|---|---|---|---|
-| capture | transport | root | rea, mitmproxy | none → network-capture {"requests":null,"responses":null} | discover-alternative-providers | fixture-contract |
-| protocol-classify | transport | capture | rea, wireshark | network-capture {"requests":null,"responses":null} → protocol {"identifier":null} | — | fixture-contract |
-| schema-infer | transport | protocol-classify, capture | rea, blackboxprotobuf | protocol {"identifier":null}; network-capture {"requests":null} → schema {"fields":null} | discover-alternative-providers | fixture-contract |
-| state-machine | persistent-state | schema-infer | aalpy, learnlib | schema {"fields":null} → state-machine {"states":null,"transitions":null} | — | fixture-contract |
-| verify | persistent-state | state-machine | rea, hypothesis | state-machine {"states":null,"transitions":null} → verification {"fixture_result":"PASS"} | — | fixture-contract |
-| discover-alternative-providers | static | EXHAUSTED | github_search, knowledge_retrieval | exhaustion-receipt {"failure_signatures":null,"artifact_types_attempted":null} → discovery-candidates {"candidates":null} | — | fixture-contract |
+| capture | transport | root | R1: rea; R3: mitmproxy; R4:  → discover-alternative-providers | none → network-capture {"requests":null,"responses":null} | discover-alternative-providers | fixture-contract |
+| protocol-classify | transport | capture | R1: rea, wireshark | network-capture {"requests":null,"responses":null} → protocol {"identifier":null} | — | fixture-contract |
+| schema-infer | transport | protocol-classify, capture | R1: rea, blackboxprotobuf; R4:  → discover-alternative-providers | protocol {"identifier":null}; network-capture {"requests":null} → schema {"fields":null} | discover-alternative-providers | fixture-contract |
+| state-machine | persistent-state | schema-infer | R4: aalpy, learnlib | schema {"fields":null} → state-machine {"states":null,"transitions":null} | — | fixture-contract |
+| verify | persistent-state | state-machine | R1: rea; R4: hypothesis | state-machine {"states":null,"transitions":null} → verification {"fixture_result":"PASS"} | — | fixture-contract |
+| discover-alternative-providers | static | EXHAUSTED | R4: github_search, knowledge_retrieval | exhaustion-receipt {"failure_signatures":null,"artifact_types_attempted":null} → discovery-candidates {"candidates":null} | — | fixture-contract |
 
 ### packed-binary
 
-| Stage | Layer | Preconditions / trigger | Ordered providers | Input → output contract | On failure | Gate |
+| Stage | Layer | Preconditions / trigger | Ordered ladder (nonempty rungs) | Input → output contract | Discovery event | Gate |
 |---|---|---|---|---|---|---|
-| fingerprint | static | root | rea, ghidra | none → fingerprint {"format":null} | — | fixture-contract |
-| unpack | static | fingerprint | rea, qiling | fingerprint {"format":null} → binary {"artifact_id":null} | discover-alternative-providers | fixture-contract |
-| emulation-decrypt | dynamic-dispatch | unpack | qiling, unicorn | binary {"artifact_id":null} → binary {"artifact_id":null} | discover-alternative-providers | fixture-contract |
-| re-static | static | emulation-decrypt | rea, ghidra | binary {"artifact_id":null} → function {"body_kind":"assembly","body":null} | — | fixture-contract |
-| symbolic-resolve | dynamic-dispatch | re-static | angr, triton | function {"body_kind":"assembly","body":null} → call-graph {"nodes":null,"edges":null,"unknown_edges":null} | discover-construction-brief | fixture-contract |
-| verify | dynamic-dispatch | symbolic-resolve | rea, hypothesis | call-graph {"nodes":null,"edges":null} → verification {"fixture_result":"PASS"} | — | fixture-contract |
-| discover-alternative-providers | static | EXHAUSTED | github_search, knowledge_retrieval | exhaustion-receipt {"failure_signatures":null,"artifact_types_attempted":null} → discovery-candidates {"candidates":null} | — | fixture-contract |
-| discover-construction-brief | persistent-state | UNRESOLVED | browser_research, github_search, knowledge_retrieval | unresolved-gap {"observable_behavior":null,"undetermined_mechanism":null} → discovery-candidates {"candidates":null} | — | fixture-contract |
+| fingerprint | static | root | R1: rea, ghidra | none → fingerprint {"format":null} | — | fixture-contract |
+| unpack | static | fingerprint | R1: rea; R2: qiling; R4:  → discover-alternative-providers | fingerprint {"format":null} → binary {"artifact_id":null} | discover-alternative-providers | fixture-contract |
+| emulation-decrypt | dynamic-dispatch | unpack | R2: qiling, unicorn; R4:  → discover-alternative-providers | binary {"artifact_id":null} → binary {"artifact_id":null} | discover-alternative-providers | fixture-contract |
+| re-static | static | emulation-decrypt | R1: rea, ghidra | binary {"artifact_id":null} → function {"body_kind":"assembly","body":null} | — | fixture-contract |
+| symbolic-resolve | dynamic-dispatch | re-static | R2: angr, triton; R4:  → discover-construction-brief | function {"body_kind":"assembly","body":null} → call-graph {"nodes":null,"edges":null,"unknown_edges":null} | discover-construction-brief | fixture-contract |
+| verify | dynamic-dispatch | symbolic-resolve | R1: rea; R4: hypothesis | call-graph {"nodes":null,"edges":null} → verification {"fixture_result":"PASS"} | — | fixture-contract |
+| discover-alternative-providers | static | EXHAUSTED | R4: github_search, knowledge_retrieval | exhaustion-receipt {"failure_signatures":null,"artifact_types_attempted":null} → discovery-candidates {"candidates":null} | — | fixture-contract |
+| discover-construction-brief | persistent-state | UNRESOLVED | R4: browser_research, github_search, knowledge_retrieval | unresolved-gap {"observable_behavior":null,"undetermined_mechanism":null} → discovery-candidates {"candidates":null} | — | fixture-contract |
 
+All stages declare four rungs: static, symbolic/emulation, live instrumentation, black-box/discovery. Empty rungs are explicitly inapplicable and bypassed, not fabricated provider attempts. The first applicable rung starts; subsequent applicable rungs require exhaustion plus intersection with that rung's trigger_signatures. PINNED, TIMEOUT_ADVERSARIAL and NONE are not automatic escalation triggers. The rung is recorded on each analysis attempt. Rung-four discovery remains a conditional DAG event, not an analytical PASS or automatic installation. The cloud capture stage declares IO.read, threshold 4096 bytes, chunks 1024 bytes, maximum 16384 bytes, and content-addressed disk storage for this PoC.
 
 An input requirement of null means present and non-null; literal values must match exactly, including representation kind. The current contract checks fixture shape and content hash, not full JSON Schema, semantic verification or source authority. Graph PASS means local fixture contract passed; it does not mean functional equivalence. Discovery instances are keyed by template@origin stage. An untriggered template is SKIPPED. A failed prerequisite produces NOT_READY; a mismatched field produces UNSATISFIED_INPUT. Independent stages continue.
 
@@ -92,7 +99,7 @@ wireshark | UNAVAILABLE | Binary not on PATH: tshark | Install Wireshark/TShark 
 No installation performed; version/health is not analysis verification.
 ```
 
-The runner can reach Docker and permit PTRACE_SEIZE on a disposable child; no display or KVM. All 15 graph providers were reported unavailable for real execution (missing CLI, unapproved probe, or unconfigured discovery backend/authorization). Fixture adapters were exercised independently. See [CI output and artifact](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45727952827). A setup command is not a receipt. Resolve license, version, host compatibility and fixture before promotion.
+The runner can reach Docker and permit PTRACE_SEIZE on a disposable child; no display or KVM. All 15 graph providers were reported unavailable for real execution (missing CLI, unapproved probe, or unconfigured discovery backend/authorization). Fixture adapters were exercised independently. See [CI output and artifact](https://github.com/jamesrwatsonx-creator/my-reverse-engineer-agent/actions/runs/45728304206). A setup command is not a receipt. Resolve license, version, host compatibility and fixture before promotion.
 
 ## 5. Dossier contract and learning-store separation
 
@@ -121,8 +128,18 @@ An unknown with a construction brief is a deliverable, not a gap. An unknown wit
 - Conditional discovery attempts are recorded with links; no candidate selection, integration, or learning success policy is implemented. The caller supplies unresolved observations; the scheduler does not decide a gap is unfillable.
 - Provisioned versions, operating-system support and command flags are unverified for real analytical execution. Existing health coverage remains incomplete for catalog libraries and hosted capabilities. Main and Phase 2 branches remain unchanged; comparison to main includes earlier phases.
 
-## 7. Recommended Phase 4 scope (not implemented)
+## 7. Directive addendum A–C
 
-Build a bounded supervisor state machine around the DAG, not inside it. It should classify exhaustion vs evidence contradiction vs policy denial, choose scoped authorized recovery or abstention, decide when discovery candidates warrant a separately approved provider qualification, and write explicit unresolved construction briefs. Add persistent checkpoints and replay/resume, policy budgets, per-obligation evidence authority and conflict adjudication, candidate-use receipts and verified learning promotion. Establish the verification gate interface now; keep the independent verification harness and remaining thirteen archetype graphs for their own phase. Test that Tier 3/4 discovery never replaces Tier 1 evidence, no discovery PASS closes an unknown, and authorization cannot be escalated through a graph edge. Real provider onboarding must have a separate permission and fixture qualification milestone.
+See [AGENT_DIRECTIVE_PHASE_3_ADDENDUM.md](AGENT_DIRECTIVE_PHASE_3_ADDENDUM.md).
+
+- A: v2 graph ladder replaces flat provider arrays on disk. Each of the four rungs has explicit trigger_signatures. The scheduler executes only the current applicable rung, matches observed exhaustion signatures before advancement, preserves ordered attempts with rung numbers, and conditionally releases discovery events. Legacy in-memory fixture definitions are accepted for regression compatibility only. A nonmatching signature stops escalation; the supervisor decides what next. A prior PASS stops the ladder. No auto-install, provider promotion or access escalation.
+- B: the executor and discovery event path use the persistent CircuitBreaker. Default threshold is three consecutive unsuccessful attempts; configurable threshold and 60-second default cooldown. Caller-supplied timestamp makes test behavior deterministic. CLOSED success resets the count; OPEN skips without invocation or failed-attempt receipt; one HALF_OPEN probe after cooldown closes on success or opens on failure. Health refusal in a half-open discovery probe reopens without inventing an invocation. Circuit transitions are append-only with receipt IDs; the current state is derived from the latest event. This is a single-writer PoC. Receipt insertion and circuit transition are separate transactions, so crash-atomic recovery and distributed leases remain Phase 4 work. No claim of resume-after-any-failure.
+- C: cloud-api capture has a streaming_capture spec. The synthetic provider supplies a stream handle and declared size; the injected IO.read/IO.close transport reads bounded chunks into a temporary disk file, checks the byte count, hashes captured bytes, and publishes the file by digest. Oversized inline metadata or a large declared size without a handle is rejected before evidence persistence. The artifact contains the reference metadata and its own metadata hash; payload_ref.sha256 identifies the bytes. The 9,300-byte fixture crosses the 4,096-byte threshold; both direct stream and DAG integration tests confirm multiple reads, exact content hash, disk reference, and no full body in the persisted DAG trace. No real CDP session was used. The cap is deliberately small for synthetic testing; production capture quotas, verified native REA retention/recovery, authorization and streaming transport wiring require qualification. The store and content files are not a distributed durable artifact store.
+
+Temporal and LangGraph are candidate durable execution backends, not dependencies installed by this phase. Temporal is already cataloged. Their production capabilities and comparative fit have not been tested in this phase; evaluate against replay, deterministic checkpoints, human authorization boundaries, idempotent receipt/circuit updates and restart fault injection in Phase 4 rather than introducing both frameworks or claiming crash-proof execution.
+
+## 8. Recommended Phase 4 scope (not implemented)
+
+Build a bounded supervisor state machine around the DAG, not inside it. It should classify exhaustion vs evidence contradiction vs policy denial, choose scoped authorized recovery or abstention, decide when discovery candidates warrant a separately approved provider qualification, and write explicit unresolved construction briefs. Add persistent per-stage checkpoints, idempotent attempt replay/resume and transactional circuit reconciliation; evaluate Temporal and LangGraph against a minimal local baseline before choosing one, add policy budgets, per-obligation evidence authority and conflict adjudication, candidate-use receipts and verified learning promotion. Establish the verification gate interface now; keep the independent verification harness and remaining thirteen archetype graphs for their own phase. Test that Tier 3/4 discovery never replaces Tier 1 evidence, no discovery PASS closes an unknown, and authorization cannot be escalated through a graph edge. Real provider onboarding must have a separate permission and fixture qualification milestone.
 
 **Stop here for review.**

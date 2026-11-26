@@ -21,3 +21,7 @@ Run `bash scripts/provision-check.sh` from any shell with Bash and Python 3.11+;
 | knowledge_retrieval | Included Python module; no package installation required | SQLite ledger; optional approved web callback | NOT_TESTED |
 
 Only synthetic stage graphs are authored. Do not invoke any real analysis stage or use discovery to bypass access restrictions. No auto-copy, auto-install or provider promotion. For browser research use sanitized permitted evidence; capture backend must independently establish authorization. Source freshness rules remain applicable.
+
+## Ladder and streaming addendum
+
+Manifest covers providers across all four rungs of schema v2. Empty rungs declare no capability. Circuit breakers and content-addressed IO.read capture are standard-library fixture components; no additional installation. Live CDP/REA capture adapter and credentials are not provisioned here. Temporal/LangGraph are future durable-execution candidates; no framework installed or selected. See the Phase 3 report for fixture limits and CI evidence.
