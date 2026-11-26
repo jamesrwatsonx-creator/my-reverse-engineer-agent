@@ -10,6 +10,8 @@ from .contracts import (Artifact,ArtifactContract,Stage,Layer,ProviderInput,Targ
 from .evidence_store import digest
 from .executor import execute_stage,ExecutionPass,ExhaustedResult
 from .streaming_capture import normalize_capture_result
+from .circuit_breaker import CircuitBreaker
+from types import SimpleNamespace
 
 class StageStatus(str,Enum):
     PASS="PASS"
@@ -153,6 +155,7 @@ class DagEngine:
         if not graph:raise ValueError("Archetype graph not authored")
         unresolved=unresolved or {}
         results={};trace=[];fired=set();events={}
+        discovery_circuit=CircuitBreaker(self.store,self.circuit_threshold,self.circuit_cooldown_seconds)
         pending={k for k,v in graph.items() if v["kind"]=="analysis"}
         def save(ident,result):
             results[ident]=result;trace.append(ident)
@@ -177,11 +180,14 @@ class DagEngine:
                 provider=self.discovery.get(name)
                 if name not in allowed_providers or provider is None or getattr(provider,"name",None)!=name:
                     attempts.append((name,"SKIPPED","not authorized or no discovery adapter"));continue
-                # Provider-specific health invocation may be cached. Keep refusal
-                # visible but do not invent a provider attempt receipt.
+                attempt_id=execution_id+":"+ident+":"+name
+                # OPEN must skip even the provider health invocation.
+                if not discovery_circuit.admit(name,attempt_id,timestamp):
+                    attempts.append((name,"SKIPPED",FailureSignature.CIRCUIT_OPEN.value));continue
                 try: healthy=provider.health_check()
                 except Exception:healthy=False
                 if not healthy:
+                    discovery_circuit.cancel_probe(name,attempt_id,timestamp)
                     attempts.append((name,"SKIPPED","health unavailable"));continue
                 try:
                     r=provider.invoke(query)
@@ -192,7 +198,8 @@ class DagEngine:
                     digest(asdict(r))
                 except Exception as exc:
                     r=DiscoveryResult(ResultStatus.TIMEOUT if isinstance(exc,TimeoutError) else ResultStatus.FAIL,FailureSignature.NONE,(),(),Derivation.UNKNOWN,("Discovery adapter error: "+type(exc).__name__,),())
-                eid=self.store.record_discovery(execution_id+":"+ident+":"+name,name,timestamp,query,r)
+                eid=self.store.record_discovery(attempt_id,name,timestamp,query,r)
+                discovery_circuit.complete(name,SimpleNamespace(attempt_id=attempt_id,provider=name,status=r.status,timestamp=timestamp))
                 refs.append(eid);attempts.append((name,r.status.value,r.failure_signature.value,eid))
                 if r.status is ResultStatus.PASS:candidates.extend(r.candidates)
                 else:exhaustion.append(eid)

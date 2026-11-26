@@ -93,3 +93,23 @@ class AddendumTests(unittest.TestCase):
             self.assertNotIn("stream_handle",payload)
             self.assertEqual(payload["payload_ref"]["sha256"],hashlib.sha256(raw).hexdigest())
             self.assertNotIn(raw.decode(),json.dumps(s.get_dag_run("stream")))
+
+    def test_discovery_circuit_skips_health_and_invocation(self):
+        class Discovery:
+            name="knowledge_retrieval"
+            def __init__(self):self.health=0;self.calls=0
+            def health_check(self):self.health+=1;return True
+            def invoke(self,q):
+                self.calls+=1
+                return DiscoveryResult(ResultStatus.EMPTY,FailureSignature.NONE,(),(),Derivation.UNKNOWN,("fixture no result",),())
+        discover=Discovery()
+        with tempfile.TemporaryDirectory() as d,EvidenceStore(Path(d)/"e.db") as s:
+            for i in range(2):
+                provider="analysis-"+str(i)
+                row=stage("A",providers=[provider],on_fail=["discover-alternative-providers"])
+                alt=stage("discover-alternative-providers",kind="discovery",providers=[discover.name])
+                alt["trigger"]="EXHAUSTED"
+                r=DagEngine({"cloud-api":[row,alt]},{provider:Fake(provider,True)},Matrix(),s,{discover.name:discover},circuit_threshold=1).run(FP,input_hash="a"*64,execution_id="run-"+str(i),timestamp=NOW,allowed_providers=frozenset({provider,discover.name}))
+            self.assertEqual(discover.calls,1)
+            self.assertEqual(discover.health,1)
+            self.assertEqual(r.stages["discover-alternative-providers@A"].attempts[0][2],"CIRCUIT_OPEN")

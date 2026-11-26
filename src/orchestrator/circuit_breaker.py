@@ -51,6 +51,12 @@ class CircuitBreaker:
         self._append(provider,event,CircuitState.HALF_OPEN,s.failures,now,"one cooldown probe")
         return True
 
+    def cancel_probe(self,provider,attempt_id,now):
+        """A refused health check is not a provider analysis attempt."""
+        if self.store.circuit_event("circuit:probe:"+attempt_id) is not None:
+            s=self.state(provider)
+            self._append(provider,"circuit:cancel:"+attempt_id,CircuitState.OPEN,s.failures,now,"health unavailable; no invocation")
+
     def complete(self,provider,receipt):
         ident="circuit:result:"+receipt.attempt_id
         if self.store.circuit_event(ident) is not None:return
