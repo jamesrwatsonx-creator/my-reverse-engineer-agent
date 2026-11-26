@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from .contracts import EvidenceEntry, Derivation, FailureSignature, ProviderResult, ResultStatus
+from .contracts import EvidenceEntry, Derivation, FailureSignature, ProviderResult, ResultStatus, ObservationScope, DiscoveryQuery, DiscoveryResult, DiscoveryCandidate, MaintenanceSignal
 
 
 def canonical(value: Any) -> str:
@@ -69,6 +69,13 @@ class EvidenceStore:
                 self.db.execute(f"CREATE TRIGGER IF NOT EXISTS immutable_{table}_{operation.lower()} "
                                 f"BEFORE {operation} ON {table} BEGIN "
                                 "SELECT RAISE(ABORT,'append-only ledger'); END;")
+        self.db.execute("""CREATE TABLE IF NOT EXISTS discovery (
+          seq INTEGER PRIMARY KEY, attempt_id TEXT UNIQUE NOT NULL,
+          evidence_id TEXT NOT NULL REFERENCES evidence(id), provider TEXT NOT NULL,
+          query TEXT NOT NULL, result TEXT NOT NULL
+        )""")
+        for op in ("UPDATE","DELETE"):
+            self.db.execute(f"CREATE TRIGGER IF NOT EXISTS immutable_discovery_{op.lower()} BEFORE {op} ON discovery BEGIN SELECT RAISE(ABORT,'append-only ledger'); END;")
         self.db.commit()
 
     def __enter__(self):
@@ -95,11 +102,20 @@ class EvidenceStore:
                         (ident,data,entry.input_artifact_hash,entry.output_artifact_hash))
         if self.db.execute("SELECT payload FROM evidence WHERE id=?", (ident,)).fetchone()[0] != data:
             raise ValueError("Evidence identity collision")
-        if entry.input_artifact_hash is not None and entry.output_artifact_hash is not None:
-            for (other,) in self.db.execute(
-                    "SELECT id FROM evidence WHERE input_hash=? AND output_hash IS NOT NULL AND output_hash<>?",
-                    (entry.input_artifact_hash,entry.output_artifact_hash)).fetchall():
-                self._link(ident,other)
+        if entry.output_artifact_hash is not None:
+            # Explicit scope defines comparable observations. Legacy rows remain
+            # comparable only to legacy rows sharing the old input hash.
+            for other,raw in self.db.execute(
+                    "SELECT id,payload FROM evidence WHERE output_hash IS NOT NULL AND output_hash<>?",
+                    (entry.output_artifact_hash,)).fetchall():
+                old=json.loads(raw)
+                scope=old.get("observation_scope")
+                if entry.observation_scope is not None:
+                    comparable=scope==asdict(entry.observation_scope)
+                else:
+                    comparable=scope is None and entry.input_artifact_hash is not None and old.get("input_artifact_hash")==entry.input_artifact_hash
+                if comparable:
+                    self._link(ident,other)
         for other in entry.contradicts:
             if self.db.execute("SELECT 1 FROM evidence WHERE id=?",(other,)).fetchone() is None:
                 raise ValueError("Explicit contradiction refers to missing evidence")
@@ -120,6 +136,8 @@ class EvidenceStore:
                     failure_signature=FailureSignature(data["failure_signature"]),
                     status=ResultStatus(data["status"]), limitations=tuple(data["limitations"]),
                     contradicts=tuple(data["contradicts"]))
+        scope=data.get('observation_scope')
+        data['observation_scope']=ObservationScope(**scope) if scope else None
         return EvidenceEntry(**data)
 
     def contradictions(self, evidence_id: str) -> tuple[str,...]:
@@ -130,7 +148,7 @@ class EvidenceStore:
             (evidence_id,evidence_id)))
 
     def record_attempt(self, attempt_id: str, provider: str, timestamp: datetime,
-                       input_hash: str | None, result: ProviderResult) -> AttemptReceipt:
+                       input_hash: str | None, result: ProviderResult, observation_scope: ObservationScope | None=None) -> AttemptReceipt:
         if not attempt_id or not provider:
             raise ValueError("Attempt identity and provider required")
         outputs=tuple(a.sha256 for a in result.artifacts)
@@ -141,7 +159,7 @@ class EvidenceStore:
         if not outputs or input_hash is None:
             limits+=("attempt has no corresponding input or output artifact",)
         entry=EvidenceEntry("",provider,result.derivation,timestamp,input_hash,output_hash,
-                            limits,(),result.verification_method,result.failure_signature,result.status)
+                            limits,(),result.verification_method,result.failure_signature,result.status,observation_scope)
         payload=canonical(asdict(result))
         stamp=timestamp.astimezone(timezone.utc).isoformat()
         with self.db:
@@ -171,3 +189,29 @@ class EvidenceStore:
         if input_hash is not None:
             sql+=" AND input_hash=?"; args.append(input_hash)
         return tuple(self._receipt(row) for row in self.db.execute(sql+" ORDER BY seq",args))
+
+    def record_discovery(self, attempt_id: str, provider: str, timestamp: datetime,
+                         query: DiscoveryQuery, result: DiscoveryResult) -> str:
+        q=canonical(asdict(query)); r=canonical(asdict(result))
+        qhash=digest(asdict(query))
+        # Discovery outputs are source observations, not competing answers to a
+        # target's verified mechanism; each provider/query has its own scope.
+        entry=EvidenceEntry("",provider,result.derivation,timestamp,qhash,digest(asdict(result)),
+            result.limitations,(),None,result.failure_signature,result.status,
+            ObservationScope("discovery:"+provider,qhash))
+        with self.db:
+            eid=self._append(entry)
+            values=(attempt_id,eid,provider,q,r)
+            self.db.execute("INSERT OR IGNORE INTO discovery(attempt_id,evidence_id,provider,query,result) VALUES(?,?,?,?,?)",values)
+            actual=self.db.execute("SELECT attempt_id,evidence_id,provider,query,result FROM discovery WHERE attempt_id=?",(attempt_id,)).fetchone()
+            if actual!=values: raise ValueError("Discovery attempt identity reused")
+        return eid
+
+    def discovery_history(self, query: DiscoveryQuery) -> tuple[dict,...]:
+        matches=[]
+        for eid,provider,q,r in self.db.execute("SELECT evidence_id,provider,query,result FROM discovery ORDER BY seq"):
+            prior=json.loads(q)
+            if (prior["archetype"],prior["failure_signature"],prior["capability"].casefold())==(query.archetype.value,query.failure_signature.value,query.capability.casefold()):
+                if not self.contradictions(eid):
+                    matches.append({"evidence_id":eid,"provider":provider,"query":prior,"result":json.loads(r)})
+        return tuple(matches)

@@ -6,7 +6,7 @@ import subprocess
 from datetime import datetime
 from typing import Mapping
 from .contracts import (Stage,TargetFingerprint,ProviderInput,ProviderResult,Provider,
-                        ResultStatus,FailureSignature,Derivation)
+                        ResultStatus,FailureSignature,Derivation,ObservationScope)
 from .evidence_store import EvidenceStore, canonical, digest
 
 
@@ -92,7 +92,7 @@ def execute_stage(stage: Stage, fingerprint: TargetFingerprint,
                 status=ResultStatus.TIMEOUT if isinstance(exc,(TimeoutError,subprocess.TimeoutExpired)) else ResultStatus.FAIL
                 result=ProviderResult(status,FailureSignature.NONE,(),(),Derivation.UNKNOWN,
                                       ("Adapter exception or invalid response: "+type(exc).__name__,),(),None,None)
-            receipt=store.record_attempt(f"{execution_id}:{current.id}:{round_id}:{i}",name,timestamp,attempt_input_hash,result)
+            receipt=store.record_attempt(f"{execution_id}:{current.id}:{round_id}:{i}",name,timestamp,attempt_input_hash,result,ObservationScope(current.id,attempt_input_hash))
             trace.append(Attempt(current.id,name,result.status,result.failure_signature,receipt.attempt_id,
                                  "provider result; not global verification"))
             if result.status is ResultStatus.PASS:

@@ -1,4 +1,4 @@
-"""Phase 1 interface declarations only; no execution or verification logic.
+"""Versioned orchestration contracts; no independent verification harness.
 
 All providers operate at authorized boundaries. Status describes provider outcome,
 not gate closure. A failed result may carry useful observed evidence. No provider
@@ -51,6 +51,8 @@ class FailureSignature(str, Enum):
     TIMEOUT_ADVERSARIAL = "TIMEOUT_ADVERSARIAL"
     SHADER_OPAQUE = "SHADER_OPAQUE"
     MODEL_GRAPH_UNKNOWN = "MODEL_GRAPH_UNKNOWN"
+    RATE_LIMITED = "RATE_LIMITED"
+    AUTH_MISSING = "AUTH_MISSING"
     NONE = "NONE"
 
 
@@ -121,6 +123,7 @@ class Artifact:
     origin_provider: str
     derivation: Derivation
     limitations: tuple[str, ...]
+    payload: Mapping[str, object] | None = None
 
 
 @dataclass(frozen=True)
@@ -188,6 +191,12 @@ class RepairRoute:
 
 
 @dataclass(frozen=True)
+class ArtifactContract:
+    artifact_type: str
+    required_fields: Mapping[str, object]  # null = present and non-null; otherwise exact value
+
+
+@dataclass(frozen=True)
 class Stage:
     """Preconditions require gate-verified PASS, not merely provider PASS.
 
@@ -200,6 +209,8 @@ class Stage:
     providers: tuple[str, ...]
     gate: GatePredicate | None
     on_fail: tuple[RepairRoute, ...]
+    input_contract: tuple[ArtifactContract, ...] = ()
+    output_contract: tuple[ArtifactContract, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -222,6 +233,16 @@ class TargetFingerprint:
 
 
 @dataclass(frozen=True)
+class ObservationScope:
+    question_asked: str
+    artifact_observed: str
+
+    def __post_init__(self):
+        if not all(isinstance(v,str) and v.strip() for v in (self.question_asked,self.artifact_observed)):
+            raise ValueError("Observation scope requires question and artifact identity")
+
+
+@dataclass(frozen=True)
 class EvidenceEntry:
     """UTC timestamp; null digest explicitly means no corresponding artifact.
 
@@ -240,6 +261,7 @@ class EvidenceEntry:
     verification_method: str | None
     failure_signature: FailureSignature
     status: ResultStatus
+    observation_scope: ObservationScope | None = None  # legacy rows only; explicit scope for new scheduling
 
     def __post_init__(self) -> None:
         if self.timestamp.tzinfo is None or self.timestamp.utcoffset() is None:
@@ -271,3 +293,77 @@ class GateAssessment:
         return (self.color is GateColor.YELLOW and not fingerprint.verification_feasibility
                 and bool(self.evidence_ids) and bool(self.residual_uncertainty)
                 and all(isinstance(x, str) and x.strip() for x in self.residual_uncertainty))
+
+
+class DiscoveryKind(str, Enum):
+    GITHUB_SEARCH = "github_search"
+    BROWSER_RESEARCH = "browser_research"
+    KNOWLEDGE_RETRIEVAL = "knowledge_retrieval"
+
+
+@dataclass(frozen=True)
+class DiscoveryQuery:
+    capability: str
+    language: str | None
+    archetype: Archetype
+    failure_signature: FailureSignature
+    license_allowlist: tuple[str, ...]
+    authorization_ref: str
+    observable_behavior: str
+    undetermined_mechanism: str
+    trigger_receipts: tuple[str, ...]
+
+    def __post_init__(self):
+        if (not isinstance(self.capability,str) or not self.capability.strip()
+                or len(self.capability)>240 or re.search(r"(?i)\bclone\b|https?://|\b(?:repo|user|org):",self.capability)):
+            raise ValueError("Use a bounded capability description, not an app clone, URL or repository selector")
+        if self.language is not None and not re.fullmatch(r"[A-Za-z0-9+#. -]{1,40}",self.language):
+            raise ValueError("Invalid language/framework qualifier")
+        if self.authorization_ref not in {"synthetic-fixture","public-research"}:
+            raise ValueError("Discovery authorization required")
+
+
+@dataclass(frozen=True)
+class MaintenanceSignal:
+    last_commit_date: str | None
+    open_issues_count: int | None
+    archived: bool | None
+
+
+@dataclass(frozen=True)
+class DiscoveryCandidate:
+    canonical_path: str
+    capability_match: str
+    license: str
+    maintenance_signal: MaintenanceSignal
+    stars: int | None
+    verification_required: str
+    derivation: Derivation
+    license_risk: str
+    eligible: bool
+    source_quote: str = ""
+    provenance_tier: int = 4
+
+
+@dataclass(frozen=True)
+class DiscoveryResult:
+    status: ResultStatus
+    failure_signature: FailureSignature
+    candidates: tuple[DiscoveryCandidate, ...]
+    evidence_ids: tuple[str, ...]
+    derivation: Derivation
+    limitations: tuple[str, ...]
+    rejections: tuple[str, ...]
+
+    def __post_init__(self):
+        if self.status not in {ResultStatus.PASS,ResultStatus.FAIL,ResultStatus.TIMEOUT,ResultStatus.EMPTY}:
+            raise ValueError("Invalid discovery status")
+        if self.status is ResultStatus.PASS and not self.candidates:
+            raise ValueError("Discovery PASS requires candidates")
+
+
+class DiscoveryProvider(Protocol):
+    name: str
+    kind: DiscoveryKind
+    def health_check(self) -> bool: ...
+    def invoke(self, query: DiscoveryQuery) -> DiscoveryResult: ...
