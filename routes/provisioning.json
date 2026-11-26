@@ -1,0 +1,92 @@
+{
+  "rea": {
+    "install": "npm install --global rea-agents",
+    "host": "Node.js/npm; provider-specific dependencies; CLI/MCP health",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "rea"
+  },
+  "mitmproxy": {
+    "install": "python -m pip install mitmproxy",
+    "host": "supported Python; local authorized capture only",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "mitmproxy"
+  },
+  "wireshark": {
+    "install": "Install Wireshark/TShark via official OS package manager (e.g. apt install tshark on Debian/Ubuntu)",
+    "host": "OS package; authorized capture permissions",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "wireshark"
+  },
+  "blackboxprotobuf": {
+    "install": "python -m pip install blackboxprotobuf",
+    "host": "supported Python; reviewed dependency/license",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "blackboxprotobuf"
+  },
+  "aalpy": {
+    "install": "python -m pip install aalpy",
+    "host": "supported Python; controlled oracle fixture",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "aalpy"
+  },
+  "learnlib": {
+    "install": "Use Maven dependency de.learnlib:learnlib-distribution after reviewing official release",
+    "host": "matching JDK/Maven; fixture",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "learnlib"
+  },
+  "hypothesis": {
+    "install": "python -m pip install hypothesis",
+    "host": "supported Python",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "hypothesis"
+  },
+  "ghidra": {
+    "install": "Download official Ghidra release and extract; use documented analyzeHeadless launcher",
+    "host": "supported OS and matching full JDK",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "ghidra"
+  },
+  "qiling": {
+    "install": "python -m pip install qiling",
+    "host": "supported host/arch and reviewed fixture runtime",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "qiling"
+  },
+  "unicorn": {
+    "install": "python -m pip install unicorn",
+    "host": "supported host/arch",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "unicorn"
+  },
+  "angr": {
+    "install": "python -m pip install angr",
+    "host": "supported Python/architecture",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "angr"
+  },
+  "triton": {
+    "install": "python -m pip install triton-library",
+    "host": "supported Python/architecture; distinguish from GPU Triton",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "triton"
+  },
+  "github_search": {
+    "install": "Install GitHub CLI via official OS package manager (e.g. apt install gh); gh auth login",
+    "host": "gh executable; explicit public-research authorization and token; rate budget",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "github"
+  },
+  "browser_research": {
+    "install": "python -m pip install playwright; python -m playwright install chromium (optional capture backend)",
+    "host": "authorized capture callback; browser dependencies if used; HAR fixture needs only Python",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": "playwright"
+  },
+  "knowledge_retrieval": {
+    "install": "Included Python module; no package installation required",
+    "host": "SQLite ledger; optional approved web callback",
+    "tested_version": "NOT_TESTED (provider analysis); fixture adapter tests only",
+    "registry_id": null
+  }
+}

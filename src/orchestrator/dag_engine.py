@@ -1,0 +1,233 @@
+"""Deterministic, fixture-only DAG scheduler. No policy loop or real-target adapter."""
+from __future__ import annotations
+from dataclasses import asdict, dataclass
+from enum import Enum
+import json
+from pathlib import Path
+from .contracts import (Artifact,ArtifactContract,Stage,Layer,ProviderInput,TargetFingerprint,
+    DiscoveryQuery,DiscoveryResult,DiscoveryCandidate,DiscoveryKind,EvidenceEntry,ObservationScope,
+    ResultStatus,FailureSignature,Derivation)
+from .evidence_store import digest
+from .executor import execute_stage,ExecutionPass
+
+class StageStatus(str,Enum):
+    PASS="PASS"
+    EXHAUSTED="EXHAUSTED"
+    UNSATISFIED_INPUT="UNSATISFIED_INPUT"
+    NOT_READY="NOT_READY"
+    SKIPPED="SKIPPED"
+
+@dataclass(frozen=True)
+class UnsatisfiedInput:
+    artifact_type:str
+    field:str
+    expected:object
+    available:tuple[object,...]
+
+@dataclass(frozen=True)
+class StageResult:
+    status:StageStatus
+    evidence_ids:tuple[str,...]=()
+    exhaustion_receipts:tuple[str,...]=()
+    attempts:tuple=()
+    artifacts:tuple[Artifact,...]=()
+    unsatisfied:tuple[UnsatisfiedInput,...]=()
+    reason:str=""
+    candidates:tuple[DiscoveryCandidate,...]=()
+    trigger_receipts:tuple[str,...]=()
+
+@dataclass(frozen=True)
+class DagResult:
+    archetype:str
+    stages:dict[str,StageResult]
+    trace:tuple[str,...]
+
+
+def load_graphs(path):
+    data=json.loads(Path(path).read_text(encoding="utf-8"))
+    if data.get("schema_version")!=1:raise ValueError("Unsupported stage schema")
+    graphs=data["graphs"]
+    for graph in graphs.values():_validate(graph)
+    return graphs
+
+
+def _contracts(rows):
+    out=[]
+    for row in rows:
+        if not isinstance(row.get("artifact_type"),str) or not isinstance(row.get("required_fields"),dict):
+            raise ValueError("Invalid artifact contract")
+        out.append(ArtifactContract(row["artifact_type"],row["required_fields"]))
+    return tuple(out)
+
+
+def _validate(rows):
+    stages={}
+    for row in rows:
+        ident=row["id"]
+        if not isinstance(ident,str) or not ident or "@" in ident or ident in stages:
+            raise ValueError("Invalid or duplicate stage ID")
+        if row["kind"] not in {"analysis","discovery"} or row["gate"]!="fixture-contract":
+            raise ValueError("Unknown stage kind or gate")
+        Layer(row["layer"])
+        if not row["providers"] or len(set(row["providers"]))!=len(row["providers"]):
+            raise ValueError("Providers must be a nonempty ordered unique list")
+        _contracts(row["input_contract"]);_contracts(row["output_contract"])
+        stages[ident]=row
+    for ident,row in stages.items():
+        for pre in row["preconditions"]:
+            if pre not in stages or stages[pre]["kind"]!="analysis":
+                raise ValueError("Unknown/non-analysis prerequisite: "+pre)
+        for dest in row["on_fail"]:
+            if dest not in stages or stages[dest]["kind"]!="discovery":
+                raise ValueError("Unknown discovery route "+dest)
+        if row["kind"]=="discovery" and (row.get("trigger") not in {"EXHAUSTED","UNRESOLVED"} or row["preconditions"] or row["on_fail"]):
+            raise ValueError("Discovery templates require a terminal event, no recursive routes")
+    pending={k:set(v["preconditions"]) for k,v in stages.items() if v["kind"]=="analysis"}
+    while pending:
+        ready=sorted(k for k,v in pending.items() if not v)
+        if not ready:raise ValueError("Dependency cycle")
+        for k in ready:del pending[k]
+        for deps in pending.values():deps.difference_update(ready)
+    return stages
+
+
+def _value(payload,path):
+    for p in path.split("."):
+        if not isinstance(payload,dict) or p not in payload:return None
+        payload=payload[p]
+    return payload
+
+
+def check_contract(contracts,artifacts):
+    failures=[]
+    for rule in contracts:
+        candidates=[a for a in artifacts if a.artifact_type==rule.artifact_type and
+                    isinstance(a.payload,dict) and digest(a.payload)==a.sha256]
+        if not candidates:
+            failures.append(UnsatisfiedInput(rule.artifact_type,"<artifact>",rule.artifact_type,tuple(a.artifact_type for a in artifacts)))
+            continue
+        def matches(a,path,expected):
+            value=_value(a.payload,path)
+            return value is not None if expected is None else type(value) is type(expected) and value==expected
+        if any(all(matches(a,k,v) for k,v in rule.required_fields.items()) for a in candidates):continue
+        for k,v in rule.required_fields.items():
+            failures.append(UnsatisfiedInput(rule.artifact_type,k,v,tuple(_value(a.payload,k) for a in candidates)))
+    return tuple(failures)
+
+
+class DagEngine:
+    def __init__(self,graphs,providers,matrix,store,discovery):
+        self.graphs=graphs;self.providers=providers;self.matrix=matrix;self.store=store;self.discovery=discovery
+        for rows in graphs.values():_validate(rows)
+
+    def run(self,fingerprint:TargetFingerprint,*,input_hash:str,execution_id:str,timestamp,
+            allowed_providers:frozenset[str],unresolved=None,initial_artifacts=()):
+        """Only explicit fixture inputs; caller classifies unresolved gaps, not this scheduler."""
+        graph=_validate(self.graphs.get(fingerprint.archetype.value,[]))
+        if not graph:raise ValueError("Archetype graph not authored")
+        unresolved=unresolved or {}
+        results={};trace=[];fired=set()
+        pending={k for k,v in graph.items() if v["kind"]=="analysis"}
+        def save(ident,result):
+            results[ident]=result;trace.append(ident)
+
+        def event_artifact(kind,payload,eid):
+            return Artifact(kind,"ledger:"+eid,digest(payload),eid,"dag-engine",Derivation.DERIVED,("synthetic event",),payload)
+
+        def discover(template,parent,trigger,receipt_ids,signature,available):
+            row=graph[template];ident=template+"@"+parent
+            fired.add(template)
+            missing=check_contract(_contracts(row["input_contract"]),available)
+            if missing:
+                save(ident,StageResult(StageStatus.UNSATISFIED_INPUT,unsatisfied=missing,trigger_receipts=receipt_ids));return
+            gap=unresolved.get(parent,{})
+            query=DiscoveryQuery(graph[parent]["capability"],graph[parent].get("language"),fingerprint.archetype,signature,
+                ("MIT","Apache-2.0","BSD-2-Clause","BSD-3-Clause","ISC"),"synthetic-fixture",
+                gap.get("observable_behavior",""),gap.get("undetermined_mechanism",""),receipt_ids)
+            candidates=[];refs=[];attempts=[];exhaustion=[]
+            for name in row["providers"]:
+                provider=self.discovery.get(name)
+                if name not in allowed_providers or provider is None or getattr(provider,"name",None)!=name:
+                    attempts.append((name,"SKIPPED","not authorized or no discovery adapter"));continue
+                # Provider-specific health invocation may be cached. Keep refusal
+                # visible but do not invent a provider attempt receipt.
+                try: healthy=provider.health_check()
+                except Exception:healthy=False
+                if not healthy:
+                    attempts.append((name,"SKIPPED","health unavailable"));continue
+                try:
+                    r=provider.invoke(query)
+                    if not isinstance(r,DiscoveryResult):raise TypeError("Invalid discovery result")
+                    if r.status is ResultStatus.PASS and any(not c.verification_required or c.capability_match!=query.capability for c in r.candidates):
+                        raise ValueError("Unscoped discovery candidate")
+                    # Validate serializability before committing a receipt.
+                    digest(asdict(r))
+                except Exception as exc:
+                    r=DiscoveryResult(ResultStatus.TIMEOUT if isinstance(exc,TimeoutError) else ResultStatus.FAIL,FailureSignature.NONE,(),(),Derivation.UNKNOWN,("Discovery adapter error: "+type(exc).__name__,),())
+                eid=self.store.record_discovery(execution_id+":"+ident+":"+name,name,timestamp,query,r)
+                refs.append(eid);attempts.append((name,r.status.value,r.failure_signature.value,eid))
+                if r.status is ResultStatus.PASS:candidates.extend(r.candidates)
+                else:exhaustion.append(eid)
+            # Preserve all candidate observations, even duplicate paths with
+            # differing provenance. No auto-install or automatic re-entry.
+            if candidates:
+                payload={"candidates":[asdict(c) for c in candidates],"trigger_receipts":list(receipt_ids)}
+                art=event_artifact("discovery-candidates",payload,refs[0])
+                missing=check_contract(_contracts(row["output_contract"]),(art,))
+                status=StageStatus.UNSATISFIED_INPUT if missing else StageStatus.PASS
+                save(ident,StageResult(status,tuple(refs),tuple(exhaustion),tuple(attempts),(art,),missing,
+                    "Discovery candidate list only; not target verification",tuple(candidates),receipt_ids))
+            else:
+                save(ident,StageResult(StageStatus.EXHAUSTED,tuple(refs),tuple(exhaustion),tuple(attempts),
+                    reason="No discovery candidate; no automatic integration",trigger_receipts=receipt_ids))
+
+        while pending:
+            # A stage becomes decidable once all dependencies are terminal.
+            ready=sorted(k for k in pending if set(graph[k]["preconditions"])<=results.keys())
+            if not ready:raise RuntimeError("Validated graph cannot progress")
+            ident=ready[0];pending.remove(ident);row=graph[ident]
+            pre=row["preconditions"]
+            if any(results[k].status is not StageStatus.PASS for k in pre):
+                save(ident,StageResult(StageStatus.NOT_READY,reason="Prerequisite not PASS: "+", ".join(k for k in pre if results[k].status is not StageStatus.PASS)));continue
+            artifacts=tuple(a for k in pre for a in results[k].artifacts) if pre else tuple(initial_artifacts)
+            input_contract=_contracts(row["input_contract"]);output_contract=_contracts(row["output_contract"])
+            missing=check_contract(input_contract,artifacts)
+            if missing:
+                save(ident,StageResult(StageStatus.UNSATISFIED_INPUT,unsatisfied=missing,reason="Input contract not satisfied"));continue
+            stage=Stage(ident,Layer(row["layer"]),tuple(pre),tuple(row["providers"]),
+                lambda r: not check_contract(output_contract,r.artifacts),(),input_contract,output_contract)
+            stage_hash=digest({"root":input_hash,"stage":ident,"inputs":[a.sha256 for a in artifacts]})
+            inp=ProviderInput(ident,artifacts,{},"synthetic-fixture")
+            r=execute_stage(stage,fingerprint,self.providers,self.matrix,self.store,inp,stage_hash,
+                allowed_providers=allowed_providers,execution_id=execution_id,timestamp=timestamp,repair_stages={},
+                passed_preconditions=frozenset(k for k in pre if results[k].status is StageStatus.PASS))
+            attempt_receipts=tuple(a.receipt_id for a in r.trace if a.receipt_id)
+            evidence=tuple(self.store.get_attempt(a).evidence_id for a in attempt_receipts)
+            if isinstance(r,ExecutionPass):
+                save(ident,StageResult(StageStatus.PASS,tuple(dict.fromkeys((*evidence,*r.result.evidence_ids))),
+                    attempts=r.trace,artifacts=r.result.artifacts,reason="Fixture contract passed; not global verification"))
+                continue
+            signatures=tuple(a.failure_signature.value for a in r.trace)
+            payload={"stage_id":ident,"attempt_receipts":list(attempt_receipts),"failure_signatures":list(signatures),
+                     "artifact_types_attempted":[c.artifact_type for c in output_contract],"reason":r.reason}
+            eid=self.store.append(EvidenceEntry("","dag-engine",Derivation.DERIVED,timestamp,stage_hash,digest(payload),
+                ("Exhaustion is a scheduler event, not a terminal gap",),(),None,FailureSignature.NONE,ResultStatus.FAIL,
+                ObservationScope("exhaustion:"+ident,stage_hash)))
+            linked=(*attempt_receipts,eid)
+            save(ident,StageResult(StageStatus.EXHAUSTED,(*evidence,eid),linked,r.trace,reason=r.reason))
+            signature=next((a.failure_signature for a in r.trace if a.status is not None and a.failure_signature is not FailureSignature.NONE),FailureSignature.NONE)
+            for template in sorted(row["on_fail"]):
+                tr=graph[template]["trigger"]
+                if tr=="EXHAUSTED":
+                    discover(template,ident,tr,linked,signature,(event_artifact("exhaustion-receipt",payload,eid),))
+                elif tr=="UNRESOLVED" and ident in unresolved:
+                    gap=unresolved[ident]
+                    if not all(isinstance(gap.get(k),str) and gap[k].strip() for k in ("observable_behavior","undetermined_mechanism")):
+                        save(template+"@"+ident,StageResult(StageStatus.UNSATISFIED_INPUT,reason="Missing named unresolved behavior/mechanism",trigger_receipts=linked));fired.add(template);continue
+                    gap_payload={"observable_behavior":gap["observable_behavior"],"undetermined_mechanism":gap["undetermined_mechanism"],
+                                 "evidence_ids":gap.get("evidence_ids",[]),"exhaustion_receipts":list(linked)}
+                    discover(template,ident,tr,linked,signature,(event_artifact("unresolved-gap",gap_payload,eid),))
+        for name,row in sorted(graph.items()):
+            if row["kind"]=="discovery" and name not in fired:
+                save(name,StageResult(StageStatus.SKIPPED,reason="No matching terminal event"))
+        return DagResult(fingerprint.archetype.value,results,tuple(trace))

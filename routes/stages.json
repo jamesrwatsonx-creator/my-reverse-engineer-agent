@@ -1,0 +1,452 @@
+{
+  "schema_version": 1,
+  "graphs": {
+    "cloud-api": [
+      {
+        "id": "capture",
+        "layer": "transport",
+        "preconditions": [],
+        "providers": [
+          "rea",
+          "mitmproxy"
+        ],
+        "input_contract": [],
+        "output_contract": [
+          {
+            "artifact_type": "network-capture",
+            "required_fields": {
+              "requests": null,
+              "responses": null
+            }
+          }
+        ],
+        "on_fail": [
+          "discover-alternative-providers"
+        ],
+        "gate": "fixture-contract",
+        "kind": "analysis",
+        "capability": "authorized network capture"
+      },
+      {
+        "id": "protocol-classify",
+        "layer": "transport",
+        "preconditions": [
+          "capture"
+        ],
+        "providers": [
+          "rea",
+          "wireshark"
+        ],
+        "input_contract": [
+          {
+            "artifact_type": "network-capture",
+            "required_fields": {
+              "requests": null,
+              "responses": null
+            }
+          }
+        ],
+        "output_contract": [
+          {
+            "artifact_type": "protocol",
+            "required_fields": {
+              "identifier": null
+            }
+          }
+        ],
+        "on_fail": [],
+        "gate": "fixture-contract",
+        "kind": "analysis",
+        "capability": "protocol classification"
+      },
+      {
+        "id": "schema-infer",
+        "layer": "transport",
+        "preconditions": [
+          "protocol-classify",
+          "capture"
+        ],
+        "providers": [
+          "rea",
+          "blackboxprotobuf"
+        ],
+        "input_contract": [
+          {
+            "artifact_type": "protocol",
+            "required_fields": {
+              "identifier": null
+            }
+          },
+          {
+            "artifact_type": "network-capture",
+            "required_fields": {
+              "requests": null
+            }
+          }
+        ],
+        "output_contract": [
+          {
+            "artifact_type": "schema",
+            "required_fields": {
+              "fields": null
+            }
+          }
+        ],
+        "on_fail": [
+          "discover-alternative-providers"
+        ],
+        "gate": "fixture-contract",
+        "kind": "analysis",
+        "capability": "schema inference"
+      },
+      {
+        "id": "state-machine",
+        "layer": "persistent-state",
+        "preconditions": [
+          "schema-infer"
+        ],
+        "providers": [
+          "aalpy",
+          "learnlib"
+        ],
+        "input_contract": [
+          {
+            "artifact_type": "schema",
+            "required_fields": {
+              "fields": null
+            }
+          }
+        ],
+        "output_contract": [
+          {
+            "artifact_type": "state-machine",
+            "required_fields": {
+              "states": null,
+              "transitions": null
+            }
+          }
+        ],
+        "on_fail": [],
+        "gate": "fixture-contract",
+        "kind": "analysis",
+        "capability": "state machine inference"
+      },
+      {
+        "id": "verify",
+        "layer": "persistent-state",
+        "preconditions": [
+          "state-machine"
+        ],
+        "providers": [
+          "rea",
+          "hypothesis"
+        ],
+        "input_contract": [
+          {
+            "artifact_type": "state-machine",
+            "required_fields": {
+              "states": null,
+              "transitions": null
+            }
+          }
+        ],
+        "output_contract": [
+          {
+            "artifact_type": "verification",
+            "required_fields": {
+              "fixture_result": null
+            }
+          }
+        ],
+        "on_fail": [],
+        "gate": "fixture-contract",
+        "kind": "analysis",
+        "capability": "held-out behavior comparison"
+      },
+      {
+        "id": "discover-alternative-providers",
+        "layer": "static",
+        "preconditions": [],
+        "providers": [
+          "github_search",
+          "knowledge_retrieval"
+        ],
+        "input_contract": [
+          {
+            "artifact_type": "exhaustion-receipt",
+            "required_fields": {
+              "failure_signatures": null,
+              "artifact_types_attempted": null
+            }
+          }
+        ],
+        "output_contract": [
+          {
+            "artifact_type": "discovery-candidates",
+            "required_fields": {
+              "candidates": null
+            }
+          }
+        ],
+        "on_fail": [],
+        "gate": "fixture-contract",
+        "kind": "discovery",
+        "capability": "alternative capability research",
+        "trigger": "EXHAUSTED"
+      }
+    ],
+    "packed-binary": [
+      {
+        "id": "fingerprint",
+        "layer": "static",
+        "preconditions": [],
+        "providers": [
+          "rea",
+          "ghidra"
+        ],
+        "input_contract": [],
+        "output_contract": [
+          {
+            "artifact_type": "fingerprint",
+            "required_fields": {
+              "format": null
+            }
+          }
+        ],
+        "on_fail": [],
+        "gate": "fixture-contract",
+        "kind": "analysis",
+        "capability": "binary format identification"
+      },
+      {
+        "id": "unpack",
+        "layer": "static",
+        "preconditions": [
+          "fingerprint"
+        ],
+        "providers": [
+          "rea",
+          "qiling"
+        ],
+        "input_contract": [
+          {
+            "artifact_type": "fingerprint",
+            "required_fields": {
+              "format": null
+            }
+          }
+        ],
+        "output_contract": [
+          {
+            "artifact_type": "binary",
+            "required_fields": {
+              "artifact_id": null
+            }
+          }
+        ],
+        "on_fail": [
+          "discover-alternative-providers"
+        ],
+        "gate": "fixture-contract",
+        "kind": "analysis",
+        "capability": "authorized artifact normalization"
+      },
+      {
+        "id": "emulation-decrypt",
+        "layer": "dynamic-dispatch",
+        "preconditions": [
+          "unpack"
+        ],
+        "providers": [
+          "qiling",
+          "unicorn"
+        ],
+        "input_contract": [
+          {
+            "artifact_type": "binary",
+            "required_fields": {
+              "artifact_id": null
+            }
+          }
+        ],
+        "output_contract": [
+          {
+            "artifact_type": "binary",
+            "required_fields": {
+              "artifact_id": null
+            }
+          }
+        ],
+        "on_fail": [
+          "discover-alternative-providers"
+        ],
+        "gate": "fixture-contract",
+        "kind": "analysis",
+        "capability": "controlled fixture emulation"
+      },
+      {
+        "id": "re-static",
+        "layer": "static",
+        "preconditions": [
+          "emulation-decrypt"
+        ],
+        "providers": [
+          "rea",
+          "ghidra"
+        ],
+        "input_contract": [
+          {
+            "artifact_type": "binary",
+            "required_fields": {
+              "artifact_id": null
+            }
+          }
+        ],
+        "output_contract": [
+          {
+            "artifact_type": "function",
+            "required_fields": {
+              "body_kind": "assembly",
+              "body": null
+            }
+          }
+        ],
+        "on_fail": [],
+        "gate": "fixture-contract",
+        "kind": "analysis",
+        "capability": "static function representation"
+      },
+      {
+        "id": "symbolic-resolve",
+        "layer": "dynamic-dispatch",
+        "preconditions": [
+          "re-static"
+        ],
+        "providers": [
+          "angr",
+          "triton"
+        ],
+        "input_contract": [
+          {
+            "artifact_type": "function",
+            "required_fields": {
+              "body_kind": "assembly",
+              "body": null
+            }
+          }
+        ],
+        "output_contract": [
+          {
+            "artifact_type": "call-graph",
+            "required_fields": {
+              "nodes": null,
+              "edges": null,
+              "unknown_edges": null
+            }
+          }
+        ],
+        "on_fail": [
+          "discover-construction-brief"
+        ],
+        "gate": "fixture-contract",
+        "kind": "analysis",
+        "capability": "indirect call graph analysis"
+      },
+      {
+        "id": "verify",
+        "layer": "dynamic-dispatch",
+        "preconditions": [
+          "symbolic-resolve"
+        ],
+        "providers": [
+          "rea",
+          "hypothesis"
+        ],
+        "input_contract": [
+          {
+            "artifact_type": "call-graph",
+            "required_fields": {
+              "nodes": null,
+              "edges": null
+            }
+          }
+        ],
+        "output_contract": [
+          {
+            "artifact_type": "verification",
+            "required_fields": {
+              "fixture_result": null
+            }
+          }
+        ],
+        "on_fail": [],
+        "gate": "fixture-contract",
+        "kind": "analysis",
+        "capability": "held-out control flow comparison"
+      },
+      {
+        "id": "discover-alternative-providers",
+        "layer": "static",
+        "preconditions": [],
+        "providers": [
+          "github_search",
+          "knowledge_retrieval"
+        ],
+        "input_contract": [
+          {
+            "artifact_type": "exhaustion-receipt",
+            "required_fields": {
+              "failure_signatures": null,
+              "artifact_types_attempted": null
+            }
+          }
+        ],
+        "output_contract": [
+          {
+            "artifact_type": "discovery-candidates",
+            "required_fields": {
+              "candidates": null
+            }
+          }
+        ],
+        "on_fail": [],
+        "gate": "fixture-contract",
+        "kind": "discovery",
+        "capability": "alternative capability research",
+        "trigger": "EXHAUSTED"
+      },
+      {
+        "id": "discover-construction-brief",
+        "layer": "persistent-state",
+        "preconditions": [],
+        "providers": [
+          "browser_research",
+          "github_search",
+          "knowledge_retrieval"
+        ],
+        "input_contract": [
+          {
+            "artifact_type": "unresolved-gap",
+            "required_fields": {
+              "observable_behavior": null,
+              "undetermined_mechanism": null
+            }
+          }
+        ],
+        "output_contract": [
+          {
+            "artifact_type": "discovery-candidates",
+            "required_fields": {
+              "candidates": null
+            }
+          }
+        ],
+        "on_fail": [],
+        "gate": "fixture-contract",
+        "kind": "discovery",
+        "capability": "independent implementation research",
+        "trigger": "UNRESOLVED"
+      }
+    ]
+  }
+}

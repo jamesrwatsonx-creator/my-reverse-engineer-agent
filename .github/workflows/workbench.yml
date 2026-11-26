@@ -9,11 +9,15 @@ jobs:
         with:
           python-version: "3.11"
       - run: python -m unittest discover -s tests -v
-      - run: python -m compileall -q src/orchestrator
+      - run: python -m compileall -q src/orchestrator src/providers
       - run: python scripts/workbench.py plan --kind web
       - name: Capture local runner capability snapshot
         run: python -m src.orchestrator.capability_matrix --catalog registry/tools.json --output phase2-capabilities.json
+      - name: Provisioning review (read-only)
+        run: bash scripts/provision-check.sh | tee phase3-provisioning.txt
       - uses: actions/upload-artifact@v4
         with:
           name: phase2-capabilities
-          path: phase2-capabilities.json
+          path: |
+            phase2-capabilities.json
+            phase3-provisioning.txt
