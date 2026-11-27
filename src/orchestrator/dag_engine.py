@@ -8,10 +8,11 @@ from .contracts import (Artifact,ArtifactContract,Stage,Layer,ProviderInput,Targ
     DiscoveryQuery,DiscoveryResult,DiscoveryCandidate,DiscoveryKind,EvidenceEntry,ObservationScope,
     ResultStatus,FailureSignature,Derivation)
 from .evidence_store import digest
-from .executor import execute_stage,ExecutionPass,ExhaustedResult
+from .executor import execute_stage,ExecutionPass,ExhaustedResult,Attempt
 from .streaming_capture import normalize_capture_result
 from .circuit_breaker import CircuitBreaker
 from types import SimpleNamespace
+from .durability import artifact_from,candidate_from,discovery_from
 
 class StageStatus(str,Enum):
     PASS="PASS"
@@ -142,23 +143,28 @@ def check_contract(contracts,artifacts):
 
 
 class DagEngine:
-    def __init__(self,graphs,providers,matrix,store,discovery,*,stream_reader=None,artifact_directory=None,circuit_threshold=3,circuit_cooldown_seconds=60):
+    def __init__(self,graphs,providers,matrix,store,discovery,*,stream_reader=None,artifact_directory=None,circuit_threshold=3,circuit_cooldown_seconds=60,durable=None):
         self.graphs=graphs;self.providers=providers;self.matrix=matrix;self.store=store;self.discovery=discovery
-        self.stream_reader=stream_reader;self.artifact_directory=artifact_directory
+        self.stream_reader=stream_reader;self.artifact_directory=artifact_directory;self.durable=durable
         self.circuit_threshold=circuit_threshold;self.circuit_cooldown_seconds=circuit_cooldown_seconds
         for rows in graphs.values():_validate(rows)
 
     def run(self,fingerprint:TargetFingerprint,*,input_hash:str,execution_id:str,timestamp,
-            allowed_providers:frozenset[str],unresolved=None,initial_artifacts=()):
+            allowed_providers:frozenset[str],unresolved=None,initial_artifacts=(),seed_passes=None,stage_overrides=None):
         """Only explicit fixture inputs; caller classifies unresolved gaps, not this scheduler."""
         graph=_validate(self.graphs.get(fingerprint.archetype.value,[]))
         if not graph:raise ValueError("Archetype graph not authored")
-        unresolved=unresolved or {}
+        unresolved=unresolved or {};seed_passes=seed_passes or {};stage_overrides=stage_overrides or {}
+        if self.durable:
+            self.durable.emit(execution_id+':dag','PLAN',{'graph':list(graph.values()),'fingerprint':asdict(fingerprint),'input_hash':input_hash,'timestamp':timestamp,'allowed':sorted(allowed_providers),'unresolved':unresolved,'initial_artifacts':[asdict(a) for a in initial_artifacts],'seed_passes':{k:asdict(v) for k,v in seed_passes.items()},'overrides':stage_overrides})
         results={};trace=[];fired=set();events={}
         discovery_circuit=CircuitBreaker(self.store,self.circuit_threshold,self.circuit_cooldown_seconds)
         pending={k for k,v in graph.items() if v["kind"]=="analysis"}
         def save(ident,result):
             results[ident]=result;trace.append(ident)
+            if self.durable:
+                self.durable.checkpoint(execution_id+':stage:'+ident,asdict(result))
+                self.durable.hook('after_stage')
 
         def event_artifact(kind,payload,eid):
             return Artifact(kind,"ledger:"+eid,digest(payload),eid,"dag-engine",Derivation.DERIVED,("synthetic event",),payload)
@@ -182,23 +188,31 @@ class DagEngine:
                     attempts.append((name,"SKIPPED","not authorized or no discovery adapter"));continue
                 attempt_id=execution_id+":"+ident+":"+name
                 # OPEN must skip even the provider health invocation.
-                if not discovery_circuit.admit(name,attempt_id,timestamp):
+                prior=self.store.discovery_receipt(attempt_id) if self.durable else None
+                started=self.durable is not None and self.durable.get(attempt_id,'STARTED') is not None
+                if not prior and not started and not discovery_circuit.admit(name,attempt_id,timestamp):
                     attempts.append((name,"SKIPPED",FailureSignature.CIRCUIT_OPEN.value));continue
-                try: healthy=provider.health_check()
+                try: healthy=bool(prior or started) or provider.health_check()
                 except Exception:healthy=False
                 if not healthy:
                     discovery_circuit.cancel_probe(name,attempt_id,timestamp)
                     attempts.append((name,"SKIPPED","health unavailable"));continue
-                try:
-                    r=provider.invoke(query)
-                    if not isinstance(r,DiscoveryResult):raise TypeError("Invalid discovery result")
-                    if r.status is ResultStatus.PASS and any(not c.verification_required or c.capability_match!=query.capability for c in r.candidates):
-                        raise ValueError("Unscoped discovery candidate")
-                    # Validate serializability before committing a receipt.
-                    digest(asdict(r))
-                except Exception as exc:
-                    r=DiscoveryResult(ResultStatus.TIMEOUT if isinstance(exc,TimeoutError) else ResultStatus.FAIL,FailureSignature.NONE,(),(),Derivation.UNKNOWN,("Discovery adapter error: "+type(exc).__name__,),())
-                eid=self.store.record_discovery(attempt_id,name,timestamp,query,r)
+                def invoke(commit):
+                    try:
+                        r=provider.invoke_durable(query,attempt_id,commit) if self.durable and callable(getattr(provider,"invoke_durable",None)) else provider.invoke(query)
+                        if not isinstance(r,DiscoveryResult):raise TypeError("Invalid discovery result")
+                        if r.status is ResultStatus.PASS and any(not c.verification_required or c.capability_match!=query.capability for c in r.candidates):
+                            raise ValueError("Unscoped discovery candidate")
+                        digest(asdict(r))
+                    except Exception as exc:
+                        r=DiscoveryResult(ResultStatus.TIMEOUT if isinstance(exc,TimeoutError) else ResultStatus.FAIL,FailureSignature.NONE,(),(),Derivation.UNKNOWN,("Discovery adapter error: "+type(exc).__name__,),())
+                    return commit(r)
+                if prior:
+                    r=discovery_from(prior["result"]);eid=prior["evidence_id"]
+                else:
+                    r=self.durable.run_operation(attempt_id,{"provider":name,"query":asdict(query),"timestamp":timestamp},invoke,discovery_from,discovery=True) if self.durable else invoke(lambda x:x)
+                    eid=self.store.record_discovery(attempt_id,name,timestamp,query,r)
+                    if self.durable:self.durable.hook("after_discovery_evidence")
                 discovery_circuit.complete(name,SimpleNamespace(attempt_id=attempt_id,provider=name,status=r.status,timestamp=timestamp))
                 refs.append(eid);attempts.append((name,r.status.value,r.failure_signature.value,eid))
                 if r.status is ResultStatus.PASS:candidates.extend(r.candidates)
@@ -235,14 +249,21 @@ class DagEngine:
             missing=check_contract(input_contract,artifacts)
             if missing:
                 save(ident,StageResult(StageStatus.UNSATISFIED_INPUT,unsatisfied=missing,reason="Input contract not satisfied"));continue
-            stage_hash=digest({"root":input_hash,"stage":ident,"inputs":[a.sha256 for a in artifacts]})
+            cached=self.durable.get(execution_id+":stage:"+ident,"CHECKPOINT") if self.durable else None
+            if cached and cached["status"]=="PASS":
+                save(ident,stage_result_from(cached));continue
+            seeded=seed_passes.get(ident)
+            if seeded is not None and seeded.status is StageStatus.PASS and not check_contract(output_contract,seeded.artifacts):
+                save(ident,seeded);continue
+            override=stage_overrides.get(ident,{})
+            stage_hash=digest({"root":input_hash,"stage":ident,"inputs":[a.sha256 for a in artifacts],**({"configuration":override} if override else {})})
             spec=row.get("streaming_capture")
-            inp=ProviderInput(ident,artifacts,{"streaming_capture":spec} if spec else {},"synthetic-fixture")
+            inp=ProviderInput(ident,artifacts,{**override.get("configuration",{}),**({"streaming_capture":spec} if spec else {})},"synthetic-fixture")
             transform=(lambda result:normalize_capture_result(result,spec,self.stream_reader,self.artifact_directory)) if spec else None
             combined=[];prior_signatures=set();started=False;discovery_allowed="ladder" not in row
             r=ExhaustedResult(ident,(),"No eligible rung")
             for rung in provider_ladder(row):
-                names=rung["providers"]; destinations=rung.get("discovery_stages",[])
+                names=[n for n in rung["providers"] if not override.get("provider") or n==override["provider"]]; destinations=rung.get("discovery_stages",[])
                 if not names and not destinations:continue  # inapplicable paradigm, not an attempt
                 triggers={FailureSignature(s) for s in rung["trigger_signatures"]}
                 if started and (not prior_signatures.intersection(triggers) or prior_signatures.intersection({FailureSignature.PINNED,FailureSignature.TIMEOUT_ADVERSARIAL})):
@@ -257,7 +278,7 @@ class DagEngine:
                     allowed_providers=allowed_providers,execution_id=execution_id+":rung-"+str(rung["rung"]),timestamp=timestamp,repair_stages={},
                     passed_preconditions=frozenset(k for k in pre if results[k].status is StageStatus.PASS),
                     circuit_threshold=self.circuit_threshold,circuit_cooldown_seconds=self.circuit_cooldown_seconds,
-                    transform_result=transform)
+                    transform_result=transform,durable=self.durable)
                 combined.extend(replace(a,rung=rung["rung"]) for a in r.trace)
                 prior_signatures={a.failure_signature for a in r.trace}
                 if isinstance(r,ExecutionPass):break
@@ -301,3 +322,11 @@ class DagEngine:
         result=DagResult(fingerprint.archetype.value,results,tuple(trace))
         self.store.record_dag_run(execution_id,{**asdict(result),"candidate_integrations":[],"timestamp":timestamp})
         return result
+
+
+def stage_result_from(row):
+    attempts=tuple(Attempt(**{**a,"status":ResultStatus(a["status"]) if a["status"] is not None else None,
+        "failure_signature":FailureSignature(a["failure_signature"])}) if isinstance(a,dict) else tuple(a) for a in row["attempts"])
+    return StageResult(StageStatus(row["status"]),tuple(row["evidence_ids"]),tuple(row["exhaustion_receipts"]),attempts,
+        tuple(artifact_from(a) for a in row["artifacts"]),tuple(UnsatisfiedInput(**{**a,"available":tuple(a["available"])}) for a in row["unsatisfied"]),
+        row["reason"],tuple(candidate_from(a) for a in row["candidates"]),tuple(row["trigger_receipts"]))

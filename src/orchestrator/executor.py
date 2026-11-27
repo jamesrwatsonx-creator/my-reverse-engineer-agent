@@ -9,6 +9,7 @@ from .contracts import (Stage,TargetFingerprint,ProviderInput,ProviderResult,Pro
                         ResultStatus,FailureSignature,Derivation,ObservationScope)
 from .evidence_store import EvidenceStore, canonical, digest
 from .circuit_breaker import CircuitBreaker
+from .durability import result_from
 
 
 @dataclass(frozen=True)
@@ -42,7 +43,7 @@ def execute_stage(stage: Stage, fingerprint: TargetFingerprint,
                   execution_id: str, timestamp: datetime, repair_stages: Mapping[str,Stage],
                   passed_preconditions: frozenset[str]=frozenset(),
                   circuit_threshold: int=3,circuit_cooldown_seconds: float=60,
-                  transform_result=None) -> ExecutionPass | ExhaustedResult:
+                  transform_result=None,durable=None) -> ExecutionPass | ExhaustedResult:
     """Call only explicitly authorized fixture adapters; receipt before advancing.
 
     Provider PASS is not verified closure. Optional supplied stage predicate is
@@ -64,21 +65,24 @@ def execute_stage(stage: Stage, fingerprint: TargetFingerprint,
         if not set(current.preconditions)<=passed_preconditions:
             return None,None
         for i,name in enumerate(current.providers):
-            if name not in allowed_providers or name not in providers or providers[name].name!=name:
-                trace.append(Attempt(current.id,name,None,FailureSignature.NONE,None,"Not authorized or no fixture adapter"))
-                continue
-            if not matrix.is_available(name):
-                trace.append(Attempt(current.id,name,None,FailureSignature.HOST_UNSUPPORTED,None,matrix.why_unavailable(name)))
-                continue
             attempt_id=f"{execution_id}:{current.id}:{round_id}:{i}"
             prior=store.get_attempt(attempt_id)
-            if prior is not None:
+            started=durable is not None and durable.get(attempt_id,"STARTED") is not None
+            if name not in allowed_providers:
+                trace.append(Attempt(current.id,name,None,FailureSignature.NONE,None,"Not authorized"))
+                continue
+            if not started and prior is None and (name not in providers or providers[name].name!=name):
+                trace.append(Attempt(current.id,name,None,FailureSignature.NONE,None,"No fixture adapter"))
+                continue
+            if not started and prior is None and not matrix.is_available(name):
+                trace.append(Attempt(current.id,name,None,FailureSignature.HOST_UNSUPPORTED,None,matrix.why_unavailable(name)))
+                continue
+            if prior is not None and durable is None:
                 raise ValueError("Attempt already persisted; explicit replay/resume is required")
-            if not circuit.admit(name,attempt_id,timestamp):
+            if prior is None and not started and not circuit.admit(name,attempt_id,timestamp):
                 trace.append(Attempt(current.id,name,None,FailureSignature.CIRCUIT_OPEN,None,"Circuit open; no invocation"))
                 continue
-            try:
-                result=providers[name].invoke(inp)
+            def prepare(result):
                 if not isinstance(result,ProviderResult):
                     raise TypeError("Adapter did not return ProviderResult")
                 if not isinstance(result.status,ResultStatus) or not isinstance(result.failure_signature,FailureSignature) or not isinstance(result.derivation,Derivation):
@@ -87,27 +91,57 @@ def execute_stage(stage: Stage, fingerprint: TargetFingerprint,
                     raise ValueError("Invalid provider artifact hash")
                 if transform_result is not None and result.status is ResultStatus.PASS:
                     result=transform_result(result)
-                canonical(asdict(result))  # reject nonserializable results before ledger write
+                canonical(asdict(result))
                 if result.status is ResultStatus.PASS and not result.artifacts:
-                    result=replace(result,status=ResultStatus.EMPTY,
-                                   limitations=result.limitations+("PASS contained no artifact",),verification_method=None)
-                gate=None
+                    result=replace(result,status=ResultStatus.EMPTY,limitations=result.limitations+("PASS contained no artifact",),verification_method=None)
                 if result.status is ResultStatus.PASS and current.gate is not None:
-                    try:
-                        gate=current.gate(result) is True
+                    try: gate=current.gate(result) is True
                     except Exception as exc:
                         gate=False
                         result=replace(result,limitations=result.limitations+("Gate raised "+type(exc).__name__,))
                     if not gate:
                         result=replace(result,status=ResultStatus.CONTRADICTED,
                                        limitations=result.limitations+("Supplied stage predicate did not pass",),verification_method=None)
-            except Exception as exc:
-                gate=None
-                status=ResultStatus.TIMEOUT if isinstance(exc,(TimeoutError,subprocess.TimeoutExpired)) else ResultStatus.FAIL
-                result=ProviderResult(status,FailureSignature.NONE,(),(),Derivation.UNKNOWN,
-                                      ("Adapter exception or invalid response: "+type(exc).__name__,),(),None,None)
-            receipt=store.record_attempt(attempt_id,name,timestamp,attempt_input_hash,result,ObservationScope(current.id,attempt_input_hash))
-            circuit.complete(name,receipt)
+                if current.id=="verify":
+                    result=replace(result,verification_method="synthetic")
+                elif result.verification_method is not None:
+                    # Phase 4 cannot certify even if a fixture adapter claims a method.
+                    result=replace(result,verification_method="synthetic")
+                return result
+            def invoke(commit):
+                try:
+                    adapter=providers[name]
+                    if durable is not None and callable(getattr(adapter,"invoke_durable",None)):
+                        # Cooperating adapter commits at its own completion boundary.
+                        return adapter.invoke_durable(inp,attempt_id,lambda raw:commit(prepare(raw)))
+                    return commit(prepare(adapter.invoke(inp)))
+                except Exception as exc:
+                    if durable is not None and durable.get(attempt_id,"COMPLETED") is not None:
+                        return result_from(durable.get(attempt_id,"COMPLETED"))
+                    status=ResultStatus.TIMEOUT if isinstance(exc,(TimeoutError,subprocess.TimeoutExpired)) else ResultStatus.FAIL
+                    return commit(ProviderResult(status,FailureSignature.NONE,(),(),Derivation.UNKNOWN,
+                                      ("Adapter exception or invalid response: "+type(exc).__name__,),(),None,None))
+            if prior is not None:
+                if prior.provider!=name or prior.input_hash!=attempt_input_hash:
+                    raise ValueError("Persisted attempt identity differs")
+                result=result_from(prior.result)
+                receipt=prior
+            else:
+                if durable is not None:
+                    request={"provider":name,"input_hash":attempt_input_hash,"input":asdict(inp),"timestamp":timestamp}
+                    result=durable.run_operation(attempt_id,request,invoke,result_from)
+                    if result is None:
+                        result=ProviderResult(ResultStatus.INCOMPLETE,FailureSignature.NONE,(),(),Derivation.UNKNOWN,
+                            ("Unknown completion; no automatic reinvocation; attempt hash "+durable.get(attempt_id,"STARTED")["attempt_hash"],),(),None,None)
+                else:
+                    result=invoke(lambda x:x)
+                receipt=store.record_attempt(attempt_id,name,timestamp,attempt_input_hash,result,ObservationScope(current.id,attempt_input_hash))
+                if durable is not None:durable.hook("after_evidence")
+            if result.status is not ResultStatus.INCOMPLETE:
+                circuit.complete(name,receipt)
+            else:
+                circuit.cancel_probe(name,attempt_id,timestamp)
+            gate=True if result.status is ResultStatus.PASS and current.gate is not None else None
             trace.append(Attempt(current.id,name,result.status,result.failure_signature,receipt.attempt_id,
                                  "provider result; not global verification"))
             if result.status is ResultStatus.PASS:
