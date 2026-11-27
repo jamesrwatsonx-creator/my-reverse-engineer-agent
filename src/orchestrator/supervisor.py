@@ -4,7 +4,7 @@ from dataclasses import asdict,dataclass
 from enum import Enum
 from types import SimpleNamespace
 from .contracts import (SupervisorAction,SupervisorDecision,AbstentionRecord,ResultStatus,
-    FailureSignature,Derivation,DiscoveryQuery,DiscoveryResult)
+    FailureSignature,Derivation,DiscoveryQuery,DiscoveryResult,Archetype)
 from .dag_engine import StageStatus,provider_ladder
 from .durability import DurableExecution,discovery_from
 from .circuit_breaker import CircuitBreaker
@@ -41,6 +41,9 @@ class Supervisor:
     def run(self,fingerprint,*,input_hash,execution_id,timestamp,allowed_providers,objectives):
         self.durable.emit(execution_id+":supervisor","PLAN",{"fingerprint":asdict(fingerprint),"input_hash":input_hash,
             "objectives":objectives,"timestamp":timestamp,"allowed":sorted(allowed_providers),"retries":self.retries})
+        terminal=self.durable.get(execution_id+":supervisor","TERMINAL")
+        if terminal is not None:
+            return supervisor_result_from(terminal)
         states=[];decisions=[];abstentions=[];rounds=[];verification=None
         graph={s["id"]:s for s in self.engine.graphs[fingerprint.archetype.value] if s["kind"]=="analysis"}
         def transition(state,action,reason,target="",refs=()):
@@ -49,10 +52,11 @@ class Supervisor:
             payload={"state":state.value,"decision":asdict(decision)}
             self.durable.emit(step,"TRANSITION",payload)
             self.learning.write(step,{"kind":"transition","data":payload})
+            self.durable.hook("after_supervisor_transition")
             states.append(state);decisions.append(decision)
-        def run_dag(suffix,seed=None,override=None):
+        def run_dag(suffix,seed=None,override=None,retry_stage=None):
             r=self.engine.run(fingerprint,input_hash=input_hash,execution_id=execution_id+":"+suffix,
-                timestamp=timestamp,allowed_providers=allowed_providers,unresolved={},seed_passes=seed or {},stage_overrides=override or {})
+                timestamp=timestamp,allowed_providers=allowed_providers,unresolved={},seed_passes=seed or {},stage_overrides=override or {},retry_stage=retry_stage)
             rounds.append(r);return r
         def available_observations(ids):
             return bool(ids) and all((e:=self.store.get(i)) is not None and e.status is ResultStatus.PASS
@@ -105,8 +109,12 @@ class Supervisor:
                         if receipt and receipt.status is not ResultStatus.PASS:
                             self.learning.write("failure:"+receipt.attempt_id,{"kind":"failure_receipt","data":row})
             return out
+        def accepted(s):
+            return s.status is StageStatus.PASS and bool(s.evidence_ids) and not any(self.store.contradictions(i) for i in s.evidence_ids if self.store.get(i))
         def seed(r):
-            return {k:v for k,v in r.stages.items() if k in graph and v.status is StageStatus.PASS}
+            return {k:v for k,v in r.stages.items() if k in graph}
+        def has_incomplete(rows):
+            return any(a["result"] and a["result"]["status"]=="INCOMPLETE" for a in rows)
         def can_retry(stage,provider):
             return provider in allowed_providers and provider in self.engine.providers and any(provider in rung["providers"] for rung in provider_ladder(graph[stage]))
         transition(SupervisorState.PLANNING,SupervisorAction.CONTINUE,"Plan bounded fixture execution")
@@ -118,18 +126,18 @@ class Supervisor:
             objective=objectives[stage_id]
             if stage_id not in graph:raise ValueError("Objective stage missing")
             s=current.stages[stage_id]
-            if s.status is StageStatus.PASS and not any(self.store.contradictions(i) for i in s.evidence_ids if self.store.get(i)):
+            if accepted(s):
                 continue
             rows=attempts_for(stage_id)
             # Only transient failures are eligible for a bounded retry. Missing
             # auth requires already authorized provider; no credential changes.
-            transient=[a for a in rows if a["result"] and ((a["result"]["status"]=="TIMEOUT" and a["failure_signature"]=="NONE") or a["failure_signature"] in {"RATE_LIMITED","AUTH_MISSING"})]
+            transient=[a for a in rows if not has_incomplete(rows) and a["result"] and ((a["result"]["status"]=="TIMEOUT" and a["failure_signature"]=="NONE") or a["failure_signature"] in {"RATE_LIMITED","AUTH_MISSING"})]
             for provider in sorted({a["provider"] for a in transient}):
                 if not can_retry(stage_id,provider):continue
                 for i in range(self.retries):
                     transition(SupervisorState.REPAIRING,SupervisorAction.REPAIR,"Bounded transient retry",stage_id)
-                    current=run_dag("retry:"+stage_id+":"+provider+":"+str(i),seed(current),{stage_id:{"provider":provider,"configuration":{}}})
-                    if current.stages[stage_id].status is StageStatus.PASS:break
+                    current=run_dag("retry:"+stage_id+":"+provider+":"+str(i),seed(current),{stage_id:{"provider":provider,"configuration":{}}},retry_stage=stage_id)
+                    if accepted(current.stages[stage_id]):break
                 if current.stages[stage_id].status is StageStatus.PASS:break
             if current.stages[stage_id].status is StageStatus.PASS:continue
             rows=attempts_for(stage_id);s=current.stages[stage_id]
@@ -146,13 +154,19 @@ class Supervisor:
             if r and r.status is ResultStatus.PASS:found.extend(r.candidates);discovery_refs.append(eid)
             # Only explicitly recorded prior successful fixture configurations,
             # not arbitrary search candidates, can be replayed.
-            strategies=self.learning.strategies(fingerprint.archetype.value,sig.value,query.capability,stage_id)
-            for strategy_id,strategy in strategies[:1]:
+            strategy_key=execution_id+":strategies:"+stage_id
+            chosen=self.durable.get(strategy_key,"SELECTED")
+            if chosen is None:
+                strategies=[(i,s) for i,s in self.learning.strategies(fingerprint.archetype.value,sig.value,query.capability,stage_id)
+                            if not i.startswith(execution_id+":")]
+                chosen={"rows":strategies[:1] if not has_incomplete(rows) and sig not in {FailureSignature.PINNED,FailureSignature.TIMEOUT_ADVERSARIAL} else []}
+                self.durable.emit(strategy_key,"SELECTED",chosen)
+            for strategy_id,strategy in chosen["rows"]:
                 provider=strategy.get("provider");config=strategy.get("configuration")
                 if not can_retry(stage_id,provider) or not isinstance(config,dict) or not available_observations(strategy.get("evidence_ids",[])):
                     continue
                 transition(SupervisorState.REPAIRING,SupervisorAction.REPAIR,"Replay prior successful authorized fixture strategy",stage_id,strategy["evidence_ids"])
-                current=run_dag("prior:"+stage_id+":"+digest(strategy_id),seed(current),{stage_id:{"provider":provider,"configuration":config}})
+                current=run_dag("prior:"+stage_id+":"+digest(strategy_id),seed(current),{stage_id:{"provider":provider,"configuration":config}},retry_stage=stage_id)
                 self.learning.write(execution_id+":strategy:"+stage_id,{"kind":"strategy_outcome","data":{"archetype":fingerprint.archetype.value,"failure_signature":sig.value,"capability":query.capability,"stage_id":stage_id,"provider":provider,"configuration":config,"outcome":"PASS" if current.stages[stage_id].status is StageStatus.PASS else "FAIL","evidence_ids":list(current.stages[stage_id].evidence_ids)}})
             if current.stages[stage_id].status is StageStatus.PASS:continue
             transition(SupervisorState.DISCOVERING,SupervisorAction.DISCOVER,"Research alternative providers and independent construction paths",stage_id)
@@ -160,7 +174,7 @@ class Supervisor:
                 r,eid=discover(stage_id,name,query)
                 if r and r.status is ResultStatus.PASS:found.extend(r.candidates);discovery_refs.append(eid)
             obs=objective.get("evidence_ids",[])
-            candidates=[c for c in found if c.license_risk!="high" and c.provenance_tier in {3,4}]
+            candidates=[c for c in found if c.license_risk!="high" and c.provenance_tier in {3,4} and c.derivation is Derivation.INFERRED]
             brief=None;reason=None;brief_id=None
             if candidates and available_observations(obs) and objective.get("observable_behavior") and objective.get("undetermined_mechanism") and objective.get("acceptance_test"):
                 paths=[{"candidate_id":digest(asdict(c)),"canonical_path":c.canonical_path,"verification_required":c.verification_required,"license":c.license} for c in candidates]
@@ -176,11 +190,18 @@ class Supervisor:
                 invalid=True;break
             rows=attempts_for(stage_id)
             issued=self.store.discoveries_for_run(execution_id)
+            for item in issued:
+                self.learning.write(item["attempt_id"],{"kind":"discovery_query","data":{k:v for k,v in item.items() if k!="attempt_id"}})
+            for ref in refs:
+                for other in self.store.contradictions(ref):
+                    ids=sorted((ref,other))
+                    self.learning.write("contradiction:"+digest(ids),{"kind":"contradiction","data":{"evidence_ids":ids}})
             record=AbstentionRecord(fingerprint.archetype,tuple(dict.fromkeys(a["failure_signature"] for a in rows)),
-                tuple(dict.fromkeys(k for r in rounds for k in r.trace)),tuple(sorted({a["rung"] for a in rows if a["rung"] is not None})),
+                tuple(dict.fromkeys(k for r in rounds for k in r.trace if r.stages[k].attempts)),tuple(sorted({a["rung"] for a in rows if a["rung"] is not None})),
                 tuple(rows),issued,brief_id,reason,(objective.get("required_to_proceed") or "Authorized fixture observation and independent verification",))
             self.learning.write(execution_id+":abstain:"+stage_id,{"kind":"abstention","data":asdict(record)})
             abstentions.append(record)
+            self.durable.hook("after_abstention_write")
             blocked|=bool(objective.get("blocks_downstream"))
         if invalid:state=SupervisorState.ESCALATED
         elif abstentions:
@@ -196,9 +217,19 @@ class Supervisor:
                 try:self.dossier.write(execution_id+":"+stage_id,{"kind":"fixture_result","gap_id":stage_id,"status":"YELLOW","verification_method":"synthetic","residual_uncertainty":["Independent functional equivalence of "+stage_id+" not verified"],"evidence_ids":evidence})
                 except DossierError as exc:
                     transition(SupervisorState.ESCALATED,SupervisorAction.ESCALATE,"Dossier rejected: "+str(exc),stage_id)
-                    return SupervisorResult(SupervisorState.ESCALATED,tuple(states),tuple(decisions),tuple(abstentions),verification)
+                    result=SupervisorResult(SupervisorState.ESCALATED,tuple(states),tuple(decisions),tuple(abstentions),verification)
+                    self.durable.emit(execution_id+":supervisor","TERMINAL",asdict(result))
+                    return result
             transition(SupervisorState.CLOSED,SupervisorAction.CONTINUE,"Synthetic objectives met; YELLOW named residual, not GREEN")
             state=SupervisorState.CLOSED
         result=SupervisorResult(state,tuple(states),tuple(decisions),tuple(abstentions),verification)
         self.durable.emit(execution_id+":supervisor","TERMINAL",asdict(result))
         return result
+
+
+def supervisor_result_from(row):
+    return SupervisorResult(SupervisorState(row["state"]),tuple(SupervisorState(x) for x in row["transitions"]),
+        tuple(SupervisorDecision(SupervisorAction(x["action"]),x["reason"],x["target"],tuple(x["evidence_ids"])) for x in row["decisions"]),
+        tuple(AbstentionRecord(Archetype(x["archetype"]),tuple(x["failure_signatures"]),tuple(x["stages_attempted"]),
+            tuple(x["rungs_attempted"]),tuple(x["providers_attempted"]),tuple(x["discovery_queries_issued"]),
+            x["construction_brief_id"],x["no_brief_reason"],tuple(x["required_to_proceed"])) for x in row["abstentions"]),row["verification_method"])

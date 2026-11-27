@@ -55,3 +55,37 @@ class SupervisorTests(unittest.TestCase):
         self.assertIn(SupervisorState.REPAIRING,r.transitions)
         self.assertEqual(r.state,SupervisorState.CLOSED)
         self.assertEqual(r.verification_method,"synthetic")
+
+    def test_completed_supervisor_replay_no_extra_invocations(self):
+        order=[]
+        with tempfile.TemporaryDirectory() as d,EvidenceStore(Path(d)/"e.db") as s,DossierWriter(Path(d)/"d.db") as w,LearningWriter(Path(d)/"l.db") as l:
+            class Adapter(Fake):
+                def invoke(self,inp):
+                    order.append("analysis");return super().invoke(inp)
+            graph={"cloud-api":[stage("A",providers=["a"])]}
+            discovery={n:Discovery(n,False,order) for n in ("knowledge_retrieval","github_search","browser_research")}
+            sup=Supervisor(DagEngine(graph,{"a":Adapter("a",True)},Matrix(),s,discovery),s,w,l)
+            args=dict(input_hash="a"*64,execution_id="resume",timestamp=NOW,allowed_providers=frozenset({"a",*discovery}),objectives={"A":F})
+            first=sup.run(FP,**args)
+            count=len(order)
+            again=sup.run(FP,**args)
+            self.assertEqual(first.state,again.state)
+            self.assertEqual(first.transitions,again.transitions)
+            self.assertEqual(len(order),count)
+    def test_transient_retry_does_not_repeat_independent_failure(self):
+        from dataclasses import replace
+        order=[]
+        with tempfile.TemporaryDirectory() as d,EvidenceStore(Path(d)/"e.db") as s,DossierWriter(Path(d)/"d.db") as w,LearningWriter(Path(d)/"l.db") as l:
+            class Retry(Fake):
+                def invoke(self,inp):
+                    order.append(self.name)
+                    r=super().invoke(inp)
+                    if self.name=="a" and order.count("a")==1:
+                        return replace(r,status=ResultStatus.TIMEOUT,failure_signature=FailureSignature.NONE)
+                    return r
+            a,b=Retry("a",True),Retry("b",True)
+            graph={"cloud-api":[stage("A",providers=["a"]),stage("B",providers=["b"])]}
+            sup=Supervisor(DagEngine(graph,{"a":a,"b":b},Matrix(),s,{}),s,w,l)
+            sup.run(FP,input_hash="a"*64,execution_id="retry",timestamp=NOW,allowed_providers=frozenset({"a","b"}),objectives={"A":F})
+            self.assertEqual(order.count("a"),2)
+            self.assertEqual(order.count("b"),1)

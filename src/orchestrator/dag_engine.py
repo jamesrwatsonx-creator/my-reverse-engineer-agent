@@ -150,13 +150,19 @@ class DagEngine:
         for rows in graphs.values():_validate(rows)
 
     def run(self,fingerprint:TargetFingerprint,*,input_hash:str,execution_id:str,timestamp,
-            allowed_providers:frozenset[str],unresolved=None,initial_artifacts=(),seed_passes=None,stage_overrides=None):
+            allowed_providers:frozenset[str],unresolved=None,initial_artifacts=(),seed_passes=None,stage_overrides=None,retry_stage=None):
         """Only explicit fixture inputs; caller classifies unresolved gaps, not this scheduler."""
         graph=_validate(self.graphs.get(fingerprint.archetype.value,[]))
         if not graph:raise ValueError("Archetype graph not authored")
         unresolved=unresolved or {};seed_passes=seed_passes or {};stage_overrides=stage_overrides or {}
+        if retry_stage is not None and retry_stage not in graph:raise ValueError('Unknown retry stage')
+        affected={retry_stage} if retry_stage else set()
+        while retry_stage:
+            more={k for k,v in graph.items() if set(v['preconditions'])&affected}
+            if more<=affected:break
+            affected|=more
         if self.durable:
-            self.durable.emit(execution_id+':dag','PLAN',{'graph':list(graph.values()),'fingerprint':asdict(fingerprint),'input_hash':input_hash,'timestamp':timestamp,'allowed':sorted(allowed_providers),'unresolved':unresolved,'initial_artifacts':[asdict(a) for a in initial_artifacts],'seed_passes':{k:asdict(v) for k,v in seed_passes.items()},'overrides':stage_overrides})
+            self.durable.emit(execution_id+':dag','PLAN',{'graph':list(graph.values()),'fingerprint':asdict(fingerprint),'input_hash':input_hash,'timestamp':timestamp,'allowed':sorted(allowed_providers),'unresolved':unresolved,'initial_artifacts':[asdict(a) for a in initial_artifacts],'seed_passes':{k:asdict(v) for k,v in seed_passes.items()},'overrides':stage_overrides,'retry_stage':retry_stage})
         results={};trace=[];fired=set();events={}
         discovery_circuit=CircuitBreaker(self.store,self.circuit_threshold,self.circuit_cooldown_seconds)
         pending={k for k,v in graph.items() if v["kind"]=="analysis"}
@@ -242,6 +248,8 @@ class DagEngine:
                 continue
             pending.remove(ident);row=graph[ident]
             pre=row["preconditions"]
+            if retry_stage is not None and ident not in affected and ident in seed_passes:
+                save(ident,seed_passes[ident]);continue
             if any(results[k].status is not StageStatus.PASS for k in pre):
                 save(ident,StageResult(StageStatus.NOT_READY,reason="Prerequisite not PASS: "+", ".join(k for k in pre if results[k].status is not StageStatus.PASS)));continue
             artifacts=tuple(a for k in pre for a in results[k].artifacts) if pre else tuple(initial_artifacts)
@@ -253,7 +261,7 @@ class DagEngine:
             if cached and cached["status"]=="PASS":
                 save(ident,stage_result_from(cached));continue
             seeded=seed_passes.get(ident)
-            if seeded is not None and seeded.status is StageStatus.PASS and not check_contract(output_contract,seeded.artifacts):
+            if seeded is not None and ident not in affected and seeded.status is StageStatus.PASS and not check_contract(output_contract,seeded.artifacts):
                 save(ident,seeded);continue
             override=stage_overrides.get(ident,{})
             stage_hash=digest({"root":input_hash,"stage":ident,"inputs":[a.sha256 for a in artifacts],**({"configuration":override} if override else {})})
@@ -281,7 +289,7 @@ class DagEngine:
                     transform_result=transform,durable=self.durable)
                 combined.extend(replace(a,rung=rung["rung"]) for a in r.trace)
                 prior_signatures={a.failure_signature for a in r.trace}
-                if isinstance(r,ExecutionPass):break
+                if isinstance(r,ExecutionPass) or any(a.status is ResultStatus.INCOMPLETE for a in r.trace):break
             r=replace(r,trace=tuple(combined))
             attempt_receipts=tuple(a.receipt_id for a in r.trace if a.receipt_id)
             evidence=tuple(self.store.get_attempt(a).evidence_id for a in attempt_receipts)

@@ -144,12 +144,16 @@ def execute_stage(stage: Stage, fingerprint: TargetFingerprint,
             gate=True if result.status is ResultStatus.PASS and current.gate is not None else None
             trace.append(Attempt(current.id,name,result.status,result.failure_signature,receipt.attempt_id,
                                  "provider result; not global verification"))
+            if result.status is ResultStatus.INCOMPLETE:
+                return None,None
             if result.status is ResultStatus.PASS:
                 return replace(result,evidence_ids=tuple(dict.fromkeys((*result.evidence_ids,receipt.evidence_id)))),gate
         return None,None
     result,gate=run_once(stage,input,"initial",input_hash)
     if result is not None:
         return ExecutionPass(result,tuple(trace),gate)
+    if any(x.status is ResultStatus.INCOMPLETE for x in trace):
+        return ExhaustedResult(stage.id,tuple(trace),"Unknown invocation completion requires review")
     seen={x.failure_signature for x in trace if x.status is not None}
     # Select first matching explicit route, then first registered repair stage;
     # no NONE retry, no recursion, no permission escalation, no adversarial loop.
