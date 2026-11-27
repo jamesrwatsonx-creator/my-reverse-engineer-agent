@@ -89,3 +89,32 @@ class SupervisorTests(unittest.TestCase):
             sup.run(FP,input_hash="a"*64,execution_id="retry",timestamp=NOW,allowed_providers=frozenset({"a","b"}),objectives={"A":F})
             self.assertEqual(order.count("a"),2)
             self.assertEqual(order.count("b"),1)
+
+    def test_all_four_rungs_exhaust_before_discovery(self):
+        order=[]
+        with tempfile.TemporaryDirectory() as d,EvidenceStore(Path(d)/"e.db") as s,DossierWriter(Path(d)/"d.db") as w,LearningWriter(Path(d)/"l.db") as l:
+            class Adapter(Fake):
+                def invoke(self,inp):
+                    order.append(self.name);return super().invoke(inp)
+            names=["static","symbolic","live","blackbox"]
+            row=stage("A")
+            row.pop("providers")
+            row["ladder"]=[{"rung":i+1,"paradigm":p,"providers":[names[i]],"trigger_signatures":[] if i==0 else ["UNKNOWN_PROTOCOL"]} for i,p in enumerate(("static","symbolic-emulation","live-instrumentation","black-box-discovery"))]
+            discovery={n:Discovery(n,True,order) for n in ("knowledge_retrieval","github_search","browser_research")}
+            obs=s.append(EvidenceEntry("","fixture",Derivation.OBSERVED,NOW,"a"*64,"b"*64,(),(),"synthetic",FailureSignature.NONE,ResultStatus.PASS,ObservationScope("behavior","a"*64)))
+            sup=Supervisor(DagEngine({"cloud-api":[row]},{n:Adapter(n,True) for n in names},Matrix(),s,discovery),s,w,l)
+            result=sup.run(FP,input_hash="a"*64,execution_id="ladder",timestamp=NOW,allowed_providers=frozenset((*names,*discovery)),objectives={"A":{**F,"evidence_ids":[obs]}})
+            self.assertEqual(result.state,SupervisorState.ABSTAINED)
+            self.assertEqual(result.abstentions[0].rungs_attempted,(1,2,3,4))
+            self.assertEqual(order[:4],names)
+            self.assertEqual(order[4:],["knowledge_retrieval","github_search","browser_research"])
+            self.assertTrue(w.read("ladder:A")["construction_brief"])
+    def test_bad_brief_escalates_without_write(self):
+        order=[]
+        with tempfile.TemporaryDirectory() as d,EvidenceStore(Path(d)/"e.db") as s,DossierWriter(Path(d)/"d.db") as w,LearningWriter(Path(d)/"l.db") as l:
+            discovery={n:Discovery(n,True,order) for n in ("knowledge_retrieval","github_search","browser_research")}
+            obs=s.append(EvidenceEntry("","fixture",Derivation.OBSERVED,NOW,"a"*64,"b"*64,(),(),"synthetic",FailureSignature.NONE,ResultStatus.PASS,ObservationScope("behavior","a"*64)))
+            sup=Supervisor(DagEngine({"cloud-api":[stage("A",providers=["a"])]},{"a":Fake("a",True)},Matrix(),s,discovery),s,w,l)
+            r=sup.run(FP,input_hash="a"*64,execution_id="bad",timestamp=NOW,allowed_providers=frozenset(("a",*discovery)),objectives={"A":{**F,"evidence_ids":[obs],"acceptance_test":{"method":"fake"}}})
+            self.assertEqual(r.state,SupervisorState.ESCALATED)
+            self.assertIsNone(w.read("bad:A"))

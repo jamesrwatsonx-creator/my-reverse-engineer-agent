@@ -17,7 +17,7 @@ NOW=datetime(2026,1,1,tzinfo=timezone.utc)
 FP=TargetFingerprint(Archetype.CLOUD_API,"fixture",None,None,(),(),None,1,False,True)
 def die():os.kill(os.getpid(),signal.SIGKILL)
 def hook(point):
-    if kill and {"completed":"after_provider_outbox","circuit":"after_evidence","stage":"after_stage"}.get(scenario)==point:die()
+    if kill and {"completed":"after_provider_outbox","circuit":"after_evidence","stage":"after_stage","transition":"after_supervisor_transition","abstention":"after_abstention_write","terminal":"after_supervisor_terminal"}.get(scenario)==point:die()
 def log(key):
     with (root/"calls").open("a") as f:
         f.write(key+"\n");f.flush();os.fsync(f.fileno())
@@ -31,7 +31,7 @@ class Provider:
         if scenario=="incomplete" and kill:die()
         payload={"body":"fixture"}
         a=Artifact("function","fixture",digest(payload),"fixture",self.name,Derivation.OBSERVED,(),payload)
-        fail=scenario=="circuit" or scenario=="discovery"
+        fail=scenario in {"circuit","discovery","transition","abstention","terminal"}
         r=ProviderResult(ResultStatus.FAIL if fail else ResultStatus.PASS,FailureSignature.UNKNOWN_PROTOCOL if fail else FailureSignature.NONE,() if fail else (a,),(),Derivation.OBSERVED,(),(),None,None)
         return commit(r)
 class Research:
@@ -39,7 +39,7 @@ class Research:
     def health_check(self):return True
     def invoke_durable(self,q,key,commit):
         log(key)
-        if kill:die()
+        if kill and scenario=="discovery":die()
         return commit(DiscoveryResult(ResultStatus.EMPTY,FailureSignature.NONE,(),(),Derivation.INFERRED,(),()))
 def stage(i,pre=()):
     return {"id":i,"kind":"analysis","layer":"static","providers":[i],"preconditions":list(pre),"input_contract":[],"output_contract":[{"artifact_type":"function","required_fields":{"body":None}}],"on_fail":[],"gate":"fixture-contract","capability":"rate limiting middleware"}
@@ -49,7 +49,7 @@ with EvidenceStore(root/"e.db") as s:
         engine=DagEngine({"cloud-api":[stage("A"),stage("B",("A",))]},{"A":Provider("A"),"B":Provider("B")},Matrix(),s,{},durable=durable)
         r=engine.run(FP,input_hash="a"*64,execution_id="fault",timestamp=NOW,allowed_providers=frozenset({"A","B"}))
         print(json.dumps({"calls":len((root/"calls").read_text().splitlines()),"stages":list(r.trace)}))
-    elif scenario=="discovery":
+    elif scenario in {"discovery","transition","abstention","terminal"}:
         # Exercise actual supervisor abstention path. Exclude initial analysis call
         # from discovery count; its stable key is still independently persisted.
         with DossierWriter(root/"d.db") as w,LearningWriter(root/"l.db") as l:
@@ -57,7 +57,7 @@ with EvidenceStore(root/"e.db") as s:
             result=Supervisor(engine,s,w,l,durable=durable).run(FP,input_hash="a"*64,execution_id="fault",timestamp=NOW,allowed_providers=frozenset({"A","knowledge_retrieval"}),objectives={"A":{"required_to_proceed":"fixture"}})
             key="fault:abstention:A:knowledge_retrieval"
             keys=[x for x in (root/"calls").read_text().splitlines() if x==key]
-            print(json.dumps({"calls":len(keys),"keys":keys,"events":[e["state"] for e in durable.events(key)],"receipts":len(s.discoveries_for_run("fault"))}))
+            print(json.dumps({"calls":len(keys),"keys":keys,"events":[e["state"] for e in durable.events(key)],"receipts":len(s.discoveries_for_run("fault")),"analysis_calls":len([x for x in (root/"calls").read_text().splitlines() if x!=key]),"dossier_records":len(w.records()),"state":result.state.value}))
     else:
         st=Stage("A",Layer.STATIC,(),("A",),None,())
         r=execute_stage(st,FP,{"A":Provider("A")},Matrix(),s,ProviderInput("A",(),{},"synthetic-fixture"),"a"*64,allowed_providers=frozenset({"A"}),execution_id="fault",timestamp=NOW,repair_stages={},durable=durable)

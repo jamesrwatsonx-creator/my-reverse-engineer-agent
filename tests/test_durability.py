@@ -27,3 +27,13 @@ class FaultTests(unittest.TestCase):
     def test_discovery_mid_invocation(self):
         r=self.fault("discovery")
         self.assertEqual(r["calls"],2);self.assertEqual(len(set(r["keys"])),1);self.assertIn("INCOMPLETE",r["events"]);self.assertEqual(r["receipts"],1)
+
+    def test_supervisor_transition_restart(self):
+        r=self.fault("transition")
+        self.assertEqual((r["analysis_calls"],r["calls"],r["dossier_records"],r["state"]),(1,1,1,"ABSTAINED"))
+    def test_supervisor_abstention_write_restart(self):
+        r=self.fault("abstention")
+        self.assertEqual((r["analysis_calls"],r["calls"],r["dossier_records"],r["state"]),(1,1,1,"ABSTAINED"))
+    def test_supervisor_terminal_restart(self):
+        r=self.fault("terminal")
+        self.assertEqual((r["analysis_calls"],r["calls"],r["dossier_records"],r["state"]),(1,1,1,"ABSTAINED"))

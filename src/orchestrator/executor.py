@@ -66,21 +66,30 @@ def execute_stage(stage: Stage, fingerprint: TargetFingerprint,
             return None,None
         for i,name in enumerate(current.providers):
             attempt_id=f"{execution_id}:{current.id}:{round_id}:{i}"
+            def skip(signature,reason):
+                if durable is not None:
+                    durable.emit(attempt_id,"SKIPPED",{"provider":name,"input_hash":attempt_input_hash,"signature":signature.value,"reason":reason})
+                trace.append(Attempt(current.id,name,None,signature,None,reason))
+            prior_skip=durable.get(attempt_id,"SKIPPED") if durable else None
+            if prior_skip is not None:
+                if prior_skip["provider"]!=name or prior_skip["input_hash"]!=attempt_input_hash:raise ValueError("Skipped attempt identity differs")
+                skip(FailureSignature(prior_skip["signature"]),prior_skip["reason"])
+                continue
             prior=store.get_attempt(attempt_id)
             started=durable is not None and durable.get(attempt_id,"STARTED") is not None
             if name not in allowed_providers:
-                trace.append(Attempt(current.id,name,None,FailureSignature.NONE,None,"Not authorized"))
+                skip(FailureSignature.NONE,"Not authorized")
                 continue
             if not started and prior is None and (name not in providers or providers[name].name!=name):
-                trace.append(Attempt(current.id,name,None,FailureSignature.NONE,None,"No fixture adapter"))
+                skip(FailureSignature.NONE,"No fixture adapter")
                 continue
             if not started and prior is None and not matrix.is_available(name):
-                trace.append(Attempt(current.id,name,None,FailureSignature.HOST_UNSUPPORTED,None,matrix.why_unavailable(name)))
+                skip(FailureSignature.HOST_UNSUPPORTED,matrix.why_unavailable(name))
                 continue
             if prior is not None and durable is None:
                 raise ValueError("Attempt already persisted; explicit replay/resume is required")
             if prior is None and not started and not circuit.admit(name,attempt_id,timestamp):
-                trace.append(Attempt(current.id,name,None,FailureSignature.CIRCUIT_OPEN,None,"Circuit open; no invocation"))
+                skip(FailureSignature.CIRCUIT_OPEN,"Circuit open; no invocation")
                 continue
             def prepare(result):
                 if not isinstance(result,ProviderResult):

@@ -190,19 +190,25 @@ class DagEngine:
             candidates=[];refs=[];attempts=[];exhaustion=[]
             for name in (p for rung in provider_ladder(row) for p in rung["providers"]):
                 provider=self.discovery.get(name)
-                if name not in allowed_providers or provider is None or getattr(provider,"name",None)!=name:
-                    attempts.append((name,"SKIPPED","not authorized or no discovery adapter"));continue
                 attempt_id=execution_id+":"+ident+":"+name
+                def skip(reason):
+                    if self.durable:self.durable.emit(attempt_id,"SKIPPED",{"provider":name,"query":asdict(query),"reason":reason})
+                    attempts.append((name,"SKIPPED",reason))
+                skipped=self.durable.get(attempt_id,"SKIPPED") if self.durable else None
+                if skipped:
+                    skip(skipped["reason"]);continue
+                if name not in allowed_providers or provider is None or getattr(provider,"name",None)!=name:
+                    skip("not authorized or no discovery adapter");continue
                 # OPEN must skip even the provider health invocation.
                 prior=self.store.discovery_receipt(attempt_id) if self.durable else None
                 started=self.durable is not None and self.durable.get(attempt_id,'STARTED') is not None
                 if not prior and not started and not discovery_circuit.admit(name,attempt_id,timestamp):
-                    attempts.append((name,"SKIPPED",FailureSignature.CIRCUIT_OPEN.value));continue
+                    skip(FailureSignature.CIRCUIT_OPEN.value);continue
                 try: healthy=bool(prior or started) or provider.health_check()
                 except Exception:healthy=False
                 if not healthy:
                     discovery_circuit.cancel_probe(name,attempt_id,timestamp)
-                    attempts.append((name,"SKIPPED","health unavailable"));continue
+                    skip("health unavailable");continue
                 def invoke(commit):
                     try:
                         r=provider.invoke_durable(query,attempt_id,commit) if self.durable and callable(getattr(provider,"invoke_durable",None)) else provider.invoke(query)

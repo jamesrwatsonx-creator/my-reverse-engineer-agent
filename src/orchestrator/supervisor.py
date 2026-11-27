@@ -39,6 +39,10 @@ class Supervisor:
         self.retries=retries_per_provider
 
     def run(self,fingerprint,*,input_hash,execution_id,timestamp,allowed_providers,objectives):
+        objectives=dict(objectives)
+        if any(s["id"]=="verify" and s["kind"]=="analysis" for s in self.engine.graphs[fingerprint.archetype.value]):
+            objectives.setdefault("verify",{"required_to_proceed":"Successful synthetic verification stage and independent Phase 5 verification","blocks_downstream":True})
+        if not objectives:raise ValueError("At least one scoped objective required")
         self.durable.emit(execution_id+":supervisor","PLAN",{"fingerprint":asdict(fingerprint),"input_hash":input_hash,
             "objectives":objectives,"timestamp":timestamp,"allowed":sorted(allowed_providers),"retries":self.retries})
         terminal=self.durable.get(execution_id+":supervisor","TERMINAL")
@@ -64,17 +68,21 @@ class Supervisor:
         def discover(stage,name,query):
             attempt_id=execution_id+":abstention:"+stage+":"+name
             provider=self.engine.discovery.get(name)
-            if name not in allowed_providers or provider is None or getattr(provider,"name",None)!=name:
+            if self.durable.get(attempt_id,"SKIPPED") is not None:return None,None
+            def skip(reason):
+                self.durable.emit(attempt_id,"SKIPPED",{"provider":name,"query":asdict(query),"reason":reason})
                 return None,None
+            if name not in allowed_providers or provider is None or getattr(provider,"name",None)!=name:
+                return skip("Not authorized or no provider")
             circuit=CircuitBreaker(self.store,self.engine.circuit_threshold,self.engine.circuit_cooldown_seconds)
             previous=self.store.discovery_receipt(attempt_id)
             started=self.durable.get(attempt_id,"STARTED") is not None
             if not previous and not started:
-                if not circuit.admit(name,attempt_id,timestamp):return None,None
+                if not circuit.admit(name,attempt_id,timestamp):return skip("Circuit open")
                 try:healthy=provider.health_check()
                 except Exception:healthy=False
                 if not healthy:
-                    circuit.cancel_probe(name,attempt_id,timestamp);return None,None
+                    circuit.cancel_probe(name,attempt_id,timestamp);return skip("Health unavailable")
             def invoke(commit):
                 try:
                     if callable(getattr(provider,"invoke_durable",None)):
@@ -196,9 +204,10 @@ class Supervisor:
                 for other in self.store.contradictions(ref):
                     ids=sorted((ref,other))
                     self.learning.write("contradiction:"+digest(ids),{"kind":"contradiction","data":{"evidence_ids":ids}})
-            record=AbstentionRecord(fingerprint.archetype,tuple(dict.fromkeys(a["failure_signature"] for a in rows)),
-                tuple(dict.fromkeys(k for r in rounds for k in r.trace if r.stages[k].attempts)),tuple(sorted({a["rung"] for a in rows if a["rung"] is not None})),
-                tuple(rows),issued,brief_id,reason,(objective.get("required_to_proceed") or "Authorized fixture observation and independent verification",))
+            all_rows=[a for k in sorted(graph) for a in attempts_for(k)]
+            record=AbstentionRecord(fingerprint.archetype,tuple(dict.fromkeys(a["failure_signature"] for a in all_rows)),
+                tuple(dict.fromkeys(k for r in rounds for k in r.trace if r.stages[k].attempts)),tuple(sorted({a["rung"] for a in all_rows if a["rung"] is not None})),
+                tuple(all_rows),issued,brief_id,reason,(objective.get("required_to_proceed") or "Authorized fixture observation and independent verification",))
             self.learning.write(execution_id+":abstain:"+stage_id,{"kind":"abstention","data":asdict(record)})
             abstentions.append(record)
             self.durable.hook("after_abstention_write")
@@ -224,6 +233,7 @@ class Supervisor:
             state=SupervisorState.CLOSED
         result=SupervisorResult(state,tuple(states),tuple(decisions),tuple(abstentions),verification)
         self.durable.emit(execution_id+":supervisor","TERMINAL",asdict(result))
+        self.durable.hook("after_supervisor_terminal")
         return result
 
 
