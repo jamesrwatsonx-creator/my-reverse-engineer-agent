@@ -1,0 +1,14 @@
+{
+  "capability": "rate limiting middleware",
+  "observable_behavior": "fixture emits status 429",
+  "undetermined_mechanism": "server-side scheduling policy",
+  "acceptance_test": {
+    "input": "controlled response fixture",
+    "expected": "status 429 and retry interval",
+    "method": "behavioral_equivalence"
+  },
+  "required_to_proceed": "Authorized held-out fixture for server-side policy",
+  "configuration": {
+    "mode": "fixture-repair"
+  }
+}
