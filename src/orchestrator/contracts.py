@@ -38,6 +38,7 @@ class ResultStatus(str, Enum):
     TIMEOUT = "TIMEOUT"
     EMPTY = "EMPTY"
     CONTRADICTED = "CONTRADICTED"
+    INCOMPLETE = "INCOMPLETE"
 
 
 class FailureSignature(str, Enum):
@@ -370,3 +371,39 @@ class DiscoveryProvider(Protocol):
     kind: DiscoveryKind
     def health_check(self) -> bool: ...
     def invoke(self, query: DiscoveryQuery) -> DiscoveryResult: ...
+
+
+class SupervisorAction(str, Enum):
+    CONTINUE="CONTINUE"
+    REPAIR="REPAIR"
+    DISCOVER="DISCOVER"
+    VERIFY="VERIFY"
+    ABSTAIN="ABSTAIN"
+    ESCALATE="ESCALATE"
+
+
+@dataclass(frozen=True)
+class SupervisorDecision:
+    action: SupervisorAction
+    reason: str
+    target: str
+    evidence_ids: tuple[str,...]
+
+
+@dataclass(frozen=True)
+class AbstentionRecord:
+    archetype: Archetype
+    failure_signatures: tuple[str,...]
+    stages_attempted: tuple[str,...]
+    rungs_attempted: tuple[int,...]
+    providers_attempted: tuple[Mapping[str,object],...]
+    discovery_queries_issued: tuple[Mapping[str,object],...]
+    construction_brief_id: str | None
+    no_brief_reason: str | None
+    required_to_proceed: tuple[str,...]
+
+    def __post_init__(self):
+        if bool(self.construction_brief_id)==bool(self.no_brief_reason):
+            raise ValueError("Exactly one brief ID or reason required")
+        if not self.required_to_proceed or not all(isinstance(x,str) and x.strip() for x in self.required_to_proceed):
+            raise ValueError("Required evidence or input must be named")

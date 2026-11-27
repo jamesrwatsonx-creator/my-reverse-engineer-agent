@@ -44,6 +44,8 @@ class EvidenceStore:
     def __init__(self, path: str | Path):
         self.db = sqlite3.connect(str(path))
         self.db.execute("PRAGMA foreign_keys=ON")
+        self.db.execute("PRAGMA journal_mode=WAL")
+        self.db.execute("PRAGMA synchronous=FULL")
         self.db.executescript("""
         CREATE TABLE IF NOT EXISTS evidence (
           id TEXT PRIMARY KEY, payload TEXT NOT NULL,
@@ -253,3 +255,12 @@ class EvidenceStore:
             self.db.execute("INSERT OR IGNORE INTO circuit_events(event_id,provider,payload) VALUES (?,?,?)",(event_id,provider,data))
             actual=self.db.execute("SELECT provider,payload FROM circuit_events WHERE event_id=?",(event_id,)).fetchone()
             if actual!=(provider,data):raise ValueError("Circuit event identity reused")
+
+    def discovery_receipt(self, attempt_id: str):
+        row=self.db.execute("SELECT evidence_id,provider,query,result FROM discovery WHERE attempt_id=?",(attempt_id,)).fetchone()
+        return {"evidence_id":row[0],"provider":row[1],"query":json.loads(row[2]),"result":json.loads(row[3])} if row else None
+
+    def discoveries_for_run(self, execution_id: str):
+        return tuple({"attempt_id":a,"evidence_id":e,"provider":p,"query":json.loads(q),"result":json.loads(r)}
+                     for a,e,p,q,r in self.db.execute("SELECT attempt_id,evidence_id,provider,query,result FROM discovery ORDER BY seq")
+                     if a.startswith(execution_id+":"))

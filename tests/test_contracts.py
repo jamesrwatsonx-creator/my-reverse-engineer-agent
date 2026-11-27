@@ -8,7 +8,7 @@ class ContractTests(unittest.TestCase):
         expected = {
             Layer: "static dynamic-dispatch cross-boundary transport persistent-state",
             ProviderKind: "static dynamic emulation symbolic capture verify research",
-            ResultStatus: "PASS FAIL TIMEOUT EMPTY CONTRADICTED",
+            ResultStatus: "PASS FAIL TIMEOUT EMPTY CONTRADICTED INCOMPLETE",
             FailureSignature: "PACKED ENCRYPTED_STRINGS DISPATCHER_LOOP UNRESOLVED_INDIRECT PINNED UNKNOWN_PROTOCOL HOST_UNSUPPORTED TIMEOUT_ADVERSARIAL SHADER_OPAQUE MODEL_GRAPH_UNKNOWN CIRCUIT_OPEN RATE_LIMITED AUTH_MISSING NONE",
             Derivation: "observed derived inferred unknown",
             Archetype: "native-desktop electron android-apk web-spa cloud-api packed-binary firmware browser-extension video-drm game-realtime ios dotnet wasm evm sqlite",
